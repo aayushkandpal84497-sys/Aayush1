@@ -1,1058 +1,2445 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MathQuest — Complete Visual Mathematics Platform</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MathQuest — Interactive Mathematics</title><link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"><script defer
+src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script><script defer
+src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script><style>
 
-<!-- KaTeX CSS & JS for Mathematical Formulas -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
-
-<style>
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
 :root{
-  --bg:#0f172a;
-  --bg-pattern:
-    radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.12), transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(99, 102, 241, 0.12), transparent 40%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  --card:#1e293b;
-  --card-hover:#334155;
-  --text:#f8fafc;
-  --muted:#94a3b8;
-  --primary:#38bdf8;
-  --primary-hover:#0284c7;
-  --secondary:#f59e0b;
-  --border:#334155;
-  --shadow:0 10px 25px -5px rgba(0, 0, 0, 0.5);
-  --accent-glow:rgba(56, 189, 248, 0.25);
+--bg:#060b16;
+--card:#101a2d;
+--card2:#14233d;
+--text:#f8fafc;
+--muted:#94a3b8;
+--primary:#38bdf8;
+--secondary:#f59e0b;
+--border:#24344f;
+--glow:rgba(56,189,248,.25);
 }
 
 body.light{
-  --bg:#f8fafc;
-  --bg-pattern:
-    radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08), transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(79, 70, 229, 0.08), transparent 40%),
-    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-  --card:#ffffff;
-  --card-hover:#f1f5f9;
-  --text:#0f172a;
-  --muted:#64748b;
-  --primary:#0284c7;
-  --primary-hover:#0369a1;
-  --secondary:#d97706;
-  --border:#e2e8f0;
-  --shadow:0 10px 25px -5px rgba(0, 0, 0, 0.08);
-  --accent-glow:rgba(2, 132, 199, 0.15);
+--bg:#f5f7fb;
+--card:#ffffff;
+--card2:#f1f5f9;
+--text:#0f172a;
+--muted:#64748b;
+--primary:#0284c7;
+--secondary:#d97706;
+--border:#dce3ed;
+--glow:rgba(2,132,199,.18);
+}
+
+html{
+scroll-behavior:smooth;
 }
 
 body{
-  font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif;
-  background-color:var(--bg);
-  background-image:var(--bg-pattern);
-  background-size:100% 100%, 100% 100%, 30px 30px, 30px 30px;
-  background-attachment:fixed;
-  color:var(--text);
-  line-height:1.6;
-  transition:background .35s ease, color .35s ease;
-  min-height:100vh;
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+Roboto,
+Arial,
+sans-serif;
+
+background:var(--bg);
+color:var(--text);
+line-height:1.6;
+min-height:100vh;
+overflow-x:hidden;
+
+transition:
+background .4s ease,
+color .4s ease;
 }
 
-button,input,select{
-  font:inherit;
+/* ================= BACKGROUND ================= */
+
+#bgCanvas{
+position:fixed;
+inset:0;
+width:100%;
+height:100%;
+z-index:-5;
+pointer-events:none;
 }
 
-button{
-  -webkit-tap-highlight-color:transparent;
+.math-symbol{
+position:fixed;
+z-index:-3;
+color:var(--primary);
+opacity:.08;
+font-weight:800;
+pointer-events:none;
+animation:floatSymbol linear infinite;
 }
+
+@keyframes floatSymbol{
+
+0%{
+transform:translateY(110vh) rotate(0deg);
+opacity:0;
+}
+
+15%{
+opacity:.08;
+}
+
+85%{
+opacity:.08;
+}
+
+100%{
+transform:translateY(-15vh) rotate(360deg);
+opacity:0;
+}
+
+}
+
+/* ================= HEADER ================= */
 
 header{
-  background:rgba(30, 41, 59, 0.75);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-  position:sticky;
-  top:0;
-  z-index:100;
-  box-shadow:var(--shadow);
+position:sticky;
+top:0;
+z-index:100;
+
+background:rgba(10,18,33,.82);
+backdrop-filter:blur(18px);
+
+border-bottom:1px solid var(--border);
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.25);
 }
 
 body.light header{
-  background:rgba(255, 255, 255, 0.8);
+background:rgba(255,255,255,.88);
 }
 
 .nav{
-  max-width:1200px;
-  margin:auto;
-  padding:15px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
+max-width:1250px;
+margin:auto;
+padding:15px 20px;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
 }
 
 .logo{
-  font-size:26px;
-  font-weight:800;
-  color:var(--primary);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  letter-spacing:-0.5px;
+font-size:27px;
+font-weight:900;
+color:var(--primary);
+cursor:pointer;
+letter-spacing:-1px;
 }
 
 .logo span{
-  color:var(--secondary);
+color:var(--secondary);
 }
 
 .nav-buttons{
-  display:flex;
-  gap:10px;
+display:flex;
+gap:9px;
 }
 
 .icon-btn{
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  border-radius:10px;
-  padding:8px 14px;
-  cursor:pointer;
-  font-weight:600;
-  transition:all .25s ease;
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
+border:1px solid var(--border);
+background:var(--card);
+color:var(--text);
+
+border-radius:11px;
+
+padding:9px 14px;
+
+cursor:pointer;
+font-weight:700;
+
+transition:
+transform .25s ease,
+background .25s ease,
+box-shadow .25s ease;
 }
 
 .icon-btn:hover{
-  background:var(--card-hover);
-  transform:translateY(-2px);
-  box-shadow:0 0 12px var(--accent-glow);
+transform:translateY(-2px);
+background:var(--card2);
+box-shadow:0 0 18px var(--glow);
 }
 
+/* ================= HERO ================= */
+
 .hero{
-  max-width:1200px;
-  margin:25px auto 10px;
-  padding:40px 25px;
-  text-align:center;
+max-width:1200px;
+margin:auto;
+padding:70px 20px 40px;
+text-align:center;
 }
 
 .hero h1{
-  font-size:clamp(32px, 6vw, 56px);
-  line-height:1.15;
-  margin-bottom:15px;
-  font-weight:800;
-  letter-spacing:-1px;
+font-size:clamp(35px,7vw,64px);
+font-weight:900;
+line-height:1.08;
+letter-spacing:-2px;
 }
 
 .hero h1 span{
-  background:linear-gradient(135deg, var(--primary), #818cf8);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
+background:
+linear-gradient(
+135deg,
+var(--primary),
+#818cf8,
+var(--secondary)
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
 .hero p{
-  color:var(--muted);
-  max-width:720px;
-  margin:auto;
-  font-size:18px;
+max-width:760px;
+margin:20px auto;
+
+font-size:18px;
+color:var(--muted);
 }
 
 .search-box{
-  max-width:700px;
-  margin:28px auto 10px;
+max-width:720px;
+margin:30px auto 0;
 }
 
 .search-box input{
-  width:100%;
-  padding:16px 22px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  outline:none;
-  box-shadow:var(--shadow);
-  font-size:16px;
-  transition:all .3s ease;
+width:100%;
+
+padding:17px 22px;
+
+border-radius:15px;
+
+border:1px solid var(--border);
+
+background:var(--card);
+color:var(--text);
+
+font-size:16px;
+outline:none;
+
+box-shadow:0 15px 35px rgba(0,0,0,.2);
+
+transition:.3s;
 }
 
 .search-box input:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 0 4px var(--accent-glow);
+border-color:var(--primary);
+box-shadow:
+0 0 0 4px var(--glow),
+0 15px 35px rgba(0,0,0,.2);
 }
 
+/* ================= MAIN ================= */
+
 .container{
-  max-width:1200px;
-  margin:auto;
-  padding:0 20px 50px;
+max-width:1250px;
+margin:auto;
+padding:0 20px 70px;
 }
 
 .dashboard{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-  margin-bottom:35px;
+display:grid;
+grid-template-columns:
+repeat(3,1fr);
+
+gap:18px;
+
+margin-bottom:40px;
 }
 
 .stat{
-  background:var(--card);
-  border:1px solid var(--border);
-  padding:22px;
-  border-radius:16px;
-  box-shadow:var(--shadow);
-  text-align:center;
+background:var(--card);
+
+border:1px solid var(--border);
+
+border-radius:17px;
+
+padding:24px;
+
+text-align:center;
+
+box-shadow:
+0 15px 35px rgba(0,0,0,.18);
+
+transition:.3s;
+}
+
+.stat:hover{
+transform:translateY(-4px);
 }
 
 .stat strong{
-  display:block;
-  font-size:32px;
-  color:var(--primary);
-  font-weight:800;
+display:block;
+
+font-size:34px;
+
+color:var(--primary);
+
+font-weight:900;
 }
 
 .section-title{
-  margin:35px 0 18px;
-  border-bottom:1px solid var(--border);
-  padding-bottom:10px;
-  font-size:24px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+font-size:27px;
+
+margin:40px 0 20px;
+
+padding-bottom:12px;
+
+border-bottom:1px solid var(--border);
 }
+
+/* ================= SUBJECT ================= */
 
 .subject{
-  margin-bottom:18px;
-  border:1px solid var(--border);
-  border-radius:16px;
-  background:var(--card);
-  overflow:hidden;
-  box-shadow:var(--shadow);
-  transition:border-color .3s ease;
-}
+margin-bottom:22px;
 
-.subject:hover{
-  border-color:rgba(56, 189, 248, 0.4);
+background:var(--card);
+
+border:1px solid var(--border);
+
+border-radius:19px;
+
+overflow:hidden;
+
+box-shadow:
+0 15px 40px rgba(0,0,0,.2);
+
+transition:.3s;
 }
 
 .subject-header{
-  width:100%;
-  padding:22px;
-  border:0;
-  background:transparent;
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  cursor:pointer;
-  text-align:left;
+width:100%;
+
+padding:23px;
+
+border:0;
+
+background:transparent;
+
+color:var(--text);
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+cursor:pointer;
+
+text-align:left;
+
+transition:.3s;
 }
 
 .subject-header:hover{
-  background:var(--card-hover);
+background:var(--card2);
 }
 
 .subject-name{
-  display:flex;
-  align-items:center;
-  gap:16px;
+display:flex;
+align-items:center;
+gap:16px;
 }
 
 .subject-icon{
-  font-size:32px;
-  background:rgba(56, 189, 248, 0.1);
-  width:54px;
-  height:54px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:12px;
+width:58px;
+height:58px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:32px;
+
+border-radius:15px;
+
+background:rgba(56,189,248,.1);
+
+border:1px solid rgba(56,189,248,.15);
 }
 
-.subject-header h3{
-  font-size:20px;
-  font-weight:700;
+.subject-name h3{
+font-size:21px;
 }
 
 .arrow{
-  transition:transform .4s ease;
-  font-size:18px;
-  color:var(--muted);
+font-size:20px;
+color:var(--muted);
+
+transition:
+transform .5s cubic-bezier(.16,1,.3,1);
 }
 
 .subject.open .arrow{
-  transform:rotate(180deg);
-  color:var(--primary);
+transform:rotate(180deg);
+color:var(--primary);
 }
 
+/* ================= TOPICS ================= */
+
 .topic-area{
-  display:none;
-  padding:0 22px 22px;
+display:grid;
+
+grid-template-rows:0fr;
+
+transition:
+grid-template-rows .7s cubic-bezier(.16,1,.3,1);
+}
+
+.topic-area>div{
+overflow:hidden;
 }
 
 .subject.open .topic-area{
-  display:block;
+grid-template-rows:1fr;
 }
 
 .topic-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-  gap:14px;
+padding:0 23px 23px;
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(280px,1fr));
+
+gap:17px;
 }
 
 .topic{
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:18px;
-  background:rgba(15, 23, 42, 0.4);
-  transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
-}
+background:
+linear-gradient(
+145deg,
+rgba(255,255,255,.025),
+rgba(255,255,255,.01)
+);
 
-body.light .topic{
-  background:rgba(248, 250, 252, 0.8);
+border:1px solid var(--border);
+
+border-radius:15px;
+
+padding:21px;
+
+transition:
+transform .35s ease,
+border-color .35s ease,
+box-shadow .35s ease;
 }
 
 .topic:hover{
-  transform:translateY(-3px);
-  border-color:var(--primary);
-  box-shadow:0 8px 20px -5px var(--accent-glow);
+transform:translateY(-6px);
+
+border-color:var(--primary);
+
+box-shadow:
+0 12px 35px var(--glow);
 }
 
 .topic h4{
-  margin-bottom:6px;
-  color:var(--primary);
-  font-size:17px;
-  font-weight:700;
+color:var(--primary);
+
+font-size:19px;
+
+margin-bottom:7px;
 }
 
 .topic p{
-  color:var(--muted);
-  font-size:14px;
-  min-height:40px;
+font-size:14px;
+color:var(--muted);
 }
 
-.topic-actions{
-  display:flex;
-  gap:8px;
-  margin-top:14px;
+.subtopic-tag-list{
+display:flex;
+flex-wrap:wrap;
+gap:7px;
+
+margin:15px 0;
 }
 
-.topic button{
-  border:1px solid var(--primary);
-  color:var(--primary);
-  background:transparent;
-  padding:7px 12px;
-  border-radius:8px;
-  cursor:pointer;
-  font-size:13px;
-  font-weight:600;
-  transition:all .2s ease;
-  flex:1;
+.subtopic-tag{
+font-size:11px;
+
+padding:4px 9px;
+
+border-radius:7px;
+
+color:var(--primary);
+
+background:rgba(56,189,248,.1);
+
+border:1px solid rgba(56,189,248,.2);
 }
 
-.topic button:hover{
-  background:var(--primary);
-  color:#ffffff;
+.study-btn{
+width:100%;
+
+margin-top:10px;
+
+padding:13px;
+
+border:none;
+
+border-radius:11px;
+
+background:
+linear-gradient(
+135deg,
+var(--primary),
+#6366f1
+);
+
+color:white;
+
+font-weight:800;
+
+cursor:pointer;
+
+transition:
+transform .3s ease,
+box-shadow .3s ease;
 }
 
-.topic button.complete-btn{
-  border-color:var(--border);
-  color:var(--text);
-  flex:initial;
+.study-btn:hover{
+transform:scale(1.025);
+
+box-shadow:
+0 8px 25px var(--glow);
 }
 
-.topic button.complete-btn:hover{
-  background:var(--card-hover);
+/* ================= FULLSCREEN STUDY MODE ================= */
+
+.fullscreen-overlay{
+position:fixed;
+inset:0;
+
+z-index:2000;
+
+background:
+rgba(2,6,23,.78);
+
+backdrop-filter:blur(15px);
+
+display:flex;
+align-items:flex-end;
+justify-content:center;
+
+opacity:0;
+
+visibility:hidden;
+
+transition:
+opacity .8s ease,
+visibility .8s ease;
 }
 
-.progress{
-  height:6px;
-  background:var(--border);
-  border-radius:10px;
-  margin-top:12px;
-  overflow:hidden;
+.fullscreen-overlay.active{
+opacity:1;
+visibility:visible;
 }
 
-.progress-bar{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg, var(--primary), #818cf8);
-  transition:width .8s ease;
+.fullscreen-modal{
+width:100vw;
+height:100vh;
+
+background:var(--card);
+
+display:flex;
+flex-direction:column;
+
+transform:
+translateY(100%)
+scale(.96);
+
+opacity:.5;
+
+transition:
+transform 1.15s cubic-bezier(.16,1,.3,1),
+opacity .9s ease;
 }
 
-/* VISUAL LESSON MODAL */
+.fullscreen-overlay.active
+.fullscreen-modal{
 
-.lesson-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.7);
-  backdrop-filter:blur(8px);
-  z-index:1000;
-  display:none;
-  align-items:center;
-  justify-content:center;
+transform:
+translateY(0)
+scale(1);
+
+opacity:1;
 }
 
-.lesson-overlay.show{
-  display:flex;
-  animation:lessonIn .3s ease both;
+/* ================= STUDY HEADER ================= */
+
+.fullscreen-header{
+position:sticky;
+top:0;
+
+z-index:20;
+
+padding:
+20px
+max(25px,calc((100vw - 1100px)/2));
+
+background:
+color-mix(
+in srgb,
+var(--card) 92%,
+transparent
+);
+
+backdrop-filter:blur(15px);
+
+border-bottom:1px solid var(--border);
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.2);
 }
 
-.lesson-modal{
-  width:94%;
-  max-width:920px;
-  max-height:90vh;
-  overflow:auto;
-  background:var(--card);
-  color:var(--text);
-  border-radius:20px;
-  box-shadow:0 25px 50px -12px rgba(0,0,0,0.7);
-  border:1px solid var(--border);
+.fullscreen-body{
+max-width:1000px;
+
+width:100%;
+
+margin:auto;
+
+padding:45px 25px 100px;
 }
 
-.lesson-header{
-  position:sticky;
-  top:0;
-  z-index:5;
-  background:var(--card);
-  border-bottom:1px solid var(--border);
-  padding:18px 24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
+/* ================= LESSON ================= */
+
+.lesson-intro{
+padding:28px;
+
+border-radius:18px;
+
+background:
+linear-gradient(
+135deg,
+rgba(56,189,248,.08),
+rgba(129,140,248,.08)
+);
+
+border:1px solid var(--border);
+
+margin-bottom:30px;
 }
 
-.lesson-content{
-  padding:30px;
+.lesson-intro h3{
+color:var(--primary);
+
+font-size:24px;
+
+margin-bottom:10px;
+}
+
+.subtopic-card{
+background:var(--card2);
+
+border:1px solid var(--border);
+
+border-radius:16px;
+
+padding:24px;
+
+margin-bottom:17px;
+
+opacity:0;
+
+transform:translateY(25px);
+
+animation:
+lessonCard .7s cubic-bezier(.16,1,.3,1)
+forwards;
+}
+
+@keyframes lessonCard{
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+.subtopic-card h4{
+color:var(--secondary);
+
+font-size:19px;
+
+margin-bottom:9px;
+}
+
+.example{
+margin-top:15px;
+
+padding:14px;
+
+border-left:
+4px solid var(--primary);
+
+background:rgba(56,189,248,.07);
+
+border-radius:8px;
 }
 
 .lesson-visual{
-  margin:22px 0;
-  text-align:center;
-  background:rgba(15, 23, 42, 0.6);
-  padding:22px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
+display:flex;
 
-body.light .lesson-visual{
-  background:#f1f5f9;
-}
+align-items:center;
 
-.lesson-visual svg{
-  max-width:100%;
-  height:auto;
-}
+justify-content:center;
 
-.lesson-visual-caption{
-  margin-top:10px;
-  font-size:14px;
-  color:var(--muted);
-  font-style:italic;
-}
+padding:30px;
 
-.lesson-quiz{
-  margin-top:28px;
-  padding:22px;
-  border:1px solid var(--border);
-  border-radius:14px;
-  background:rgba(15, 23, 42, 0.3);
-}
+margin-bottom:30px;
 
-.lesson-answers{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin-top:16px;
-}
+border-radius:18px;
 
-.lesson-answer{
-  padding:14px;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  border-radius:10px;
-  cursor:pointer;
-  text-align:left;
-  transition:all .2s ease;
-  font-weight:500;
-}
+background:
+rgba(56,189,248,.05);
 
-.lesson-answer:hover{
-  border-color:var(--primary);
-  transform:translateY(-2px);
-}
+border:1px solid var(--border);
 
-.lesson-answer.correct{
-  background:#166534;
-  color:#f0fdf4;
-  border-color:#22c55e;
-}
-
-.lesson-answer.wrong{
-  background:#991b1b;
-  color:#fef2f2;
-  border-color:#ef4444;
-}
-
-/* PRACTICE SHEETS & CHALLENGE */
-
-.worksheets-section, .practice{
-  margin-top:40px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:28px;
-  box-shadow:var(--shadow);
-}
-
-.sheet-card{
-  border:1px solid var(--border);
-  padding:20px;
-  border-radius:12px;
-  background:rgba(15, 23, 42, 0.3);
-  margin-bottom:16px;
-}
-
-body.light .sheet-card{
-  background:#f8fafc;
-}
-
-.sheet-card h4{
-  color:var(--primary);
-  margin-bottom:6px;
-  font-size:18px;
-}
-
-.sheet-questions{
-  margin-top:12px;
-  padding-left:22px;
-}
-
-.sheet-questions li{
-  margin-bottom:10px;
-}
-
-.answers{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-top:16px;
-}
-
-.answer{
-  padding:14px;
-  border:1px solid var(--border);
-  background:rgba(15, 23, 42, 0.3);
-  color:var(--text);
-  border-radius:10px;
-  cursor:pointer;
-  text-align:left;
-  font-weight:500;
-  transition:all .2s ease;
-}
-
-body.light .answer{
-  background:#f8fafc;
-}
-
-.answer:hover{
-  border-color:var(--primary);
-  transform:translateY(-2px);
-}
-
-.answer.correct{
-  background:#166534;
-  color:#ffffff;
-}
-
-.answer.wrong{
-  background:#991b1b;
-  color:#ffffff;
+min-height:160px;
 }
 
 .main-btn{
-  background:var(--primary);
-  color:#ffffff;
-  border:0;
-  border-radius:10px;
-  padding:12px 22px;
-  cursor:pointer;
-  font-weight:700;
-  transition:all .25s ease;
+width:100%;
+
+margin-top:25px;
+
+padding:15px;
+
+border:0;
+
+border-radius:12px;
+
+background:var(--primary);
+
+color:white;
+
+font-weight:800;
+
+cursor:pointer;
+
+font-size:16px;
+
+transition:.3s;
 }
 
 .main-btn:hover{
-  background:var(--primary-hover);
-  transform:translateY(-2px);
-  box-shadow:0 4px 12px var(--accent-glow);
+background:#0284c7;
+
+transform:translateY(-2px);
 }
 
 footer{
-  border-top:1px solid var(--border);
-  text-align:center;
-  padding:30px;
-  color:var(--muted);
-  margin-top:50px;
+border-top:1px solid var(--border);
+
+text-align:center;
+
+padding:30px;
+
+color:var(--muted);
 }
 
-@keyframes lessonIn{
-  from{opacity:0; transform:scale(0.96);}
-  to{opacity:1; transform:scale(1);}
-}
+/* ================= MOBILE ================= */
 
 @media(max-width:700px){
-  .dashboard, .answers, .lesson-answers{
-    grid-template-columns:1fr;
-  }
-}
-</style>
-</head>
 
-<body>
-
-<header>
-  <div class="nav">
-    <div class="logo" onclick="scrollToTop()">
-      📐 Math<span>Quest</span>
-    </div>
-
-    <div class="nav-buttons">
-      <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle dark/light mode">🌙 Theme</button>
-      <button class="icon-btn" onclick="resetProgress()" aria-label="Reset progress">Reset</button>
-    </div>
-  </div>
-</header>
-
-<section class="hero">
-  <h1>Complete <span>Mathematics</span> Journey</h1>
-  <p>From primary arithmetic to university-level mathematics with interactive derivations, diagrams, and practice problems.</p>
-
-  <div class="search-box">
-    <input
-      type="search"
-      id="search"
-      placeholder="Search all topics... e.g., fractions, quadratic equations, calculus, matrices"
-      aria-label="Search mathematics topics"
-      oninput="searchTopics()"
-    >
-  </div>
-</section>
-
-<main class="container">
-  <div class="dashboard">
-    <div class="stat">
-      <strong id="completed">0</strong>
-      Topics Completed
-    </div>
-
-    <div class="stat">
-      <strong id="totalTopics">0</strong>
-      Total Topics
-    </div>
-
-    <div class="stat">
-      <strong id="percentage">0%</strong>
-      Overall Progress
-    </div>
-  </div>
-
-  <h2 class="section-title">Mathematics Roadmap</h2>
-
-  <div id="subjects"></div>
-
-  <div class="no-results" id="noResults" style="display:none; text-align:center; padding:30px; color:var(--muted);">
-    No topics found matching your query.
-  </div>
-
-  <!-- PRACTICE SHEETS SECTION -->
-  <section class="worksheets-section">
-    <h2 style="margin-bottom:8px;">📄 Interactive Practice Worksheets</h2>
-    <p style="color:var(--muted); margin-bottom:20px;">Structured problem sheets across various levels with instant solution verification.</p>
-
-    <div class="sheet-card">
-      <h4>Sheet #1: Arithmetic & Percentages</h4>
-      <p style="font-size:14px; color:var(--muted);">Practice fractions, ratios, and percentage conversions.</p>
-      <ol class="sheet-questions">
-        <li>Calculate $\frac{3}{8} + \frac{1}{4}$.</li>
-        <li>A quantity increases from $80$ to $100$. Find the percentage increase.</li>
-      </ol>
-      <button class="main-btn" style="margin-top:10px;" onclick="alert('Answers:\n1) 5/8\n2) 25% increase')">Reveal Solutions</button>
-    </div>
-
-    <div class="sheet-card">
-      <h4>Sheet #2: Algebra & Quadratic Formulas</h4>
-      <p style="font-size:14px; color:var(--muted);">Solve linear and quadratic equations step by step.</p>
-      <ol class="sheet-questions">
-        <li>Solve for $x$: $3x + 5 = 20$.</li>
-        <li>Find the roots of $x^2 - 7x + 10 = 0$.</li>
-      </ol>
-      <button class="main-btn" style="margin-top:10px;" onclick="alert('Answers:\n1) x = 5\n2) x = 2 and x = 5')">Reveal Solutions</button>
-    </div>
-  </section>
-
-  <!-- CHALLENGE PRACTICE SECTION -->
-  <section class="practice" id="practiceSection">
-    <h2>📝 MathQuest Challenge Quiz</h2>
-    <p style="color:var(--muted); margin-bottom:15px;">Test your knowledge across random topics.</p>
-
-    <div class="question" id="question" style="font-size:20px; font-weight:600; margin-bottom:15px;">Loading question...</div>
-    <div class="answers" id="answers"></div>
-    <div class="message" id="message" style="margin-top:12px; font-weight:bold;"></div>
-
-    <div id="solutionBox" style="display:none; margin-top:18px; padding:18px; background:rgba(15, 23, 42, 0.5); border-left:4px solid var(--secondary); border-radius:10px;">
-      <h4>💡 Solution:</h4>
-      <p id="solutionText" style="margin-top:6px;"></p>
-    </div>
-
-    <button class="main-btn" style="margin-top:18px;" onclick="newQuestion()">Next Question →</button>
-  </section>
-</main>
-
-<footer>
-  <p><strong>MathQuest</strong> — Complete Mathematics Roadmap for Everyone.</p>
-</footer>
-
-<!-- VISUAL LESSON OVERLAY MODAL -->
-<div class="lesson-overlay" id="lessonOverlay" role="dialog" aria-modal="true">
-  <div class="lesson-modal">
-    <div class="lesson-header">
-      <h2 id="lessonTitle">Lesson</h2>
-      <button class="icon-btn" onclick="closeLesson()">✕ Close</button>
-    </div>
-    <div class="lesson-content" id="lessonContent"></div>
-  </div>
-</div>
-
-<script>
-
-function renderMath(container) {
-  if (window.renderMathInElement) {
-    window.renderMathInElement(container, {
-      delimiters: [
-        { left: "$$", right: "$$", display: true },
-        { left: "$", right: "$", display: false }
-      ],
-      throwOnError: false
-    });
-  }
+.dashboard{
+grid-template-columns:1fr;
 }
 
-/* FULL ALL-TOPIC REGISTRY WITH DYNAMIC SVG DIAGRAMS */
-const TOPICS = {
-  // 1. ARITHMETIC
-  "arithmetic-counting": {
-    id: "arithmetic-counting", subject: "Arithmetic", title: "Counting", summary: "Finding how many objects there are.",
-    svg: `<svg width="220" height="120" viewBox="0 0 220 120"><circle cx="40" cy="60" r="20" fill="#38bdf8"/><circle cx="90" cy="60" r="20" fill="#38bdf8"/><circle cx="140" cy="60" r="20" fill="#38bdf8"/><circle cx="190" cy="60" r="20" fill="#f59e0b"/><text x="40" y="65" text-anchor="middle" fill="#0f172a" font-weight="bold">1</text><text x="90" y="65" text-anchor="middle" fill="#0f172a" font-weight="bold">2</text><text x="140" y="65" text-anchor="middle" fill="#0f172a" font-weight="bold">3</text><text x="190" y="65" text-anchor="middle" fill="#0f172a" font-weight="bold">4</text></svg>`,
-    caption: "Sequential counting of discrete elements.",
-    definition: "Counting determines the total quantity of items in a set.",
-    simpleNote: "Assign each object one unique number in sequence.",
-    keyPoints: ["Each object is counted exactly once.", "The last number specifies total count."],
-    examples: ["Counting $4$ circles gives $1, 2, 3, 4$."],
-    questions: [{ question: "What number comes after $19$?", options: ["$18$", "$20$", "$21$", "$29$"], correct: 1, explanation: "$19 + 1 = 20$." }]
-  },
-  "arithmetic-fractions": {
-    id: "arithmetic-fractions", subject: "Arithmetic", title: "Fractions", summary: "Parts of a whole.",
-    svg: `<svg width="140" height="140" viewBox="0 0 140 140"><path d="M70,70 L70,10 A60,60 0 0,1 130,70 Z" fill="#38bdf8"/><path d="M70,70 L130,70 A60,60 0 1,1 70,10 Z" fill="#334155"/><circle cx="70" cy="70" r="60" fill="none" stroke="#38bdf8" stroke-width="3"/></svg>`,
-    caption: "Visual pie representation showing a 1/4 fraction.",
-    definition: "A fraction represents a part of a whole written as $\\frac{a}{b}$.",
-    simpleNote: "The top number is numerator (parts taken); bottom is denominator (total parts).",
-    keyPoints: ["Denominator $b \\neq 0$.", "$\\frac{1}{4}$ represents one part out of four equal divisions."],
-    examples: ["$\\frac{2}{4} = \\frac{1}{2}$."],
-    questions: [{ question: "What is $\\frac{2}{5} + \\frac{1}{5}$?", options: ["$\\frac{3}{5}$", "$\\frac{3}{10}$", "$\\frac{2}{10}$", "$1$"], correct: 0, explanation: "$\\frac{2+1}{5} = \\frac{3}{5}$." }]
-  },
-  "arithmetic-addition": { id: "arithmetic-addition", subject: "Arithmetic", title: "Addition", summary: "Combining quantities together.", definition: "Addition is combining values into a total sum.", simpleNote: "Put amounts together.", keyPoints: ["Commutative: $a+b = b+a$."], examples: ["$23 + 17 = 40$."], questions: [{ question: "What is $47 + 18$?", options: ["$55$", "$65$", "$75$", "$61$"], correct: 1, explanation: "$47 + 18 = 65$." }] },
-  "arithmetic-subtraction": { id: "arithmetic-subtraction", subject: "Arithmetic", title: "Subtraction", summary: "Taking away or finding difference.", definition: "Subtraction finds the difference between two quantities.", simpleNote: "Remove an amount from a total.", keyPoints: ["Inverse of addition."], examples: ["$25 - 9 = 16$."], questions: [{ question: "What is $92 - 37$?", options: ["$45$", "$55$", "$65$", "$75$"], correct: 1, explanation: "$92 - 37 = 55$." }] },
-  "arithmetic-multiplication": { id: "arithmetic-multiplication", subject: "Arithmetic", title: "Multiplication", summary: "Repeated addition of equal groups.", definition: "Multiplication scales a number by another.", simpleNote: "Quick addition of equal groups.", keyPoints: ["$a \\times b = b \\times a$."], examples: ["$4 \\times 3 = 12$."], questions: [{ question: "What is $9 \\times 7$?", options: ["$56$", "$63$", "$72$", "$81$"], correct: 1, explanation: "$9 \\times 7 = 63$." }] },
-  "arithmetic-division": { id: "arithmetic-division", subject: "Arithmetic", title: "Division", summary: "Splitting into equal groups.", definition: "Division splits a quantity into equal parts.", simpleNote: "Sharing equally.", keyPoints: ["Inverse of multiplication."], examples: ["$20 \\div 5 = 4$."], questions: [{ question: "What is $72 \\div 9$?", options: ["$6$", "$7$", "$8$", "$9$"], correct: 2, explanation: "$72 \\div 9 = 8$." }] },
+.hero{
+padding-top:45px;
+}
 
-  // 2. NUMBER SYSTEMS
-  "numbers-integers": { id: "numbers-integers", subject: "Number Systems", title: "Integers", summary: "Positive and negative whole numbers.", definition: "Integers consist of whole numbers and their negatives: $\\{\\dots, -2, -1, 0, 1, 2, \\dots\\}$.", simpleNote: "Whole numbers with signs.", keyPoints: ["Includes zero."], examples: ["$-5 + 8 = 3$."], questions: [{ question: "What is $-7 + 4$?", options: ["$-3$", "$3$", "$-11$", "$11$"], correct: 0, explanation: "$-7 + 4 = -3$." }] },
-  "numbers-real": { id: "numbers-real", subject: "Number Systems", title: "Real Numbers", summary: "Rational and irrational numbers combined.", definition: "Real numbers represent points along an infinite continuous number line.", simpleNote: "All numbers on the number line.", keyPoints: ["Includes fractions, integers, and irrationals like $\\pi$."], examples: ["$\\sqrt{2} \\approx 1.414$."], questions: [{ question: "Which of the following is an irrational number?", options: ["$\\frac{1}{2}$", "$\\sqrt{2}$", "$0.75$", "$-5$"], correct: 1, explanation: "$\\sqrt{2}$ cannot be written as a fraction of integers." }] },
+.hero h1{
+letter-spacing:-1px;
+}
 
-  // 3. ALGEBRA
-  "algebra-linear": {
-    id: "algebra-linear", subject: "Algebra", title: "Linear Equations", summary: "Equations where variables have power 1.",
-    svg: `<svg width="200" height="120" viewBox="0 0 200 120"><line x1="20" y1="100" x2="180" y2="100" stroke="#94a3b8" stroke-width="2"/><line x1="30" y1="110" x2="30" y2="10" stroke="#94a3b8" stroke-width="2"/><line x1="30" y1="90" x2="170" y2="20" stroke="#38bdf8" stroke-width="3"/></svg>`,
-    caption: "Graph of a linear equation y = mx + c.",
-    definition: "An equation of the form $ax + b = c$.", simpleNote: "Keep both sides balanced.", keyPoints: ["Degree of $x$ is $1$."], examples: ["$2x + 3 = 11 \\implies x = 4$."], questions: [{ question: "Solve $3x - 5 = 10$.", options: ["$x=3$", "$x=5$", "$x=7$", "$x=15$"], correct: 1, explanation: "$3x = 15 \\implies x = 5$." }]
-  },
-  "algebra-quadratic": { id: "algebra-quadratic", subject: "Algebra", title: "Quadratic Equations", summary: "Equations involving a squared variable.", definition: "An equation of degree 2: $ax^2 + bx + c = 0$.", simpleNote: "Parabola shape with quadratic formula $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$.", keyPoints: ["Has up to two real roots."], examples: ["$x^2 - 9 = 0 \\implies x = \\pm 3$."], questions: [{ question: "Roots of $x^2 - 7x + 10 = 0$?", options: ["$1, 10$", "$2, 5$", "$3, 4$", "$-2, -5$"], correct: 1, explanation: "$(x-2)(x-5) = 0$." }] },
+.nav{
+padding:12px;
+}
 
-  // 4. GEOMETRY
-  "geometry-pythagoras": {
-    id: "geometry-pythagoras", subject: "Geometry", title: "Pythagoras Theorem", summary: "Right triangle side relationships.",
-    svg: `<svg width="160" height="120" viewBox="0 0 160 120"><polygon points="30,100 130,100 30,20" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="3"/><rect x="30" y="85" width="15" height="15" fill="none" stroke="#f59e0b" stroke-width="2"/><text x="80" y="115" fill="#94a3b8" text-anchor="middle">a</text><text x="15" y="65" fill="#94a3b8">b</text><text x="90" y="55" fill="#38bdf8">c</text></svg>`,
-    caption: "Right triangle with hypotenuse c.",
-    definition: "In a right triangle, $a^2 + b^2 = c^2$.", simpleNote: "Square the short sides to find the hypotenuse.", keyPoints: ["Applies only to $90^\\circ$ triangles."], examples: ["$3^2 + 4^2 = 5^2$."], questions: [{ question: "If $a=6, b=8$, find $c$.", options: ["$9$", "$10$", "$12$", "$14$"], correct: 1, explanation: "$c = \\sqrt{36+64} = 10$." }]
-  },
+.logo{
+font-size:23px;
+}
 
-  // 5. MENSURATION
-  "mensuration-area": { id: "mensuration-area", subject: "Mensuration", title: "Area & Volume", summary: "Space inside flat shapes and solids.", definition: "Area measures surface extent; volume measures occupied 3D space.", simpleNote: "Area is 2D space; volume is 3D space.", keyPoints: ["Circle Area $= \\pi r^2$."], examples: ["Circle with $r=7$: Area $\\approx 154$."], questions: [{ question: "Area of square with side $9\\text{ cm}$?", options: ["$18$", "$36$", "$81$", "$27$"], correct: 2, explanation: "$9 \\times 9 = 81\\text{ cm}^2$." }] },
+.icon-btn{
+padding:8px 10px;
+}
 
-  // 6. TRIGONOMETRY
-  "trigonometry-ratios": { id: "trigonometry-ratios", subject: "Trigonometry", title: "Trigonometric Ratios", summary: "Sine, Cosine, and Tangent.", definition: "Ratios connecting angles to side lengths in right triangles.", simpleNote: "SOH CAH TOA.", keyPoints: ["$\\sin(\\theta) = \\frac{\\text{Opp}}{\\text{Hyp}}$."], examples: ["$\\sin(30^\\circ) = 0.5$."], questions: [{ question: "What is $\\tan(45^\\circ)$?", options: ["$0$", "$0.5$", "$1$", "$\\sqrt{2}$"], correct: 2, explanation: "Opposite equals adjacent, so ratio is $1$." }] },
+.fullscreen-header{
+padding:15px;
+}
 
-  // 7. STATISTICS
-  "statistics-mean": { id: "statistics-mean", subject: "Statistics", title: "Mean & Averages", summary: "Central tendencies of data.", definition: "The arithmetic mean is the sum of values divided by count.", simpleNote: "Add all values and divide by how many there are.", keyPoints: ["Mean $= \\frac{\\sum x}{n}$."], examples: ["Mean of $2, 4, 6$ is $4$."], questions: [{ question: "Mean of $6, 8, 10$?", options: ["$7$", "$8$", "$9$", "$10$"], correct: 1, explanation: "$(6+8+10)/3 = 8$." }] },
+.fullscreen-header h2{
+font-size:21px!important;
+}
 
-  // 8. CALCULUS
-  "calculus-derivatives": {
-    id: "calculus-derivatives", subject: "Calculus", title: "Derivatives", summary: "Instantaneous rate of change.",
-    svg: `<svg width="180" height="110" viewBox="0 0 180 110"><path d="M20,90 Q90,90 160,20" fill="none" stroke="#38bdf8" stroke-width="3"/><line x1="50" y1="100" x2="150" y2="20" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4"/><circle cx="100" cy="60" r="5" fill="#f59e0b"/></svg>`,
-    caption: "Tangent line representing slope at a point.",
-    definition: "Derivative represents instantaneous rate of change.", simpleNote: "Slope of the curve at a point.", keyPoints: ["$\\frac{d}{dx}[x^n] = n x^{n-1}$."], examples: ["$\\frac{d}{dx}[x^2] = 2x$."], questions: [{ question: "Derivative of $5x$?", options: ["$5$", "$x$", "$0$", "$5x^2$"], correct: 0, explanation: "$\\frac{d}{dx}[5x] = 5$." }]
-  },
+.fullscreen-body{
+padding:
+30px 18px 80px;
+}
 
-  // 9. DISCRETE MATH
-  "discrete-sets": { id: "discrete-sets", subject: "Discrete Mathematics", title: "Set Theory", summary: "Collections of distinct objects.", definition: "A set is a well-defined collection of distinct elements.", simpleNote: "Grouping items into sets.", keyPoints: ["Union $\\cup$, Intersection $\\cap$."], examples: ["$\\{1,2\\} \\cup \\{3\\} = \\{1,2,3\\}$."], questions: [{ question: "If $A=\\{1,2,3\\}$, how many elements are in $A$?", options: ["$1$", "$2$", "$3$", "$4$"], correct: 2, explanation: "There are 3 elements." }] },
+.topic-grid{
+grid-template-columns:1fr;
+}
 
-  // 10. ADVANCED MATH
-  "advanced-matrices": { id: "advanced-matrices", subject: "Advanced Mathematics", title: "Matrices & Linear Algebra", summary: "Rectangular arrays of numbers.", definition: "A matrix is a grid of numbers arranged in rows and columns.", simpleNote: "Grids used for linear transformations.", keyPoints: ["Dimensions: rows $\\times$ columns."], examples: ["$\\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\end{bmatrix}$ is $2 \\times 2$."], questions: [{ question: "How many entries in a $3 \\times 2$ matrix?", options: ["$5$", "$6$", "$8$", "$9$"], correct: 1, explanation: "$3 \\times 2 = 6$ entries." }] }
+}
+
+/* accessibility */
+
+button:focus-visible,
+input:focus-visible{
+outline:
+3px solid var(--primary);
+
+outline-offset:2px;
+}
+
+</style></head><body><canvas id="bgCanvas"></canvas>
+
+<!-- Floating mathematical symbols --><div class="math-symbol" style="left:5%;font-size:32px;animation-duration:18s;">π</div>
+<div class="math-symbol" style="left:18%;font-size:25px;animation-duration:23s;animation-delay:3s;">∑</div>
+<div class="math-symbol" style="left:35%;font-size:38px;animation-duration:20s;animation-delay:6s;">√</div>
+<div class="math-symbol" style="left:55%;font-size:28px;animation-duration:25s;animation-delay:2s;">∞</div>
+<div class="math-symbol" style="left:72%;font-size:35px;animation-duration:19s;animation-delay:8s;">∫</div>
+<div class="math-symbol" style="left:88%;font-size:30px;animation-duration:22s;animation-delay:5s;">x²</div><header><div class="nav"><div class="logo"
+onclick="scrollToTop()">
+📐 Math<span>Quest</span>
+</div><div class="nav-buttons"><button
+class="icon-btn"
+onclick="toggleTheme()">
+🌙 Theme
+</button>
+
+<button
+class="icon-btn"
+onclick="resetProgress()">
+↻ Reset
+</button>
+
+</div></div></header><section class="hero"><h1>
+Master <span>Mathematics</span>
+</h1><p>
+Start from simple counting and gradually travel
+through algebra, geometry, trigonometry, calculus
+and advanced mathematics.
+</p><div class="search-box"><input
+type="search"
+id="search"
+placeholder="🔎 Search topics, formulas or concepts..."
+oninput="searchTopics()">
+
+</div></section><main class="container"><div class="dashboard"><div class="stat">
+<strong id="completed">0</strong>
+Topics Completed
+</div><div class="stat">
+<strong id="totalTopics">0</strong>
+Total Topics
+</div><div class="stat">
+<strong id="percentage">0%</strong>
+Overall Progress
+</div></div><h2 class="section-title">
+🗺️ Mathematics Roadmap
+</h2><div id="subjects"></div></main><footer><strong>MathQuest</strong>
+<br>
+Learn mathematics step-by-step.
+
+</footer><!-- ================= FULLSCREEN LESSON ================= --><div
+class="fullscreen-overlay"
+id="fullscreenOverlay"><div class="fullscreen-modal"><div class="fullscreen-header"><div><h2
+id="fsTitle"
+style="
+color:var(--primary);
+font-size:27px;
+">
+Topic
+</h2><small
+id="fsCategory"
+style="color:var(--muted);">
+Mathematics
+</small>
+
+</div><button
+class="icon-btn"
+onclick="closeStudyMode()">
+✕ Exit
+</button>
+
+</div><div
+class="fullscreen-body"
+id="fsBody">
+</div></div></div><script>
+
+/* =====================================================
+   BACKGROUND PARTICLE SYSTEM
+===================================================== */
+
+const canvas =
+document.getElementById("bgCanvas");
+
+const ctx =
+canvas.getContext("2d");
+
+let particles=[];
+
+function resizeCanvas(){
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+}
+
+resizeCanvas();
+
+window.addEventListener(
+"resize",
+resizeCanvas
+);
+
+class Particle{
+
+constructor(){
+
+this.x=Math.random()*canvas.width;
+
+this.y=Math.random()*canvas.height;
+
+this.vx=
+(Math.random()-.5)*.25;
+
+this.vy=
+(Math.random()-.5)*.25;
+
+this.radius=
+Math.random()*1.8+.5;
+
+}
+
+update(){
+
+this.x+=this.vx;
+this.y+=this.vy;
+
+if(this.x<0||
+this.x>canvas.width)
+this.vx*=-1;
+
+if(this.y<0||
+this.y>canvas.height)
+this.vy*=-1;
+
+}
+
+draw(){
+
+ctx.beginPath();
+
+ctx.arc(
+this.x,
+this.y,
+this.radius,
+0,
+Math.PI*2
+);
+
+ctx.fillStyle=
+"rgba(56,189,248,.35)";
+
+ctx.fill();
+
+}
+
+}
+
+for(let i=0;i<80;i++){
+
+particles.push(
+new Particle()
+);
+
+}
+
+function animateBackground(){
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+for(let i=0;i<particles.length;i++){
+
+particles[i].update();
+particles[i].draw();
+
+for(
+let j=i+1;
+j<particles.length;
+j++
+){
+
+const dx=
+particles[i].x-
+particles[j].x;
+
+const dy=
+particles[i].y-
+particles[j].y;
+
+const distance=
+Math.sqrt(dx*dx+dy*dy);
+
+if(distance<140){
+
+ctx.beginPath();
+
+ctx.moveTo(
+particles[i].x,
+particles[i].y
+);
+
+ctx.lineTo(
+particles[j].x,
+particles[j].y
+);
+
+ctx.strokeStyle=
+`rgba(56,189,248,${
+.10-distance/1400
+})`;
+
+ctx.stroke();
+
+}
+
+}
+
+}
+
+requestAnimationFrame(
+animateBackground
+);
+
+}
+
+animateBackground();
+
+
+/* =====================================================
+   TOPIC DATABASE
+===================================================== */
+
+const TOPICS={
+
+/* ================= ARITHMETIC ================= */
+
+"counting":{
+subject:"Arithmetic",
+title:"Counting & Number Names",
+summary:"Learn how numbers are counted, written and represented.",
+subtopics:[
+
+{
+name:"1. What is Counting?",
+desc:"Counting means finding how many objects are present by assigning numbers in order.",
+example:"Example: 🍎 🍎 🍎 = 3 apples."
+},
+
+{
+name:"2. Natural Numbers",
+desc:"Natural numbers are the counting numbers: 1, 2, 3, 4, 5, ...",
+example:"The first five natural numbers are 1, 2, 3, 4 and 5."
+},
+
+{
+name:"3. Number Names",
+desc:"Numbers can be written using words.",
+example:"25 = twenty-five."
+},
+
+{
+name:"4. Comparing Numbers",
+desc:"We compare numbers using greater than (>), less than (<), or equal to (=).",
+example:"8 > 5 because 8 is greater than 5."
+}
+
+]
+},
+
+"place-value":{
+subject:"Arithmetic",
+title:"Place Value",
+summary:"Understand ones, tens, hundreds, thousands and beyond.",
+subtopics:[
+
+{
+name:"1. Ones Place",
+desc:"The rightmost digit of a whole number represents ones.",
+example:"In 47, 7 is in the ones place."
+},
+
+{
+name:"2. Tens Place",
+desc:"The second digit from the right represents tens.",
+example:"In 47, 4 means four tens = 40."
+},
+
+{
+name:"3. Hundreds & Thousands",
+desc:"Moving one place left multiplies the place value by 10.",
+example:"5,432 = 5 thousands + 4 hundreds + 3 tens + 2 ones."
+},
+
+{
+name:"4. Expanded Form",
+desc:"Expanded form writes a number as the sum of its place values.",
+example:"3,205 = 3,000 + 200 + 5."
+}
+
+]
+},
+
+"addition-subtraction":{
+subject:"Arithmetic",
+title:"Addition & Subtraction",
+summary:"Learn how quantities are combined and separated.",
+subtopics:[
+
+{
+name:"1. Addition",
+desc:"Addition combines two or more quantities to find their total.",
+example:"7 + 5 = 12."
+},
+
+{
+name:"2. Subtraction",
+desc:"Subtraction finds how much remains or the difference between quantities.",
+example:"12 - 5 = 7."
+},
+
+{
+name:"3. Carrying",
+desc:"When a column adds to 10 or more, regroup into the next place.",
+example:"8 + 7 = 15, so write 5 and carry 1."
+},
+
+{
+name:"4. Word Problems",
+desc:"Real-life situations can be represented using addition or subtraction.",
+example:"If you have 8 pencils and buy 5 more, you have 13 pencils."
+}
+
+]
+},
+
+"multiplication-division":{
+subject:"Arithmetic",
+title:"Multiplication & Division",
+summary:"Understand repeated groups, sharing and quotients.",
+subtopics:[
+
+{
+name:"1. Multiplication",
+desc:"Multiplication is repeated addition or equal grouping.",
+example:"4 × 3 means four groups of three = 12."
+},
+
+{
+name:"2. Multiplication Tables",
+desc:"Tables help calculate products quickly.",
+example:"7 × 8 = 56."
+},
+
+{
+name:"3. Division",
+desc:"Division means splitting a quantity into equal groups.",
+example:"20 ÷ 5 = 4."
+},
+
+{
+name:"4. Remainders",
+desc:"Sometimes a quantity cannot be divided equally. The amount left is the remainder.",
+example:"17 ÷ 5 = 3 remainder 2."
+}
+
+]
+},
+
+"fractions":{
+subject:"Arithmetic",
+title:"Fractions",
+summary:"Understand parts of a whole and how fractions work.",
+subtopics:[
+
+{
+name:"1. Numerator",
+desc:"The numerator is the top number of a fraction. It tells how many parts are selected.",
+example:"In 3/5, 3 is the numerator."
+},
+
+{
+name:"2. Denominator",
+desc:"The denominator is the bottom number. It tells how many equal parts make one whole.",
+example:"In 3/5, 5 is the denominator."
+},
+
+{
+name:"3. Proper Fractions",
+desc:"A proper fraction has a numerator smaller than its denominator.",
+example:"3/7 is a proper fraction."
+},
+
+{
+name:"4. Improper Fractions",
+desc:"An improper fraction has a numerator greater than or equal to its denominator.",
+example:"9/4 is an improper fraction."
+},
+
+{
+name:"5. Mixed Numbers",
+desc:"A mixed number contains a whole number and a fraction.",
+example:"2 1/3."
+},
+
+{
+name:"6. Equivalent Fractions",
+desc:"Equivalent fractions have different numbers but represent the same value.",
+example:"1/2 = 2/4 = 4/8."
+},
+
+{
+name:"7. Adding Fractions",
+desc:"Fractions with the same denominator can be added by adding their numerators.",
+example:"2/7 + 3/7 = 5/7."
+},
+
+{
+name:"8. Comparing Fractions",
+desc:"Fractions can be compared using common denominators or cross multiplication.",
+example:"3/4 > 2/3."
+}
+
+]
+},
+
+"decimals":{
+subject:"Arithmetic",
+title:"Decimals",
+summary:"Learn tenths, hundredths and decimal operations.",
+subtopics:[
+
+{
+name:"1. Tenths",
+desc:"The first digit after the decimal point represents tenths.",
+example:"0.7 means seven tenths."
+},
+
+{
+name:"2. Hundredths",
+desc:"The second digit after the decimal point represents hundredths.",
+example:"0.35 = 35 hundredths."
+},
+
+{
+name:"3. Decimal Addition",
+desc:"Align decimal points before adding.",
+example:"2.50 + 1.25 = 3.75."
+},
+
+{
+name:"4. Decimal Multiplication",
+desc:"Multiply normally, then place the decimal according to the total number of decimal places.",
+example:"0.5 × 0.2 = 0.10 = 0.1."
+}
+
+]
+},
+
+"percentages":{
+subject:"Arithmetic",
+title:"Percentages",
+summary:"Understand percentages as parts out of 100.",
+subtopics:[
+
+{
+name:"1. Meaning of Percent",
+desc:"Percent means 'per hundred'.",
+example:"25% means 25 out of 100."
+},
+
+{
+name:"2. Fraction to Percentage",
+desc:"Multiply a fraction by 100 to convert it to a percentage.",
+example:"1/4 × 100 = 25%."
+},
+
+{
+name:"3. Percentage of a Number",
+desc:"To find a percentage, multiply the number by the percentage written as a decimal.",
+example:"20% of 50 = 0.20 × 50 = 10."
+},
+
+{
+name:"4. Percentage Increase",
+desc:"Percentage increase measures how much a quantity grows compared with its original value."
+}
+
+]
+},
+
+"ratio-proportion":{
+subject:"Arithmetic",
+title:"Ratio & Proportion",
+summary:"Compare quantities and understand equivalent relationships.",
+subtopics:[
+
+{
+name:"1. Ratio",
+desc:"A ratio compares two quantities using division.",
+example:"If there are 2 red balls and 3 blue balls, the ratio is 2:3."
+},
+
+{
+name:"2. Equivalent Ratios",
+desc:"Multiplying both parts of a ratio by the same number creates an equivalent ratio.",
+example:"2:3 = 4:6."
+},
+
+{
+name:"3. Proportion",
+desc:"A proportion states that two ratios are equal.",
+example:"2/3 = 4/6."
+},
+
+{
+name:"4. Unit Rate",
+desc:"A unit rate tells the amount for one unit.",
+example:"₹100 for 5 notebooks = ₹20 per notebook."
+}
+
+]
+},
+
+/* ================= NUMBER SYSTEMS ================= */
+
+"natural-whole":{
+subject:"Number Systems",
+title:"Natural & Whole Numbers",
+summary:"Build the foundation of the number system.",
+subtopics:[
+
+{
+name:"1. Natural Numbers",
+desc:"Counting numbers beginning with 1.",
+example:"1, 2, 3, 4, ..."
+},
+
+{
+name:"2. Whole Numbers",
+desc:"Whole numbers include zero and all natural numbers.",
+example:"0, 1, 2, 3, ..."
+},
+
+{
+name:"3. Successor",
+desc:"The successor of a number is the number immediately after it.",
+example:"Successor of 8 = 9."
+},
+
+{
+name:"4. Predecessor",
+desc:"The predecessor is the number immediately before a number.",
+example:"Predecessor of 8 = 7."
+}
+
+]
+},
+
+"integers":{
+subject:"Number Systems",
+title:"Integers",
+summary:"Learn positive numbers, negative numbers and zero.",
+subtopics:[
+
+{
+name:"1. Positive Integers",
+desc:"Integers greater than zero are positive.",
+example:"+5, +8, +20."
+},
+
+{
+name:"2. Negative Integers",
+desc:"Integers less than zero are negative.",
+example:"-2, -7, -15."
+},
+
+{
+name:"3. Number Line",
+desc:"Numbers increase toward the right and decrease toward the left.",
+example:"-3 lies to the left of -1."
+},
+
+{
+name:"4. Absolute Value",
+desc:"Absolute value is the distance of a number from zero.",
+example:"|-7| = 7."
+}
+
+]
+},
+
+"prime-composite":{
+subject:"Number Systems",
+title:"Prime & Composite Numbers",
+summary:"Learn how numbers are built from factors.",
+subtopics:[
+
+{
+name:"1. Prime Number",
+desc:"A prime number has exactly two positive factors: 1 and itself.",
+example:"7 is prime because its factors are 1 and 7."
+},
+
+{
+name:"2. Composite Number",
+desc:"A composite number has more than two positive factors.",
+example:"12 is composite."
+},
+
+{
+name:"3. Factors",
+desc:"Factors are numbers that divide another number exactly.",
+example:"Factors of 12 are 1, 2, 3, 4, 6 and 12."
+},
+
+{
+name:"4. Multiples",
+desc:"Multiples are obtained by multiplying a number by whole numbers.",
+example:"Multiples of 5: 5, 10, 15, 20..."
+}
+
+]
+},
+
+"hcf-lcm":{
+subject:"Number Systems",
+title:"HCF & LCM",
+summary:"Find common factors and common multiples.",
+subtopics:[
+
+{
+name:"1. HCF",
+desc:"Highest Common Factor is the greatest factor shared by two or more numbers.",
+example:"HCF of 12 and 18 = 6."
+},
+
+{
+name:"2. LCM",
+desc:"Least Common Multiple is the smallest positive common multiple.",
+example:"LCM of 4 and 6 = 12."
+},
+
+{
+name:"3. Prime Factorisation",
+desc:"Break a number into prime factors.",
+example:"12 = 2 × 2 × 3."
+},
+
+{
+name:"4. HCF-LCM Relationship",
+desc:"For two positive integers a and b: HCF(a,b) × LCM(a,b) = a × b."
+}
+
+]
+},
+
+/* ================= ALGEBRA ================= */
+
+"algebra-basics":{
+subject:"Algebra",
+title:"Algebra Fundamentals",
+summary:"Learn how letters can represent unknown quantities.",
+subtopics:[
+
+{
+name:"1. Variables",
+desc:"A variable is a symbol, usually a letter, that represents a number.",
+example:"In x + 5, x is the variable."
+},
+
+{
+name:"2. Constants",
+desc:"A constant is a fixed value.",
+example:"In 3x + 7, 7 is a constant."
+},
+
+{
+name:"3. Coefficients",
+desc:"A coefficient is the number multiplying a variable.",
+example:"In 5x, 5 is the coefficient."
+},
+
+{
+name:"4. Algebraic Expressions",
+desc:"An expression combines numbers, variables and operations.",
+example:"3x + 2 is an algebraic expression."
+}
+
+]
+},
+
+"linear-equations":{
+subject:"Algebra",
+title:"Linear Equations",
+summary:"Solve equations where the highest power of the variable is one.",
+subtopics:[
+
+{
+name:"1. Equation",
+desc:"An equation states that two expressions are equal.",
+example:"x + 5 = 12."
+},
+
+{
+name:"2. Balancing",
+desc:"Whatever operation you perform on one side of an equation must also be performed on the other side.",
+example:"x + 5 = 12 → x = 7."
+},
+
+{
+name:"3. Linear Equation",
+desc:"A linear equation has variables raised only to the first power.",
+example:"2x + 3 = 9."
+},
+
+{
+name:"4. Word Problems",
+desc:"Real situations can be converted into equations.",
+example:"A number increased by 4 is 10 → x + 4 = 10."
+}
+
+]
+},
+
+"polynomials":{
+subject:"Algebra",
+title:"Polynomials",
+summary:"Understand terms, coefficients, degree and polynomial operations.",
+subtopics:[
+
+{
+name:"1. Terms",
+desc:"Parts separated by addition or subtraction signs are called terms.",
+example:"3x² + 2x - 5 has three terms."
+},
+
+{
+name:"2. Degree",
+desc:"The highest power of the variable is the degree.",
+example:"4x³ + x has degree 3."
+},
+
+{
+name:"3. Addition",
+desc:"Combine like terms.",
+example:"3x + 2x = 5x."
+},
+
+{
+name:"4. Multiplication",
+desc:"Use the distributive property to multiply polynomial terms.",
+example:"x(x + 3) = x² + 3x."
+}
+
+]
+},
+
+"quadratic":{
+subject:"Algebra",
+title:"Quadratic Equations",
+summary:"Study equations involving x², roots and parabolas.",
+subtopics:[
+
+{
+name:"1. Standard Form",
+desc:"A quadratic equation has the form ax² + bx + c = 0, where a ≠ 0."
+},
+
+{
+name:"2. Factorisation",
+desc:"Some quadratic equations can be solved by writing them as a product of two linear factors.",
+example:"x² - 5x + 6 = (x-2)(x-3)."
+},
+
+{
+name:"3. Quadratic Formula",
+desc:"The general solution is x = (-b ± √(b² - 4ac))/(2a)."
+},
+
+{
+name:"4. Discriminant",
+desc:"The discriminant Δ = b² - 4ac tells us about the roots."
+},
+
+{
+name:"5. Parabola",
+desc:"The graph of a quadratic function is a curve called a parabola."
+}
+
+]
+},
+
+/* ================= GEOMETRY ================= */
+
+"basic-geometry":{
+subject:"Geometry",
+title:"Geometry Foundations",
+summary:"Understand points, lines, rays, segments and angles.",
+subtopics:[
+
+{
+name:"1. Point",
+desc:"A point represents an exact location and has no size."
+},
+
+{
+name:"2. Line",
+desc:"A line extends infinitely in both directions."
+},
+
+{
+name:"3. Line Segment",
+desc:"A line segment has two endpoints and a fixed length."
+},
+
+{
+name:"4. Ray",
+desc:"A ray starts at one endpoint and extends infinitely in one direction."
+},
+
+{
+name:"5. Angle",
+desc:"An angle is formed by two rays sharing a common endpoint."
+}
+
+]
+},
+
+"triangles":{
+subject:"Geometry",
+title:"Triangles",
+summary:"Learn triangle types, properties and angle relationships.",
+subtopics:[
+
+{
+name:"1. Equilateral Triangle",
+desc:"All three sides are equal and each angle is 60°."
+},
+
+{
+name:"2. Isosceles Triangle",
+desc:"Two sides are equal and the opposite angles are equal."
+},
+
+{
+name:"3. Scalene Triangle",
+desc:"All three sides have different lengths."
+},
+
+{
+name:"4. Angle Sum",
+desc:"The three interior angles of a triangle always add to 180°."
+},
+
+{
+name:"5. Pythagorean Theorem",
+desc:"For a right triangle, a² + b² = c²."
+}
+
+]
+},
+
+"quadrilaterals":{
+subject:"Geometry",
+title:"Quadrilaterals",
+summary:"Study four-sided figures and their properties.",
+subtopics:[
+
+{
+name:"1. Square",
+desc:"A square has four equal sides and four right angles."
+},
+
+{
+name:"2. Rectangle",
+desc:"A rectangle has four right angles and opposite sides equal."
+},
+
+{
+name:"3. Parallelogram",
+desc:"Opposite sides are parallel and equal."
+},
+
+{
+name:"4. Rhombus",
+desc:"All four sides are equal."
+},
+
+{
+name:"5. Trapezium",
+desc:"A trapezium has one pair of parallel sides."
+}
+
+]
+},
+
+"circle":{
+subject:"Geometry",
+title:"Circles",
+summary:"Understand radius, diameter, circumference and area.",
+subtopics:[
+
+{
+name:"1. Centre",
+desc:"The centre is the fixed point from which every point on the circle is equally distant."
+},
+
+{
+name:"2. Radius",
+desc:"A radius joins the centre to a point on the circle."
+},
+
+{
+name:"3. Diameter",
+desc:"A diameter passes through the centre and equals twice the radius.",
+example:"d = 2r."
+},
+
+{
+name:"4. Circumference",
+desc:"The distance around a circle is C = 2πr."
+},
+
+{
+name:"5. Area",
+desc:"The area of a circle is A = πr²."
+}
+
+]
+},
+
+/* ================= TRIGONOMETRY ================= */
+
+"trigonometry-basics":{
+subject:"Trigonometry",
+title:"Trigonometry Basics",
+summary:"Understand relationships between angles and sides of right triangles.",
+subtopics:[
+
+{
+name:"1. Sine",
+desc:"For a right triangle, sin θ = opposite/hypotenuse."
+},
+
+{
+name:"2. Cosine",
+desc:"cos θ = adjacent/hypotenuse."
+},
+
+{
+name:"3. Tangent",
+desc:"tan θ = opposite/adjacent."
+},
+
+{
+name:"4. SOH-CAH-TOA",
+desc:"A useful memory aid: SOH = sine, CAH = cosine, TOA = tangent."
+},
+
+{
+name:"5. Special Angles",
+desc:"Important angles include 0°, 30°, 45°, 60° and 90°."
+}
+
+]
+},
+
+/* ================= CALCULUS ================= */
+
+"limits":{
+subject:"Calculus",
+title:"Limits",
+summary:"Understand what a function approaches near a point.",
+subtopics:[
+
+{
+name:"1. Idea of a Limit",
+desc:"A limit describes the value a function approaches as the input gets close to a particular number."
+},
+
+{
+name:"2. Left-Hand Limit",
+desc:"The left-hand limit studies values approaching from smaller inputs."
+},
+
+{
+name:"3. Right-Hand Limit",
+desc:"The right-hand limit studies values approaching from larger inputs."
+},
+
+{
+name:"4. Continuity",
+desc:"A function is continuous at a point when there is no break, hole or jump there."
+}
+
+]
+},
+
+"derivatives":{
+subject:"Calculus",
+title:"Derivatives",
+summary:"Study rate of change, slopes and tangent lines.",
+subtopics:[
+
+{
+name:"1. Derivative Meaning",
+desc:"A derivative measures instantaneous rate of change."
+},
+
+{
+name:"2. Power Rule",
+desc:"d/dx(xⁿ) = nxⁿ⁻¹."
+},
+
+{
+name:"3. Product Rule",
+desc:"(uv)' = u'v + uv'."
+},
+
+{
+name:"4. Quotient Rule",
+desc:"(u/v)' = (u'v - uv')/v²."
+},
+
+{
+name:"5. Chain Rule",
+desc:"The chain rule differentiates a composite function."
+}
+
+]
+},
+
+"integrals":{
+subject:"Calculus",
+title:"Integration",
+summary:"Understand accumulation, area and antiderivatives.",
+subtopics:[
+
+{
+name:"1. Antiderivative",
+desc:"An antiderivative is a function whose derivative gives the original function."
+},
+
+{
+name:"2. Indefinite Integral",
+desc:"∫f(x)dx represents a family of antiderivatives."
+},
+
+{
+name:"3. Power Rule",
+desc:"∫xⁿdx = xⁿ⁺¹/(n+1) + C, for n ≠ -1."
+},
+
+{
+name:"4. Definite Integral",
+desc:"A definite integral can represent accumulated quantity or area under a curve."
+}
+
+]
+}
+
 };
 
-const SUBJECTS = [
-  { name: "Arithmetic", icon: "🔢", description: "The foundation of mathematics.", topicIds: ["arithmetic-counting", "arithmetic-fractions", "arithmetic-addition", "arithmetic-subtraction", "arithmetic-multiplication", "arithmetic-division"] },
-  { name: "Number Systems", icon: "ℕ", description: "Explore types of numbers.", topicIds: ["numbers-integers", "numbers-real"] },
-  { name: "Algebra", icon: "𝑥", description: "Use symbols and equations to solve problems.", topicIds: ["algebra-linear", "algebra-quadratic"] },
-  { name: "Geometry", icon: "📐", description: "Study shapes, angles, and space.", topicIds: ["geometry-pythagoras"] },
-  { name: "Mensuration", icon: "📏", description: "Calculate lengths, areas, and volumes.", topicIds: ["mensuration-area"] },
-  { name: "Trigonometry", icon: "📐", description: "Study ratios and triangle angles.", topicIds: ["trigonometry-ratios"] },
-  { name: "Statistics", icon: "📊", description: "Collect, analyze, and interpret data.", topicIds: ["statistics-mean"] },
-  { name: "Calculus", icon: "∫", description: "Study change, motion, and accumulation.", topicIds: ["calculus-derivatives"] },
-  { name: "Discrete Mathematics", icon: "🧩", description: "Study countable structures and logic.", topicIds: ["discrete-sets"] },
-  { name: "Advanced Mathematics", icon: "∞", description: "Matrices, vectors, and complex structures.", topicIds: ["advanced-matrices"] }
+
+/* =====================================================
+   SUBJECT STRUCTURE
+===================================================== */
+
+const SUBJECTS=[
+
+{
+name:"Arithmetic",
+icon:"🔢",
+description:"Start here — numbers, operations and everyday mathematics.",
+topicIds:[
+"counting",
+"place-value",
+"addition-subtraction",
+"multiplication-division",
+"fractions",
+"decimals",
+"percentages",
+"ratio-proportion"
+]
+},
+
+{
+name:"Number Systems",
+icon:"ℕ",
+description:"Discover how numbers are classified and organized.",
+topicIds:[
+"natural-whole",
+"integers",
+"prime-composite",
+"hcf-lcm"
+]
+},
+
+{
+name:"Algebra",
+icon:"𝒙",
+description:"Use symbols and equations to solve mathematical problems.",
+topicIds:[
+"algebra-basics",
+"linear-equations",
+"polynomials",
+"quadratic"
+]
+},
+
+{
+name:"Geometry",
+icon:"📐",
+description:"Explore shapes, angles, space and measurements.",
+topicIds:[
+"basic-geometry",
+"triangles",
+"quadrilaterals",
+"circle"
+]
+},
+
+{
+name:"Trigonometry",
+icon:"📊",
+description:"Connect angles and sides using powerful relationships.",
+topicIds:[
+"trigonometry-basics"
+]
+},
+
+{
+name:"Calculus",
+icon:"∫",
+description:"Study change, motion, limits, derivatives and areas.",
+topicIds:[
+"limits",
+"derivatives",
+"integrals"
+]
+}
+
 ];
 
-let completedTopics = JSON.parse(localStorage.getItem("mathquestCompleted") || "[]");
 
-function renderSubjects() {
-  const container = document.getElementById("subjects");
-  container.innerHTML = "";
+/* =====================================================
+   PROGRESS
+===================================================== */
 
-  SUBJECTS.forEach((subj) => {
-    const div = document.createElement("div");
-    div.className = "subject";
+let completedTopics=
+JSON.parse(
+localStorage.getItem(
+"mathquestCompleted"
+)||"[]"
+);
 
-    const header = document.createElement("button");
-    header.className = "subject-header";
-    header.innerHTML = `
-      <div class="subject-name">
-        <span class="subject-icon">${subj.icon}</span>
-        <div>
-          <h3>${subj.name}</h3>
-          <small style="color:var(--muted);">${subj.description}</small>
-        </div>
-      </div>
-      <span class="arrow">▼</span>
-    `;
-    header.onclick = () => div.classList.toggle("open");
 
-    const area = document.createElement("div");
-    area.className = "topic-area";
+/* =====================================================
+   RENDER SUBJECTS
+===================================================== */
 
-    const grid = document.createElement("div");
-    grid.className = "topic-grid";
+function renderSubjects(){
 
-    subj.topicIds.forEach((id) => {
-      const topic = TOPICS[id];
-      if (!topic) return;
+const container=
+document.getElementById("subjects");
 
-      const done = completedTopics.includes(id);
-      const card = document.createElement("div");
-      card.className = "topic";
-      card.dataset.search = (subj.name + " " + topic.title + " " + topic.summary).toLowerCase();
+container.innerHTML="";
 
-      card.innerHTML = `
-        <h4>${topic.title}</h4>
-        <p>${topic.summary}</p>
-        <div class="topic-actions">
-          <button onclick="openLesson('${id}')">📖 Learn Lesson</button>
-          <button class="complete-btn" onclick="toggleComplete(event, '${id}')">${done ? "✓ Done" : "Mark Complete"}</button>
-        </div>
-        <div class="progress">
-          <div class="progress-bar" style="width:${done ? 100 : 0}%"></div>
-        </div>
-      `;
-      grid.appendChild(card);
-    });
+SUBJECTS.forEach(subject=>{
 
-    area.appendChild(grid);
-    div.appendChild(header);
-    div.appendChild(area);
-    container.appendChild(div);
-  });
+const div=
+document.createElement("div");
 
-  updateStats();
+div.className="subject open";
+
+const header=
+document.createElement("button");
+
+header.className="subject-header";
+
+header.innerHTML=`
+
+<div class="subject-name">
+
+<span class="subject-icon">
+${subject.icon}
+</span>
+
+<div>
+
+<h3>${subject.name}</h3>
+
+<small style="color:var(--muted)">
+${subject.description}
+</small>
+
+</div>
+
+</div>
+
+<span class="arrow">▼</span>
+`;
+
+header.onclick=()=>{
+div.classList.toggle("open");
+};
+
+const area=
+document.createElement("div");
+
+area.className="topic-area";
+
+const wrapper=
+document.createElement("div");
+
+const grid=
+document.createElement("div");
+
+grid.className="topic-grid";
+
+subject.topicIds.forEach(id=>{
+
+const topic=TOPICS[id];
+
+if(!topic)return;
+
+const card=
+document.createElement("div");
+
+card.className="topic";
+
+card.dataset.search=
+(
+subject.name+
+" "+
+topic.title+
+" "+
+topic.summary+
+" "+
+topic.subtopics
+.map(x=>x.name+" "+x.desc)
+.join(" ")
+).toLowerCase();
+
+const tags=
+topic.subtopics
+.slice(0,6)
+.map(x=>`
+<span class="subtopic-tag">
+${x.name.replace(/^\d+\.\s*/,"")}
+</span>
+`)
+.join("");
+
+card.innerHTML=`
+
+<h4>
+${topic.title}
+</h4>
+
+<p>
+${topic.summary}
+</p>
+
+<div class="subtopic-tag-list">
+${tags}
+</div>
+
+<button
+class="study-btn"
+onclick="openStudyMode('${id}')">
+
+🚀 Let's Study
+
+</button>
+`;
+
+grid.appendChild(card);
+
+});
+
+wrapper.appendChild(grid);
+
+area.appendChild(wrapper);
+
+div.appendChild(header);
+
+div.appendChild(area);
+
+container.appendChild(div);
+
+});
+
+updateStats();
+
 }
 
-function toggleComplete(event, id) {
-  event.stopPropagation();
-  if (completedTopics.includes(id)) {
-    completedTopics = completedTopics.filter(x => x !== id);
-  } else {
-    completedTopics.push(id);
-  }
-  localStorage.setItem("mathquestCompleted", JSON.stringify(completedTopics));
-  renderSubjects();
+
+/* =====================================================
+   STATS
+===================================================== */
+
+function updateStats(){
+
+const total=
+Object.keys(TOPICS).length;
+
+const completed=
+completedTopics.length;
+
+document.getElementById(
+"completed"
+).textContent=completed;
+
+document.getElementById(
+"totalTopics"
+).textContent=total;
+
+document.getElementById(
+"percentage"
+).textContent=
+Math.round(
+(completed/total)*100
+)+"%";
+
 }
 
-function updateStats() {
-  const total = Object.keys(TOPICS).length;
-  const completed = completedTopics.length;
-  document.getElementById("completed").textContent = completed;
-  document.getElementById("totalTopics").textContent = total;
-  document.getElementById("percentage").textContent = (total === 0 ? 0 : Math.round((completed / total) * 100)) + "%";
+
+/* =====================================================
+   STUDY MODE
+===================================================== */
+
+function openStudyMode(id){
+
+const topic=TOPICS[id];
+
+if(!topic)return;
+
+document.getElementById(
+"fsTitle"
+).textContent=
+topic.title;
+
+document.getElementById(
+"fsCategory"
+).textContent=
+topic.subject+
+" • Step-by-Step Lesson";
+
+const body=
+document.getElementById(
+"fsBody"
+);
+
+const cards=
+topic.subtopics
+.map((item,index)=>`
+
+<div
+class="subtopic-card"
+style="animation-delay:${index*.08}s">
+
+<h4>
+${item.name}
+</h4>
+
+<p>
+${item.desc}
+</p>
+
+${item.example?
+`
+<div class="example">
+<strong>💡 Example:</strong>
+<br>
+${item.example}
+</div>
+`
+:""}
+
+</div>
+
+`)
+.join("");
+
+body.innerHTML=`
+
+<div class="lesson-intro">
+
+<h3>
+📚 What will you learn?
+</h3>
+
+<p>
+${topic.summary}
+</p>
+
+</div>
+
+<h3
+style="
+color:var(--primary);
+margin-bottom:18px;
+font-size:23px;
+">
+
+🧩 Learn Step-by-Step
+
+</h3>
+
+${cards}
+
+<button
+class="main-btn"
+onclick="finishLesson('${id}')">
+
+✓ Finish Lesson
+
+</button>
+
+`;
+
+const overlay=
+document.getElementById(
+"fullscreenOverlay"
+);
+
+overlay.classList.add("active");
+
+document.body.style.overflow="hidden";
+
+body.scrollTop=0;
+
+setTimeout(()=>{
+renderMath(body);
+},200);
+
 }
 
-function openLesson(id) {
-  const topic = TOPICS[id];
-  if (!topic) return;
 
-  const contentEl = document.getElementById("lessonContent");
-  document.getElementById("lessonTitle").textContent = topic.title;
+/* =====================================================
+   FINISH LESSON
+===================================================== */
 
-  const svgVisual = topic.svg ? `
-    <div class="lesson-visual">
-      ${topic.svg}
-      <div class="lesson-visual-caption">${topic.caption}</div>
-    </div>
-  ` : '';
+function finishLesson(id){
 
-  contentEl.innerHTML = `
-    <p style="color:var(--muted); font-size:14px;">${topic.subject} • ${topic.summary}</p>
+if(
+id &&
+!completedTopics.includes(id)
+){
 
-    ${svgVisual}
+completedTopics.push(id);
 
-    <h3 style="margin-top:20px; color:var(--primary);">📚 Concept Definition</h3>
-    <p><strong>${topic.definition}</strong></p>
+localStorage.setItem(
+"mathquestCompleted",
+JSON.stringify(
+completedTopics
+)
+);
 
-    <h3 style="margin-top:16px; color:var(--primary);">💡 Intuitive View</h3>
-    <p>${topic.simpleNote}</p>
+updateStats();
 
-    <h3 style="margin-top:16px; color:var(--primary);">⭐ Key Highlights</h3>
-    <ul style="padding-left:20px;">${topic.keyPoints.map(p => `<li>${p}</li>`).join("")}</ul>
-
-    <div class="lesson-quiz">
-      <h3 style="color:var(--primary);">🧠 Quick Check</h3>
-      <p style="margin-top:8px;"><strong>${topic.questions[0].question}</strong></p>
-      <div class="lesson-answers">
-        ${topic.questions[0].options.map((opt, i) => `
-          <button class="lesson-answer" onclick="checkLessonAnswer(${i}, ${topic.questions[0].correct}, this)">${opt}</button>
-        `).join("")}
-      </div>
-      <div id="lessonMsg" style="margin-top:12px; font-weight:bold;"></div>
-    </div>
-  `;
-
-  document.getElementById("lessonOverlay").classList.add("show");
-  renderMath(contentEl);
 }
 
-function checkLessonAnswer(selected, correct, btn) {
-  const all = btn.parentElement.querySelectorAll("button");
-  all.forEach(b => b.disabled = true);
-  if (selected === correct) {
-    btn.classList.add("correct");
-    document.getElementById("lessonMsg").textContent = "✓ Correct answer!";
-  } else {
-    btn.classList.add("wrong");
-    all[correct].classList.add("correct");
-    document.getElementById("lessonMsg").textContent = "Incorrect. The correct answer is highlighted in green.";
-  }
+closeStudyMode();
+
 }
 
-function closeLesson() {
-  document.getElementById("lessonOverlay").classList.remove("show");
+
+/* =====================================================
+   CLOSE STUDY MODE
+===================================================== */
+
+function closeStudyMode(){
+
+const overlay=
+document.getElementById(
+"fullscreenOverlay"
+);
+
+overlay.classList.remove("active");
+
+setTimeout(()=>{
+
+document.body.style.overflow="";
+
+},850);
+
 }
 
-/* PRACTICE CHALLENGE ENGINE */
-const challengeQuestions = [
-  { q: "Calculate $\\frac{2}{3} + \\frac{1}{6}$.", a: ["$\\frac{3}{9}$", "$\\frac{5}{6}$", "$1$", "$\\frac{4}{6}$"], correct: 1, solution: "Convert $\\frac{2}{3} = \\frac{4}{6}$. Then $\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$." },
-  { q: "What is $\\sin(90^\\circ)$?", a: ["$0$", "$0.5$", "$1$", "Undefined"], correct: 2, solution: "At $90^\\circ$, $\\sin(90^\\circ) = 1$." },
-  { q: "If $3x + 5 = 20$, find $x$.", a: ["$3$", "$5$", "$7$", "$15$"], correct: 1, solution: "$3x = 15 \\implies x = 5$." },
-  { q: "Find $\\sqrt{196}$.", a: ["$12$", "$13$", "$14$", "$16$"], correct: 2, solution: "$14 \\times 14 = 196$." }
-];
 
-let activeQuestion = null;
+/* =====================================================
+   SEARCH
+===================================================== */
 
-function newQuestion() {
-  activeQuestion = challengeQuestions[Math.floor(Math.random() * challengeQuestions.length)];
-  const qEl = document.getElementById("question");
-  qEl.innerHTML = activeQuestion.q;
+function searchTopics(){
 
-  const answersEl = document.getElementById("answers");
-  answersEl.innerHTML = "";
-  document.getElementById("message").textContent = "";
-  document.getElementById("solutionBox").style.display = "none";
+const query=
+document.getElementById(
+"search"
+).value
+.toLowerCase()
+.trim();
 
-  activeQuestion.a.forEach((ans, idx) => {
-    const btn = document.createElement("button");
-    btn.className = "answer";
-    btn.innerHTML = ans;
-    btn.onclick = () => checkAnswer(idx, btn);
-    answersEl.appendChild(btn);
-  });
+document
+.querySelectorAll(".topic")
+.forEach(card=>{
 
-  renderMath(document.getElementById("practiceSection"));
+card.style.display=
+card.dataset.search
+.includes(query)
+?
+""
+:
+"none";
+
+});
+
 }
 
-function checkAnswer(index, btn) {
-  const all = document.querySelectorAll(".answer");
-  all.forEach(b => b.disabled = true);
 
-  if (index === activeQuestion.correct) {
-    btn.classList.add("correct");
-    document.getElementById("message").textContent = "✓ Correct!";
-  } else {
-    btn.classList.add("wrong");
-    all[activeQuestion.correct].classList.add("correct");
-    document.getElementById("message").textContent = "Incorrect.";
-  }
+/* =====================================================
+   THEME
+===================================================== */
 
-  document.getElementById("solutionText").innerHTML = activeQuestion.solution;
-  document.getElementById("solutionBox").style.display = "block";
-  renderMath(document.getElementById("solutionBox"));
+function toggleTheme(){
+
+document.body.classList.toggle(
+"light"
+);
+
+localStorage.setItem(
+"mathquestTheme",
+document.body.classList.contains(
+"light"
+)
+?
+"light"
+:
+"dark"
+);
+
 }
 
-function searchTopics() {
-  const query = document.getElementById("search").value.toLowerCase().trim();
-  document.querySelectorAll(".topic").forEach(t => {
-    t.style.display = t.dataset.search.includes(query) ? "" : "none";
-  });
+if(
+localStorage.getItem(
+"mathquestTheme"
+)==="light"
+){
+
+document.body.classList.add(
+"light"
+);
+
 }
 
-function toggleTheme() {
-  document.body.classList.toggle("light");
-}
 
-function resetProgress() {
-  completedTopics = [];
-  localStorage.removeItem("mathquestCompleted");
-  renderSubjects();
-}
+/* =====================================================
+   RESET
+===================================================== */
 
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
+function resetProgress(){
 
-/* INITIALIZATION */
+if(
+!confirm(
+"Reset all MathQuest progress?"
+)
+)return;
+
+completedTopics=[];
+
+localStorage.removeItem(
+"mathquestCompleted"
+);
+
 renderSubjects();
-newQuestion();
 
-</script>
-</body>
-</html>
+}
+
+
+/* =====================================================
+   TOP
+===================================================== */
+
+function scrollToTop(){
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+/* =====================================================
+   ESC KEY
+===================================================== */
+
+document.addEventListener(
+"keydown",
+event=>{
+
+if(
+event.key==="Escape"
+){
+
+closeStudyMode();
+
+}
+
+});
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+renderSubjects();
+
+</script></body>
+  </html>
