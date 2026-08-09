@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MathQuest — Learn Mathematics</title>
+<title>MathQuest — Visual Mathematics Platform</title>
 
 <!-- KaTeX CSS & JS for Mathematical Formulas -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
@@ -18,36 +18,44 @@
 }
 
 :root{
-  --bg:#f5f1e8;
-  --card:#fffdf7;
-  --text:#27231d;
-  --muted:#756d60;
-  --primary:#3d5a40;
+  --bg:#f4f0e6;
+  --bg-pattern:radial-gradient(circle at 50% 0%, rgba(61,90,64,0.08), transparent 70%),
+             linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
+             linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
+  --card:#ffffff;
+  --text:#22201c;
+  --muted:#6e6658;
+  --primary:#2d4a32;
   --secondary:#b7791f;
-  --border:#d8d0c0;
-  --shadow:0 5px 18px rgba(60,45,25,.10);
+  --border:#dcd4c4;
+  --shadow:0 8px 24px rgba(40,30,15,0.08);
 }
 
 body.dark{
-  --bg:#1c1b18;
-  --card:#282621;
-  --text:#f4efe5;
-  --muted:#bdb5a7;
-  --primary:#9ab89d;
+  --bg:#161513;
+  --bg-pattern:radial-gradient(circle at 50% 0%, rgba(154,184,157,0.1), transparent 70%),
+             linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+             linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+  --card:#211f1b;
+  --text:#f0eae1;
+  --muted:#a8a090;
+  --primary:#88aa8b;
   --secondary:#e0ae62;
-  --border:#49453c;
-  --shadow:0 5px 18px rgba(0,0,0,.35);
+  --border:#3a362e;
+  --shadow:0 8px 24px rgba(0,0,0,0.4);
 }
 
 body{
-  font-family:Georgia,"Times New Roman",serif;
-  background:var(--bg);
+  font-family:Georgia, "Times New Roman", serif;
+  background-color:var(--bg);
+  background-image:var(--bg-pattern);
+  background-size:100% 100%, 24px 24px, 24px 24px;
   color:var(--text);
   line-height:1.6;
   transition:background .45s ease, color .45s ease;
 }
 
-button,input{
+button,input,select{
   font:inherit;
 }
 
@@ -75,10 +83,13 @@ header{
 }
 
 .logo{
-  font-size:25px;
+  font-size:26px;
   font-weight:bold;
   color:var(--primary);
   cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
 
 .logo span{
@@ -95,7 +106,7 @@ header{
   background:var(--card);
   color:var(--text);
   border-radius:8px;
-  padding:8px 12px;
+  padding:8px 14px;
   cursor:pointer;
   transition:all .35s ease;
 }
@@ -113,7 +124,7 @@ header{
 }
 
 .hero h1{
-  font-size:clamp(32px,6vw,58px);
+  font-size:clamp(32px, 6vw, 58px);
   line-height:1.1;
   margin-bottom:15px;
 }
@@ -142,6 +153,7 @@ header{
   background:var(--card);
   color:var(--text);
   outline:none;
+  box-shadow:var(--shadow);
 }
 
 .search-box input:focus{
@@ -180,6 +192,9 @@ header{
   margin:30px 0 15px;
   border-bottom:1px solid var(--border);
   padding-bottom:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
 .subject{
@@ -218,10 +233,6 @@ header{
   font-size:30px;
 }
 
-.subject-header h3{
-  font-size:21px;
-}
-
 .arrow{
   transition:transform .45s ease;
   font-size:20px;
@@ -242,7 +253,7 @@ header{
 
 .topic-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
   gap:12px;
 }
 
@@ -251,7 +262,7 @@ header{
   border-radius:9px;
   padding:16px;
   background:var(--bg);
-  transition:transform .45s ease,box-shadow .45s ease,background .45s ease;
+  transition:transform .35s ease, box-shadow .35s ease;
 }
 
 .topic:hover{
@@ -285,11 +296,6 @@ header{
   font-size:13px;
 }
 
-.topic button.complete-btn{
-  border-color:var(--border);
-  color:var(--text);
-}
-
 .progress{
   height:7px;
   background:var(--border);
@@ -305,30 +311,34 @@ header{
   transition:width .8s ease;
 }
 
-/* FULL SCREEN LESSON */
+/* VISUAL LESSON MODAL */
 
 .lesson-overlay{
   position:fixed;
   inset:0;
-  background:var(--bg);
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(4px);
   z-index:1000;
   display:none;
-  width:100vw;
-  height:100dvh;
-  overflow:hidden;
+  align-items:center;
+  justify-content:center;
 }
 
 .lesson-overlay.show{
-  display:block;
-  animation:lessonIn .55s ease both;
+  display:flex;
+  animation:lessonIn .35s ease both;
 }
 
 .lesson-modal{
-  width:100%;
-  height:100dvh;
+  width:92%;
+  max-width:900px;
+  max-height:90vh;
   overflow:auto;
   background:var(--card);
   color:var(--text);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--border);
 }
 
 .lesson-header{
@@ -342,73 +352,40 @@ header{
   justify-content:space-between;
   align-items:center;
   gap:15px;
-  box-shadow:var(--shadow);
-}
-
-.lesson-header h2{
-  color:var(--primary);
-}
-
-.close-btn{
-  border:1px solid var(--border);
-  background:var(--bg);
-  color:var(--text);
-  border-radius:8px;
-  padding:9px 13px;
-  cursor:pointer;
 }
 
 .lesson-content{
-  max-width:900px;
-  margin:0 auto;
-  padding:32px 24px 110px;
-  animation:lessonContentIn .7s ease both;
+  padding:28px;
 }
 
-.lesson-content h3{
-  margin-top:28px;
-  margin-bottom:10px;
-  font-size:24px;
-}
-
-.lesson-content p,
-.lesson-content li{
-  font-size:18px;
-  line-height:1.8;
-}
-
-.lesson-content ul{
-  padding-left:25px;
-}
-
-.lesson-note{
-  color:var(--muted);
-}
-
-.lesson-progress-label{
-  display:inline-block;
-  padding:6px 12px;
-  border:1px solid var(--border);
-  border-radius:20px;
-  color:var(--muted);
-  font-size:14px;
-  margin-bottom:10px;
-}
-
-.example{
-  margin:14px 0;
-  padding:18px 20px;
-  border-left:4px solid var(--secondary);
-  border-radius:10px;
+.lesson-visual{
+  margin:20px 0;
+  text-align:center;
   background:var(--bg);
-  line-height:1.8;
+  padding:18px;
+  border-radius:12px;
+  border:1px solid var(--border);
+}
+
+.lesson-visual img{
+  max-width:100%;
+  max-height:280px;
+  border-radius:8px;
+  object-fit:contain;
+}
+
+.lesson-visual-caption{
+  margin-top:8px;
+  font-size:14px;
+  color:var(--muted);
+  font-style:italic;
 }
 
 .lesson-quiz{
-  margin-top:32px;
-  padding:24px;
+  margin-top:28px;
+  padding:20px;
   border:1px solid var(--border);
-  border-radius:14px;
+  border-radius:12px;
   background:var(--bg);
 }
 
@@ -420,19 +397,13 @@ header{
 }
 
 .lesson-answer{
-  padding:13px;
+  padding:12px;
   border:1px solid var(--border);
   background:var(--card);
   color:var(--text);
   border-radius:8px;
   cursor:pointer;
-  transition:all .35s ease;
   text-align:left;
-}
-
-.lesson-answer:hover{
-  transform:translateY(-2px);
-  border-color:var(--primary);
 }
 
 .lesson-answer.correct{
@@ -445,30 +416,10 @@ header{
   color:#5a211a;
 }
 
-.lesson-actions{
-  position:sticky;
-  bottom:0;
-  padding:16px;
-  background:var(--card);
-  border-top:1px solid var(--border);
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
+/* WORKSHEETS SECTION */
 
-.lesson-complete{
-  background:var(--primary);
-  color:white;
-  border:0;
-  border-radius:8px;
-  padding:11px 18px;
-  cursor:pointer;
-}
-
-/* PRACTICE */
-
-.practice{
-  margin-top:45px;
+.worksheets-section{
+  margin-top:40px;
   background:var(--card);
   border:1px solid var(--border);
   border-radius:14px;
@@ -476,104 +427,44 @@ header{
   box-shadow:var(--shadow);
 }
 
-.practice-heading{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  flex-wrap:wrap;
-}
-
-.challenge-badge{
-  padding:9px 15px;
-  border:1px solid var(--primary);
-  border-radius:999px;
-  color:var(--primary);
-  font-weight:bold;
-  background:var(--bg);
-}
-
-.difficulty-wrap{
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  gap:8px;
-  margin:22px 0 16px;
-}
-
-.difficulty-btn{
+.sheet-card{
   border:1px solid var(--border);
+  padding:18px;
+  border-radius:10px;
   background:var(--bg);
-  color:var(--text);
-  padding:10px 7px;
-  border-radius:99px;
-  cursor:pointer;
-  transition:all .35s ease;
+  margin-bottom:15px;
 }
 
-.difficulty-btn:hover{
-  transform:translateY(-2px);
-  border-color:var(--primary);
+.sheet-card h4{
+  color:var(--primary);
+  margin-bottom:6px;
 }
 
-.difficulty-btn.active{
-  background:var(--primary);
-  color:white;
-  border-color:var(--primary);
+.sheet-questions{
+  margin-top:12px;
+  padding-left:20px;
 }
 
-.difficulty-btn.locked{
-  opacity:.45;
+.sheet-questions li{
+  margin-bottom:10px;
 }
 
-.challenge-progress{
-  margin:12px 0 20px;
-}
+/* PRACTICE & CHALLENGE */
 
-.challenge-progress>div:first-child{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  font-weight:bold;
-  color:var(--muted);
-  margin-bottom:7px;
-}
-
-.challenge-bar{
-  height:9px;
-  background:var(--border);
-  border-radius:999px;
-  overflow:hidden;
-}
-
-#challengeBarFill{
-  width:0%;
-  height:100%;
-  background:var(--primary);
-  transition:width .8s ease;
-}
-
-.progressive-mode{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
-
-#progressiveStatus{
-  color:var(--muted);
-  font-size:14px;
-}
-
-.question{
-  font-size:22px;
-  margin:15px 0;
+.practice{
+  margin-top:40px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:25px;
+  box-shadow:var(--shadow);
 }
 
 .answers{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:10px;
+  margin-top:15px;
 }
 
 .answer{
@@ -583,13 +474,7 @@ header{
   color:var(--text);
   border-radius:8px;
   cursor:pointer;
-  transition:all .35s ease;
   text-align:left;
-}
-
-.answer:hover{
-  border-color:var(--primary);
-  transform:translateY(-2px);
 }
 
 .answer.correct{
@@ -600,25 +485,6 @@ header{
 .answer.wrong{
   background:#f0d8d4;
   color:#5a211a;
-}
-
-body.dark .answer.correct,
-body.dark .lesson-answer.correct{
-  background:#304b34;
-  color:white;
-}
-
-body.dark .answer.wrong,
-body.dark .lesson-answer.wrong{
-  background:#4b302d;
-  color:white;
-}
-
-.practice-controls{
-  margin-top:18px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
 }
 
 .main-btn{
@@ -636,32 +502,6 @@ body.dark .lesson-answer.wrong{
   transform:translateY(-2px);
 }
 
-.solution-box{
-  margin-top:20px;
-  padding:18px 20px;
-  border-left:4px solid var(--secondary);
-  background:var(--bg);
-  border-radius:10px;
-  animation:lessonContentIn .5s ease both;
-}
-
-.solution-box h3{
-  margin-bottom:6px;
-}
-
-.message{
-  margin-top:15px;
-  min-height:25px;
-  font-weight:bold;
-}
-
-.no-results{
-  display:none;
-  text-align:center;
-  padding:30px;
-  color:var(--muted);
-}
-
 footer{
   border-top:1px solid var(--border);
   text-align:center;
@@ -671,62 +511,13 @@ footer{
 }
 
 @keyframes lessonIn{
-  from{opacity:0}
-  to{opacity:1}
-}
-
-@keyframes lessonContentIn{
-  from{
-    opacity:0;
-    transform:translateY(18px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-@media(max-width:900px){
-  .difficulty-wrap{
-    grid-template-columns:repeat(3,1fr);
-  }
+  from{opacity:0; transform:scale(0.96);}
+  to{opacity:1; transform:scale(1);}
 }
 
 @media(max-width:700px){
-  .dashboard{
+  .dashboard, .answers, .lesson-answers{
     grid-template-columns:1fr;
-  }
-
-  .answers,
-  .lesson-answers{
-    grid-template-columns:1fr;
-  }
-
-  .hero{
-    padding:25px 10px;
-  }
-
-  .nav{
-    padding:12px;
-  }
-}
-
-@media(max-width:520px){
-  .difficulty-wrap{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .lesson-content{
-    padding:24px 18px 120px;
-  }
-
-  .lesson-content h3{
-    font-size:21px;
-  }
-
-  .lesson-content p,
-  .lesson-content li{
-    font-size:17px;
   }
 }
 </style>
@@ -737,25 +528,25 @@ footer{
 <header>
   <div class="nav">
     <div class="logo" onclick="scrollToTop()">
-      Math<span>Quest</span>
+      📐 Math<span>Quest</span>
     </div>
 
     <div class="nav-buttons">
       <button class="icon-btn" onclick="toggleDark()" aria-label="Toggle dark mode">🌙</button>
-      <button class="icon-btn" onclick="resetProgress()" aria-label="Reset all progress">Reset</button>
+      <button class="icon-btn" onclick="resetProgress()" aria-label="Reset progress">Reset</button>
     </div>
   </div>
 </header>
 
 <section class="hero">
-  <h1>Learn <span>Mathematics</span><br>from the Beginning</h1>
-  <p>A complete mathematics journey for children, teenagers, and adults — from counting to Olympiad mathematics.</p>
+  <h1>Visual <span>Mathematics</span> Journey</h1>
+  <p>Explore concepts through interactive lessons, visual diagrams, formula derivations, and practice sheets.</p>
 
   <div class="search-box">
     <input
       type="search"
       id="search"
-      placeholder="Search topics... e.g. fractions, algebra, geometry"
+      placeholder="Search topics... e.g. fractions, pythagoras, trigonometry, calculus"
       aria-label="Search mathematics topics"
       oninput="searchTopics()"
     >
@@ -784,84 +575,71 @@ footer{
 
   <div id="subjects"></div>
 
-  <div class="no-results" id="noResults">
-    No topics found. Try another search.
+  <div class="no-results" id="noResults" style="display:none; text-align:center; padding:30px; color:var(--muted);">
+    No topics found. Try searching for another term.
   </div>
 
+  <!-- PRACTICE SHEETS SECTION -->
+  <section class="worksheets-section">
+    <h2 style="margin-bottom:10px;">📄 Interactive Practice Sheets</h2>
+    <p style="color:var(--muted); margin-bottom:20px;">Generate targeted exercise sheets to test your problem-solving skills step by step.</p>
+
+    <div class="sheet-card">
+      <h4>Sheet #1: Fractions & Ratios Fundamentals</h4>
+      <p style="font-size:14px; color:var(--muted);">Practice simplifying fractions, finding common denominators, and calculating proportional parts.</p>
+      <ol class="sheet-questions">
+        <li>Calculate $\frac{3}{8} + \frac{1}{4}$.</li>
+        <li>A recipe calls for a sugar to flour ratio of $2:5$. If you use $250\text{g}$ of flour, how much sugar do you need?</li>
+        <li>Convert $\frac{7}{20}$ into a percentage.</li>
+      </ol>
+      <button class="main-btn" style="margin-top:10px;" onclick="alert('Answers:\n1) 5/8\n2) 100g sugar\n3) 35%')">Reveal Solutions</button>
+    </div>
+
+    <div class="sheet-card">
+      <h4>Sheet #2: Geometric Equations & Pythagoras</h4>
+      <p style="font-size:14px; color:var(--muted);">Apply the Pythagorean theorem and solve right-triangle side lengths.</p>
+      <ol class="sheet-questions">
+        <li>A right triangle has legs $a = 6\text{ cm}$ and $b = 8\text{ cm}$. Find hypotenuse $c$.</li>
+        <li>Find the side length of a square whose diagonal measures $\sqrt{50}\text{ cm}$.</li>
+      </ol>
+      <button class="main-btn" style="margin-top:10px;" onclick="alert('Answers:\n1) c = 10 cm\n2) side = 5 cm')">Reveal Solutions</button>
+    </div>
+  </section>
+
+  <!-- CHALLENGE PRACTICE SECTION -->
   <section class="practice" id="practiceSection">
-    <div class="practice-heading">
-      <div>
-        <h2>📝 MathQuest Challenge</h2>
-        <p>Start at Beginner and climb all the way to Olympiad.</p>
-      </div>
-
-      <div class="challenge-badge" id="challengeBadge">Beginner</div>
-    </div>
-
-    <div class="difficulty-wrap">
-      <button class="difficulty-btn active" data-level="0" onclick="setDifficulty(0)">🌱 Beginner</button>
-      <button class="difficulty-btn" data-level="1" onclick="setDifficulty(1)">📘 Easy</button>
-      <button class="difficulty-btn" data-level="2" onclick="setDifficulty(2)">🧠 Medium</button>
-      <button class="difficulty-btn" data-level="3" onclick="setDifficulty(3)">🔥 Hard</button>
-      <button class="difficulty-btn" data-level="4" onclick="setDifficulty(4)">🚀 Advanced</button>
-      <button class="difficulty-btn" data-level="5" onclick="setDifficulty(5)">🏆 Olympiad</button>
-    </div>
-
-    <div class="challenge-progress">
-      <div>
-        <span id="levelText">Beginner</span>
-        <span id="levelScore">0 / 3 correct</span>
-      </div>
-
-      <div class="challenge-bar">
-        <div id="challengeBarFill"></div>
-      </div>
-    </div>
-
-    <div class="progressive-mode">
-      <button class="main-btn" id="progressiveBtn" onclick="toggleProgressiveMode()">▶ Start Progressive Mode</button>
-      <span id="progressiveStatus">Answer 3 questions correctly to move up a level.</span>
-    </div>
+    <h2>📝 Challenge Practice Mode</h2>
+    <p style="color:var(--muted); margin-bottom:15px;">Test your knowledge with randomized questions across all difficulty tiers.</p>
 
     <div class="question" id="question">Loading question...</div>
-
     <div class="answers" id="answers"></div>
+    <div class="message" id="message" style="margin-top:10px; font-weight:bold;"></div>
 
-    <div class="message" id="message"></div>
-
-    <div class="solution-box" id="solutionBox" style="display:none">
-      <h3>💡 Solution</h3>
+    <div id="solutionBox" style="display:none; margin-top:15px; padding:15px; background:var(--bg); border-left:4px solid var(--secondary); border-radius:8px;">
+      <h4>💡 Solution:</h4>
       <p id="solutionText"></p>
     </div>
 
-    <div class="practice-controls">
-      <button class="main-btn" id="nextQuestionBtn" onclick="newQuestion()">Next Question →</button>
-    </div>
+    <button class="main-btn" style="margin-top:15px;" onclick="newQuestion()">Next Question →</button>
   </section>
 </main>
 
 <footer>
-  <p><strong>MathQuest</strong> — Mathematics for everyone.</p>
-  <p>Learn • Practise • Understand • Master</p>
+  <p><strong>MathQuest</strong> — Visual Mathematics for Everyone.</p>
 </footer>
 
-<!-- FULL SCREEN LESSON -->
+<!-- VISUAL LESSON OVERLAY MODAL -->
 <div class="lesson-overlay" id="lessonOverlay" role="dialog" aria-modal="true">
   <div class="lesson-modal">
     <div class="lesson-header">
       <h2 id="lessonTitle">Lesson</h2>
-      <button class="close-btn" onclick="closeLesson()">✕ Close</button>
+      <button class="icon-btn" onclick="closeLesson()">✕ Close</button>
     </div>
-
     <div class="lesson-content" id="lessonContent"></div>
   </div>
 </div>
 
 <script>
-
-/* =====================================================
-   DYNAMIC KATEX MATHEMATICAL MATH RENDERER
-===================================================== */
 
 function renderMath(container) {
   if (window.renderMathInElement) {
@@ -875,104 +653,31 @@ function renderMath(container) {
   }
 }
 
-/* =====================================================
-   CENTRALIZED REFACTORED TOPIC DATA STRUCTURE
-===================================================== */
-
+/* CENTRALIZED TOPIC DATA STORE WITH VISUALS */
 const TOPICS = {
-  "arithmetic-counting": {
-    id: "arithmetic-counting",
-    subject: "Arithmetic",
-    icon: "🔢",
-    title: "Counting",
-    summary: "Finding how many objects there are.",
-    definition: "Counting is the process of determining the number of elements in a finite set of objects.",
-    simpleNote: "Counting means finding how many things there are by giving each item one number.",
-    keyPoints: [
-      "Each object must be counted exactly once.",
-      "The final number named tells us how many objects there are in total.",
-      "Counting forms the ultimate foundation of all arithmetic."
-    ],
-    examples: [
-      "If you have apples $1, 2, 3, 4, 5$, you have $5$ apples in total."
-    ],
-    questions: [
-      {
-        question: "Which number comes directly after $19$?",
-        options: ["$18$", "$20$", "$21$", "$29$"],
-        correct: 1,
-        explanation: "Adding $1$ to $19$ gives $19 + 1 = 20$."
-      },
-      {
-        question: "How many numbers are there in the inclusive range from $1$ to $8$?",
-        options: ["$6$", "$7$", "$8$", "$9$"],
-        correct: 2,
-        explanation: "Counting $1, 2, 3, 4, 5, 6, 7, 8$ gives $8$ numbers."
-      }
-    ]
-  },
-
   "arithmetic-fractions": {
     id: "arithmetic-fractions",
     subject: "Arithmetic",
     icon: "🔢",
-    title: "Fractions",
-    summary: "Parts of a whole or collection.",
-    definition: "A fraction represents a part of a whole or a numerical ratio written as $\\frac{a}{b}$.",
-    simpleNote: "The top number (numerator) tells how many parts you have; the bottom (denominator) tells how many equal parts make a whole.",
+    title: "Fractions & Parts",
+    summary: "Visualizing equal parts of a whole.",
+    imageUrl: "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcQLB7hxIZGoBOUd6ciod1nsY2bJDVXKlS3DO37a5Ws7lN2huWMN3mmouMuYKNyR8t_1HhxPXlGBzCoNAlQ",
+    imageCaption: "A pie chart visual representation of fraction proportions.",
+    definition: "A fraction represents a part of a whole, written as $\\frac{a}{b}$ where $a$ is the numerator and $b$ is the non-zero denominator.",
+    simpleNote: "Think of a slice of pizza: the denominator tells you total slices, and the numerator tells you how many slices you have.",
     keyPoints: [
-      "Written in the form $\\frac{\\text{numerator}}{\\text{denominator}}$.",
-      "The denominator cannot equal zero ($b \\neq 0$).",
-      "Equivalent fractions represent the same value, e.g., $\\frac{1}{2} = \\frac{2}{4}$."
+      "Numerators count active parts; denominators count total equal divisions.",
+      "Equivalent fractions like $\\frac{1}{2}$ and $\\frac{2}{4}$ cover identical visual areas."
     ],
     examples: [
-      "$\\frac{3}{4}$ means $3$ equal parts out of $4$ total equal parts.",
-      "Adding like denominators: $\\frac{2}{5} + \\frac{1}{5} = \\frac{3}{5}$."
+      "$\\frac{3}{8}$ represents three out of eight equal segments of a circle."
     ],
     questions: [
       {
-        question: "Which fraction is greater?",
-        options: ["$\\frac{1}{4}$", "$\\frac{1}{2}$", "$\\frac{1}{8}$", "$\\frac{1}{10}$"],
-        correct: 1,
-        explanation: "$\\frac{1}{2}$ represents half of the whole, which is larger than $\\frac{1}{4}, \\frac{1}{8},$ or $\\frac{1}{10}$."
-      },
-      {
-        question: "What is $\\frac{2}{5} + \\frac{1}{5}$?",
-        options: ["$\\frac{2}{5}$", "$\\frac{3}{5}$", "$\\frac{3}{10}$", "$1$"],
-        correct: 1,
-        explanation: "When denominators are equal, add numerators: $\\frac{2+1}{5} = \\frac{3}{5}$."
-      }
-    ]
-  },
-
-  "algebra-linear-equations": {
-    id: "algebra-linear-equations",
-    subject: "Algebra",
-    icon: "𝑥",
-    title: "Linear Equations",
-    summary: "Equations where variables have degree 1.",
-    definition: "A linear equation is an algebraic equation in which each term has an exponent of $1$, taking the form $ax + b = c$.",
-    simpleNote: "Keep the equation balanced: whatever operation you do to one side, apply to the other side.",
-    keyPoints: [
-      "The degree of the unknown variable is strictly $1$.",
-      "The goal is to isolate $x$ on one side of the equals sign.",
-      "Check your final answer by substituting $x$ back into the original equation."
-    ],
-    examples: [
-      "Solve $2x + 3 = 11$: Subtract $3 \\implies 2x = 8$, then divide by $2 \\implies x = 4$."
-    ],
-    questions: [
-      {
-        question: "If $x - 4 = 9$, find $x$.",
-        options: ["$5$", "$13$", "$36$", "$9$"],
-        correct: 1,
-        explanation: "Add $4$ to both sides: $x = 9 + 4 = 13$."
-      },
-      {
-        question: "Solve for $x$: $3x = 21$",
-        options: ["$6$", "$7$", "$8$", "$9$"],
-        correct: 1,
-        explanation: "Divide both sides by $3$: $x = \\frac{21}{3} = 7$."
+        question: "Which fraction is equivalent to $\\frac{2}{6}$?",
+        options: ["$\\frac{1}{3}$", "$\\frac{1}{2}$", "$\\frac{2}{3}$", "$\\frac{3}{4}$"],
+        correct: 0,
+        explanation: "Dividing numerator and denominator by $2$ yields $\\frac{1}{3}$."
       }
     ]
   },
@@ -981,101 +686,76 @@ const TOPICS = {
     id: "geometry-pythagoras",
     subject: "Geometry",
     icon: "📐",
-    title: "Pythagoras Theorem",
-    summary: "Relationship between sides of a right triangle.",
-    definition: "In any right-angled triangle, the area of the square on the hypotenuse equals the sum of areas of squares on the other two sides: $a^2 + b^2 = c^2$.",
-    simpleNote: "For right triangles, square the two shorter sides, add them together, and that equals the longest side squared.",
+    title: "Pythagorean Theorem",
+    summary: "Calculating hypotenuse lengths in right triangles.",
+    imageUrl: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcTnzE8KE-NZnYBsN-4fK5I7tdsAP-Lju6Kh2FLfwT8MS4fO8vR0ucDwvnzqXVQ0-jpa4YyXS8HEIH7MRac",
+    imageCaption: "Right triangle geometry displaying leg relationships.",
+    definition: "For any right-angled triangle, $a^2 + b^2 = c^2$, where $c$ is the hypotenuse.",
+    simpleNote: "Square the short sides, sum them together, and take the square root to get the diagonal.",
     keyPoints: [
-      "Applies exclusively to right-angled triangles.",
-      "The hypotenuse $c$ is always opposite the $90^\\circ$ angle.",
-      "Formula: $a^2 + b^2 = c^2$."
+      "Applies exclusively to triangles containing a $90^\\circ$ angle.",
+      "The hypotenuse $c$ is always the longest side opposite the right angle."
     ],
     examples: [
-      "If shorter sides are $a = 3$ and $b = 4$, then $c^2 = 3^2 + 4^2 = 9 + 16 = 25 \\implies c = 5$."
+      "With legs $a = 3, b = 4$: $c = \\sqrt{3^2 + 4^2} = \\sqrt{25} = 5$."
     ],
     questions: [
       {
-        question: "For legs $a = 5$ and $b = 12$, find hypotenuse $c$.",
-        options: ["$10$", "$11$", "$13$", "$17$"],
+        question: "If leg $a = 5$ and leg $b = 12$, find hypotenuse $c$.",
+        options: ["$10$", "$11$", "$13$", "$15$"],
         correct: 2,
-        explanation: "$c^2 = 5^2 + 12^2 = 25 + 144 = 169 \\implies c = \\sqrt{169} = 13$."
+        explanation: "$c = \\sqrt{5^2 + 12^2} = \\sqrt{25 + 144} = \\sqrt{169} = 13$."
       }
     ]
   },
 
-  "calculus-derivatives": {
-    id: "calculus-derivatives",
-    subject: "Calculus",
-    icon: "∫",
-    title: "Derivatives",
-    summary: "Instantaneous rate of change of a function.",
-    definition: "The derivative $f'(x) = \\lim_{h \\to 0} \\frac{f(x+h) - f(x)}{h}$ represents the rate of change of a function.",
-    simpleNote: "A derivative tells you how steep a graph is or how quickly a quantity is changing at one exact moment.",
+  "trigonometry-ratios": {
+    id: "trigonometry-ratios",
+    subject: "Trigonometry",
+    icon: "📐",
+    title: "Trigonometric Ratios",
+    summary: "Sine, Cosine, and Tangent definitions.",
+    imageUrl: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcTM2Sl7CzboXltL9do_J6ZbLJG99O-zOzUc77FYALLgrq0_Zx7W8XHUdn_3h3CasyVcNeepsFfW2BFxz5Q",
+    imageCaption: "Trigonometric unit circle and side ratio diagrams.",
+    definition: "Fundamental trigonometric functions relate angle measures to side length ratios in right triangles.",
+    simpleNote: "SOH CAH TOA: $\\sin(\\theta) = \\frac{\\text{Opp}}{\\text{Hyp}}$, $\\cos(\\theta) = \\frac{\\text{Adj}}{\\text{Hyp}}$, $\\tan(\\theta) = \\frac{\\text{Opp}}{\\text{Adj}}$.",
     keyPoints: [
-      "Represents the geometric slope of a tangent line.",
-      "Power Rule: $\\frac{d}{dx}[x^n] = n x^{n-1}$.",
-      "The derivative of any constant value is $0$."
+      "Sine relates opposite side to hypotenuse.",
+      "Cosine relates adjacent side to hypotenuse.",
+      "Tangent equals $\\frac{\\sin(\\theta)}{\\cos(\\theta)}$."
     ],
     examples: [
-      "If $y = x^2$, then derivative $\\frac{dy}{dx} = 2x$."
+      "In a $30^\\circ-60^\\circ-90^\\circ$ triangle, $\\sin(30^\\circ) = 0.5$."
     ],
     questions: [
       {
-        question: "What is the derivative of $f(x) = 5x$?",
-        options: ["$5$", "$x$", "$5x^2$", "$0$"],
-        correct: 0,
-        explanation: "By the power rule, $\\frac{d}{dx}[5x] = 5(1)x^0 = 5$."
+        question: "What is $\\tan(45^\\circ)$?",
+        options: ["$0$", "$0.5$", "$1$", "$\\sqrt{2}$"],
+        correct: 2,
+        explanation: "At $45^\\circ$, opposite and adjacent sides are equal, so $\\tan(45^\\circ) = 1$."
       }
     ]
   }
 };
 
-/* Subject Hierarchy Mapping */
 const SUBJECTS = [
-  {
-    name: "Arithmetic",
-    icon: "🔢",
-    description: "The foundation of mathematics.",
-    topicIds: ["arithmetic-counting", "arithmetic-fractions"]
-  },
-  {
-    name: "Algebra",
-    icon: "𝑥",
-    description: "Use symbols to solve mathematical problems.",
-    topicIds: ["algebra-linear-equations"]
-  },
-  {
-    name: "Geometry",
-    icon: "📐",
-    description: "Study shapes, space, and measurements.",
-    topicIds: ["geometry-pythagoras"]
-  },
-  {
-    name: "Calculus",
-    icon: "∫",
-    description: "Study change, motion, and accumulation.",
-    topicIds: ["calculus-derivatives"]
-  }
+  { name: "Arithmetic", icon: "🔢", description: "Foundational mathematics.", topicIds: ["arithmetic-fractions"] },
+  { name: "Geometry", icon: "📐", description: "Shapes, angles, and spatial theorems.", topicIds: ["geometry-pythagoras"] },
+  { name: "Trigonometry", icon: "📐", description: "Ratios, angles, and periodic functions.", topicIds: ["trigonometry-ratios"] }
 ];
 
-/* =====================================================
-   ROADMAP RENDERING
-===================================================== */
-
-const subjectsContainer = document.getElementById("subjects");
 let completedTopics = JSON.parse(localStorage.getItem("mathquestCompleted") || "[]");
 
 function renderSubjects() {
-  subjectsContainer.innerHTML = "";
+  const container = document.getElementById("subjects");
+  container.innerHTML = "";
 
   SUBJECTS.forEach((subj) => {
-    const subjectDiv = document.createElement("div");
-    subjectDiv.className = "subject";
+    const div = document.createElement("div");
+    div.className = "subject";
 
     const header = document.createElement("button");
     header.className = "subject-header";
-    header.setAttribute("aria-expanded", "false");
-
     header.innerHTML = `
       <div class="subject-name">
         <span class="subject-icon">${subj.icon}</span>
@@ -1086,11 +766,7 @@ function renderSubjects() {
       </div>
       <span class="arrow">▼</span>
     `;
-
-    header.onclick = () => {
-      const isOpen = subjectDiv.classList.toggle("open");
-      header.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    };
+    header.onclick = () => div.classList.toggle("open");
 
     const area = document.createElement("div");
     area.className = "topic-area";
@@ -1103,7 +779,6 @@ function renderSubjects() {
       if (!topic) return;
 
       const done = completedTopics.includes(id);
-
       const card = document.createElement("div");
       card.className = "topic";
       card.dataset.search = (subj.name + " " + topic.title + " " + topic.summary).toLowerCase();
@@ -1112,23 +787,20 @@ function renderSubjects() {
         <h4>${topic.title}</h4>
         <p>${topic.summary}</p>
         <div class="topic-actions">
-          <button onclick="openLesson('${id}')">📖 Learn</button>
-          <button class="complete-btn" onclick="toggleComplete(event, '${id}')">
-            ${done ? "✓ Done" : "Mark Complete"}
-          </button>
+          <button onclick="openLesson('${id}')">📖 Learn Visual Lesson</button>
+          <button onclick="toggleComplete(event, '${id}')">${done ? "✓ Done" : "Mark Complete"}</button>
         </div>
         <div class="progress">
           <div class="progress-bar" style="width:${done ? 100 : 0}%"></div>
         </div>
       `;
-
       grid.appendChild(card);
     });
 
     area.appendChild(grid);
-    subjectDiv.appendChild(header);
-    subjectDiv.appendChild(area);
-    subjectsContainer.appendChild(subjectDiv);
+    div.appendChild(header);
+    div.appendChild(area);
+    container.appendChild(div);
   });
 
   updateStats();
@@ -1136,13 +808,11 @@ function renderSubjects() {
 
 function toggleComplete(event, id) {
   event.stopPropagation();
-
   if (completedTopics.includes(id)) {
     completedTopics = completedTopics.filter(x => x !== id);
   } else {
     completedTopics.push(id);
   }
-
   localStorage.setItem("mathquestCompleted", JSON.stringify(completedTopics));
   renderSubjects();
 }
@@ -1150,377 +820,137 @@ function toggleComplete(event, id) {
 function updateStats() {
   const total = Object.keys(TOPICS).length;
   const completed = completedTopics.length;
-
   document.getElementById("completed").textContent = completed;
   document.getElementById("totalTopics").textContent = total;
-
-  const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
-  document.getElementById("percentage").textContent = percentage + "%";
+  document.getElementById("percentage").textContent = (total === 0 ? 0 : Math.round((completed / total) * 100)) + "%";
 }
 
-/* =====================================================
-   SEARCH & UTILITIES
-===================================================== */
+function openLesson(id) {
+  const topic = TOPICS[id];
+  if (!topic) return;
+
+  const contentEl = document.getElementById("lessonContent");
+  document.getElementById("lessonTitle").textContent = topic.icon + " " + topic.title;
+
+  contentEl.innerHTML = `
+    <p class="lesson-note">${topic.subject} • ${topic.summary}</p>
+
+    <div class="lesson-visual">
+      <img src="${topic.imageUrl}" alt="${topic.title}">
+      <div class="lesson-visual-caption">${topic.imageCaption}</div>
+    </div>
+
+    <h3>📚 Concept Definition</h3>
+    <p><strong>${topic.definition}</strong></p>
+
+    <h3>💡 Intuitive View</h3>
+    <p>${topic.simpleNote}</p>
+
+    <h3>Key Highlights</h3>
+    <ul>${topic.keyPoints.map(p => `<li>${p}</li>`).join("")}</ul>
+
+    <div class="lesson-quiz">
+      <h3>🧠 Quick Practice Check</h3>
+      <p>${topic.questions[0].question}</p>
+      <div class="lesson-answers">
+        ${topic.questions[0].options.map((opt, i) => `
+          <button class="lesson-answer" onclick="checkLessonAnswer(${i}, ${topic.questions[0].correct}, this)">${opt}</button>
+        `).join("")}
+      </div>
+      <div id="lessonMsg" style="margin-top:10px; font-weight:bold;"></div>
+    </div>
+  `;
+
+  document.getElementById("lessonOverlay").classList.add("show");
+  renderMath(contentEl);
+}
+
+function checkLessonAnswer(selected, correct, btn) {
+  const all = btn.parentElement.querySelectorAll("button");
+  all.forEach(b => b.disabled = true);
+  if (selected === correct) {
+    btn.classList.add("correct");
+    document.getElementById("lessonMsg").textContent = "✓ Correct answer!";
+  } else {
+    btn.classList.add("wrong");
+    all[correct].classList.add("correct");
+    document.getElementById("lessonMsg").textContent = "Incorrect. The correct answer is highlighted in green.";
+  }
+}
+
+function closeLesson() {
+  document.getElementById("lessonOverlay").classList.remove("show");
+}
+
+/* PRACTICE CHALLENGE ENGINE */
+const challengeQuestions = [
+  { q: "Calculate $\\frac{2}{3} + \\frac{1}{6}$.", a: ["$\\frac{3}{9}$", "$\\frac{5}{6}$", "$1$", "$\\frac{4}{6}$"], correct: 1, solution: "Convert $\\frac{2}{3} = \\frac{4}{6}$. Then $\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$." },
+  { q: "What is $\\sin(90^\\circ)$?", a: ["$0$", "$0.5$", "$1$", "Undefined"], correct: 2, solution: "At $90^\\circ$, the opposite side equals the hypotenuse, yielding $\\sin(90^\\circ) = 1$." }
+];
+
+let activeQuestion = null;
+
+function newQuestion() {
+  activeQuestion = challengeQuestions[Math.floor(Math.random() * challengeQuestions.length)];
+  const qEl = document.getElementById("question");
+  qEl.innerHTML = activeQuestion.q;
+
+  const answersEl = document.getElementById("answers");
+  answersEl.innerHTML = "";
+  document.getElementById("message").textContent = "";
+  document.getElementById("solutionBox").style.display = "none";
+
+  activeQuestion.a.forEach((ans, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "answer";
+    btn.innerHTML = ans;
+    btn.onclick = () => checkAnswer(idx, btn);
+    answersEl.appendChild(btn);
+  });
+
+  renderMath(document.getElementById("practiceSection"));
+}
+
+function checkAnswer(index, btn) {
+  const all = document.querySelectorAll(".answer");
+  all.forEach(b => b.disabled = true);
+
+  if (index === activeQuestion.correct) {
+    btn.classList.add("correct");
+    document.getElementById("message").textContent = "✓ Correct!";
+  } else {
+    btn.classList.add("wrong");
+    all[activeQuestion.correct].classList.add("correct");
+    document.getElementById("message").textContent = "Incorrect.";
+  }
+
+  document.getElementById("solutionText").innerHTML = activeQuestion.solution;
+  document.getElementById("solutionBox").style.display = "block";
+  renderMath(document.getElementById("solutionBox"));
+}
 
 function searchTopics() {
   const query = document.getElementById("search").value.toLowerCase().trim();
-  const subjectsEls = document.querySelectorAll(".subject");
-  let found = 0;
-
-  subjectsEls.forEach(subject => {
-    const topics = subject.querySelectorAll(".topic");
-    let subjectFound = 0;
-
-    topics.forEach(topic => {
-      if (topic.dataset.search.includes(query)) {
-        topic.style.display = "";
-        subjectFound++;
-        found++;
-      } else {
-        topic.style.display = "none";
-      }
-    });
-
-    if (query && subjectFound > 0) {
-      subject.style.display = "";
-      subject.classList.add("open");
-    } else if (query) {
-      subject.style.display = "none";
-    } else {
-      subject.style.display = "";
-      subject.classList.remove("open");
-    }
+  document.querySelectorAll(".topic").forEach(t => {
+    t.style.display = t.dataset.search.includes(query) ? "" : "none";
   });
-
-  document.getElementById("noResults").style.display = query && found === 0 ? "block" : "none";
 }
 
 function toggleDark() {
   document.body.classList.toggle("dark");
-  localStorage.setItem("mathquestDark", document.body.classList.contains("dark"));
-}
-
-if (localStorage.getItem("mathquestDark") === "true") {
-  document.body.classList.add("dark");
 }
 
 function resetProgress() {
-  if (confirm("Reset all MathQuest progress and unlocked levels?")) {
-    completedTopics = [];
-    localStorage.removeItem("mathquestCompleted");
-    localStorage.removeItem("mathquestUnlockedLevel");
-
-    unlockedDifficulty = 0;
-    currentDifficulty = 0;
-    challengeCorrect = 0;
-
-    renderSubjects();
-    updateDifficultyUI();
-    newQuestion();
-  }
+  completedTopics = [];
+  localStorage.removeItem("mathquestCompleted");
+  renderSubjects();
 }
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* =====================================================
-   LESSON SYSTEM
-===================================================== */
-
-let currentLesson = null;
-let lessonQuestionIndex = 0;
-let lessonScore = 0;
-
-function openLesson(topicId) {
-  const topic = TOPICS[topicId];
-  if (!topic) return;
-
-  currentLesson = { id: topicId, data: topic };
-  lessonQuestionIndex = 0;
-  lessonScore = 0;
-
-  document.getElementById("lessonTitle").textContent = `${topic.icon} ${topic.title}`;
-  renderLesson();
-
-  document.getElementById("lessonOverlay").classList.add("show");
-  document.body.style.overflow = "hidden";
-}
-
-function renderLesson() {
-  const topic = currentLesson.data;
-  const q = topic.questions[Math.min(lessonQuestionIndex, topic.questions.length - 1)];
-  const contentEl = document.getElementById("lessonContent");
-
-  contentEl.innerHTML = `
-    <div class="lesson-progress-label">
-      Practice Question ${lessonQuestionIndex + 1} of ${topic.questions.length}
-    </div>
-
-    <p class="lesson-note">${topic.subject} • ${topic.summary}</p>
-
-    <h3>📚 Definition</h3>
-    <p><strong>${topic.definition}</strong></p>
-
-    <h3>💡 In Simple Words</h3>
-    <p>${topic.simpleNote}</p>
-
-    <h3>⭐ Key Ideas</h3>
-    <ul>
-      ${topic.keyPoints.map(p => `<li>${p}</li>`).join("")}
-    </ul>
-
-    <h3>✏️ Examples</h3>
-    ${topic.examples.map((ex, i) => `
-      <div class="example">
-        <strong>Example ${i + 1}:</strong><br>${ex}
-      </div>
-    `).join("")}
-
-    <div class="lesson-quiz">
-      <h3>🧠 Practice</h3>
-      <p><strong>${q.question}</strong></p>
-
-      <div class="lesson-answers" id="lessonAnswers">
-        ${q.options.map((opt, i) => `
-          <button class="lesson-answer" onclick="checkLessonAnswer(${i}, this)">
-            ${opt}
-          </button>
-        `).join("")}
-      </div>
-
-      <div class="message" id="lessonMessage"></div>
-    </div>
-
-    <div class="lesson-actions">
-      <button class="lesson-complete" onclick="completeCurrentLesson()">
-        ${completedTopics.includes(currentLesson.id) ? "✓ Completed" : "✓ Mark Lesson Complete"}
-      </button>
-
-      <button class="main-btn" id="nextLessonQuestion" onclick="nextLessonQuestion()">
-        Next Question →
-      </button>
-
-      <button class="icon-btn" onclick="closeLesson()">✕ Close</button>
-    </div>
-  `;
-
-  renderMath(contentEl);
-}
-
-function checkLessonAnswer(index, button) {
-  const q = currentLesson.data.questions[lessonQuestionIndex];
-  const all = document.querySelectorAll("#lessonAnswers .lesson-answer");
-
-  all.forEach(b => b.disabled = true);
-
-  if (index === q.correct) {
-    button.classList.add("correct");
-    lessonScore++;
-    document.getElementById("lessonMessage").textContent = "✓ Correct! Excellent work.";
-  } else {
-    button.classList.add("wrong");
-    all[q.correct].classList.add("correct");
-    document.getElementById("lessonMessage").textContent = "Not quite — the correct answer is shown in green.";
-  }
-}
-
-function nextLessonQuestion() {
-  if (!currentLesson) return;
-  const total = currentLesson.data.questions.length;
-
-  if (lessonQuestionIndex < total - 1) {
-    lessonQuestionIndex++;
-    renderLesson();
-  } else {
-    document.getElementById("lessonMessage").textContent = `🎉 Lesson finished! You scored ${lessonScore}/${total}.`;
-    const btn = document.getElementById("nextLessonQuestion");
-    btn.textContent = "🔄 Try Again";
-    btn.onclick = () => {
-      lessonQuestionIndex = 0;
-      lessonScore = 0;
-      renderLesson();
-    };
-  }
-}
-
-function completeCurrentLesson() {
-  if (!currentLesson) return;
-  if (!completedTopics.includes(currentLesson.id)) {
-    completedTopics.push(currentLesson.id);
-  }
-
-  localStorage.setItem("mathquestCompleted", JSON.stringify(completedTopics));
-  renderSubjects();
-  renderLesson();
-}
-
-function closeLesson() {
-  document.getElementById("lessonOverlay").classList.remove("show");
-  document.body.style.overflow = "";
-}
-
-/* =====================================================
-   PROGRESSIVE PRACTICE CHALLENGE
-===================================================== */
-
-const difficultyNames = ["Beginner", "Easy", "Medium", "Hard", "Advanced", "Olympiad"];
-
-const difficultyQuestions = [
-  /* BEGINNER */
-  [
-    { q: "What is $7 + 5$?", a: ["$10$", "$11$", "$12$", "$13$"], correct: 2, solution: "$7 + 5 = 12$." },
-    { q: "What is $20 \\div 5$?", a: ["$2$", "$4$", "$5$", "$10$"], correct: 1, solution: "$20 \\div 5 = 4$." }
-  ],
-  /* EASY */
-  [
-    { q: "What is $25\\%$ of $80$?", a: ["$10$", "$15$", "$20$", "$25$"], correct: 2, solution: "$25\\% = \\frac{1}{4}$. $80 \\div 4 = 20$." },
-    { q: "What is $\\frac{3}{4} + \\frac{1}{4}$?", a: ["$\\frac{1}{2}$", "$\\frac{3}{4}$", "$1$", "$\\frac{5}{4}$"], correct: 2, solution: "$\\frac{3+1}{4} = \\frac{4}{4} = 1$." }
-  ],
-  /* MEDIUM */
-  [
-    { q: "If $3x + 5 = 20$, find $x$.", a: ["$3$", "$5$", "$7$", "$15$"], correct: 1, solution: "$3x = 15 \\implies x = 5$." },
-    { q: "Find $\\sqrt{196}$.", a: ["$12$", "$13$", "$14$", "$16$"], correct: 2, solution: "$14 \\times 14 = 196$." }
-  ],
-  /* HARD */
-  [
-    { q: "If $x + \\frac{1}{x} = 5$, find $x^2 + \\frac{1}{x^2}$.", a: ["$20$", "$21$", "$23$", "$25$"], correct: 2, solution: "Square both sides: $(x + \\frac{1}{x})^2 = 25 \\implies x^2 + 2 + \\frac{1}{x^2} = 25 \\implies x^2 + \\frac{1}{x^2} = 23$." }
-  ],
-  /* ADVANCED */
-  [
-    { q: "If $x + y = 10$ and $xy = 21$, find $x^2 + y^2$.", a: ["$42$", "$58$", "$79$", "$100$"], correct: 1, solution: "$x^2 + y^2 = (x+y)^2 - 2xy = 100 - 42 = 58$." }
-  ],
-  /* OLYMPIAD */
-  [
-    { q: "If $a + b + c = 0$, find $a^3 + b^3 + c^3 - 3abc$.", a: ["$0$", "$1$", "$3abc$", "$a+b+c$"], correct: 0, solution: "Identity: $a^3 + b^3 + c^3 - 3abc = (a+b+c)(a^2+b^2+c^2-ab-bc-ca)$. Since $a+b+c=0$, the product equals $0$." }
-  ]
-];
-
-let currentDifficulty = 0;
-let currentQuestion = null;
-let challengeCorrect = 0;
-let progressiveMode = false;
-
-let unlockedDifficulty = Number(localStorage.getItem("mathquestUnlockedLevel") || 0);
-
-function setDifficulty(level) {
-  if (level > unlockedDifficulty) {
-    document.getElementById("message").textContent = "🔒 Complete the current level to unlock this one.";
-    return;
-  }
-
-  currentDifficulty = level;
-  challengeCorrect = 0;
-  updateDifficultyUI();
-  newQuestion();
-}
-
-function updateDifficultyUI() {
-  const name = difficultyNames[currentDifficulty];
-
-  document.getElementById("challengeBadge").textContent = name;
-  document.getElementById("levelText").textContent = name;
-  document.getElementById("levelScore").textContent = challengeCorrect + " / 3 correct";
-  document.getElementById("challengeBarFill").style.width = Math.min(100, (challengeCorrect / 3) * 100) + "%";
-
-  document.querySelectorAll(".difficulty-btn").forEach(btn => {
-    const level = Number(btn.dataset.level);
-    btn.classList.toggle("active", level === currentDifficulty);
-    btn.classList.toggle("locked", level > unlockedDifficulty);
-  });
-}
-
-function newQuestion() {
-  const bank = difficultyQuestions[currentDifficulty];
-  currentQuestion = bank[Math.floor(Math.random() * bank.length)];
-
-  const qEl = document.getElementById("question");
-  qEl.innerHTML = currentQuestion.q;
-
-  const answers = document.getElementById("answers");
-  answers.innerHTML = "";
-
-  document.getElementById("message").textContent = "";
-  document.getElementById("solutionBox").style.display = "none";
-
-  currentQuestion.a.forEach((ans, idx) => {
-    const btn = document.createElement("button");
-    btn.className = "answer";
-    btn.innerHTML = ans;
-    btn.onclick = () => checkAnswer(idx, btn);
-    answers.appendChild(btn);
-  });
-
-  updateDifficultyUI();
-  renderMath(document.getElementById("practiceSection"));
-}
-
-function checkAnswer(index, button) {
-  const all = document.querySelectorAll(".answer");
-  all.forEach(b => b.disabled = true);
-
-  if (index === currentQuestion.correct) {
-    button.classList.add("correct");
-    challengeCorrect++;
-    document.getElementById("message").textContent = "✓ Correct! Keep going.";
-  } else {
-    button.classList.add("wrong");
-    all[currentQuestion.correct].classList.add("correct");
-    document.getElementById("message").textContent = "Not quite correct.";
-  }
-
-  const solBox = document.getElementById("solutionBox");
-  document.getElementById("solutionText").innerHTML = currentQuestion.solution;
-  solBox.style.display = "block";
-
-  renderMath(solBox);
-  updateDifficultyUI();
-
-  if (progressiveMode && challengeCorrect >= 3) {
-    setTimeout(advanceDifficulty, 1200);
-  }
-}
-
-function advanceDifficulty() {
-  if (currentDifficulty < difficultyNames.length - 1) {
-    unlockedDifficulty = Math.max(unlockedDifficulty, currentDifficulty + 1);
-    localStorage.setItem("mathquestUnlockedLevel", unlockedDifficulty);
-
-    currentDifficulty++;
-    challengeCorrect = 0;
-
-    document.getElementById("message").textContent = "🎉 Level up! You unlocked " + difficultyNames[currentDifficulty] + ".";
-    updateDifficultyUI();
-    setTimeout(newQuestion, 900);
-  } else {
-    document.getElementById("message").textContent = "🏆 Incredible! You reached Olympiad level!";
-    progressiveMode = false;
-    updateProgressiveButton();
-  }
-}
-
-function toggleProgressiveMode() {
-  progressiveMode = !progressiveMode;
-
-  if (progressiveMode) {
-    document.getElementById("progressiveStatus").textContent = "Progressive Mode: get 3 correct answers to climb.";
-    challengeCorrect = 0;
-    currentDifficulty = 0;
-    updateProgressiveButton();
-    updateDifficultyUI();
-    newQuestion();
-  } else {
-    document.getElementById("progressiveStatus").textContent = "Choose any unlocked level and practise at your own pace.";
-    updateProgressiveButton();
-  }
-}
-
-function updateProgressiveButton() {
-  const btn = document.getElementById("progressiveBtn");
-  btn.textContent = progressiveMode ? "⏸ Pause Progressive Mode" : "▶ Start Progressive Mode";
-}
-
-/* INITIALIZE APP */
+/* INITIALIZATION */
 renderSubjects();
 newQuestion();
 
