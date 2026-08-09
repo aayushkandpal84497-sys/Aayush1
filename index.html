@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MathQuest — Visual Mathematics Platform</title>
+<title>MathQuest — Complete Visual Mathematics Platform</title>
 
 <!-- KaTeX CSS & JS for Mathematical Formulas -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
@@ -18,41 +18,53 @@
 }
 
 :root{
-  --bg:#f4f0e6;
-  --bg-pattern:radial-gradient(circle at 50% 0%, rgba(61,90,64,0.08), transparent 70%),
-             linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
-             linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
-  --card:#ffffff;
-  --text:#22201c;
-  --muted:#6e6658;
-  --primary:#2d4a32;
-  --secondary:#b7791f;
-  --border:#dcd4c4;
-  --shadow:0 8px 24px rgba(40,30,15,0.08);
+  --bg:#0f172a;
+  --bg-pattern:
+    radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.12), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(99, 102, 241, 0.12), transparent 40%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  --card:#1e293b;
+  --card-hover:#334155;
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --primary:#38bdf8;
+  --primary-hover:#0284c7;
+  --secondary:#f59e0b;
+  --border:#334155;
+  --shadow:0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  --accent-glow:rgba(56, 189, 248, 0.25);
 }
 
-body.dark{
-  --bg:#161513;
-  --bg-pattern:radial-gradient(circle at 50% 0%, rgba(154,184,157,0.1), transparent 70%),
-             linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-             linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-  --card:#211f1b;
-  --text:#f0eae1;
-  --muted:#a8a090;
-  --primary:#88aa8b;
-  --secondary:#e0ae62;
-  --border:#3a362e;
-  --shadow:0 8px 24px rgba(0,0,0,0.4);
+body.light{
+  --bg:#f8fafc;
+  --bg-pattern:
+    radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(79, 70, 229, 0.08), transparent 40%),
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  --card:#ffffff;
+  --card-hover:#f1f5f9;
+  --text:#0f172a;
+  --muted:#64748b;
+  --primary:#0284c7;
+  --primary-hover:#0369a1;
+  --secondary:#d97706;
+  --border:#e2e8f0;
+  --shadow:0 10px 25px -5px rgba(0, 0, 0, 0.08);
+  --accent-glow:rgba(2, 132, 199, 0.15);
 }
 
 body{
-  font-family:Georgia, "Times New Roman", serif;
+  font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif;
   background-color:var(--bg);
   background-image:var(--bg-pattern);
-  background-size:100% 100%, 24px 24px, 24px 24px;
+  background-size:100% 100%, 100% 100%, 30px 30px, 30px 30px;
+  background-attachment:fixed;
   color:var(--text);
   line-height:1.6;
-  transition:background .45s ease, color .45s ease;
+  transition:background .35s ease, color .35s ease;
+  min-height:100vh;
 }
 
 button,input,select{
@@ -64,12 +76,17 @@ button{
 }
 
 header{
-  background:var(--card);
+  background:rgba(30, 41, 59, 0.75);
+  backdrop-filter:blur(12px);
   border-bottom:1px solid var(--border);
   position:sticky;
   top:0;
   z-index:100;
   box-shadow:var(--shadow);
+}
+
+body.light header{
+  background:rgba(255, 255, 255, 0.8);
 }
 
 .nav{
@@ -84,12 +101,13 @@ header{
 
 .logo{
   font-size:26px;
-  font-weight:bold;
+  font-weight:800;
   color:var(--primary);
   cursor:pointer;
   display:flex;
   align-items:center;
   gap:8px;
+  letter-spacing:-0.5px;
 }
 
 .logo span{
@@ -98,66 +116,78 @@ header{
 
 .nav-buttons{
   display:flex;
-  gap:8px;
+  gap:10px;
 }
 
 .icon-btn{
   border:1px solid var(--border);
   background:var(--card);
   color:var(--text);
-  border-radius:8px;
+  border-radius:10px;
   padding:8px 14px;
   cursor:pointer;
-  transition:all .35s ease;
+  font-weight:600;
+  transition:all .25s ease;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
 }
 
 .icon-btn:hover{
-  background:var(--bg);
+  background:var(--card-hover);
   transform:translateY(-2px);
+  box-shadow:0 0 12px var(--accent-glow);
 }
 
 .hero{
   max-width:1200px;
-  margin:35px auto 20px;
+  margin:25px auto 10px;
   padding:40px 25px;
   text-align:center;
 }
 
 .hero h1{
-  font-size:clamp(32px, 6vw, 58px);
-  line-height:1.1;
+  font-size:clamp(32px, 6vw, 56px);
+  line-height:1.15;
   margin-bottom:15px;
+  font-weight:800;
+  letter-spacing:-1px;
 }
 
 .hero h1 span{
-  color:var(--primary);
+  background:linear-gradient(135deg, var(--primary), #818cf8);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
 
 .hero p{
   color:var(--muted);
-  max-width:700px;
+  max-width:720px;
   margin:auto;
   font-size:18px;
 }
 
 .search-box{
   max-width:700px;
-  margin:25px auto;
+  margin:28px auto 10px;
 }
 
 .search-box input{
   width:100%;
-  padding:15px 18px;
-  border-radius:10px;
+  padding:16px 22px;
+  border-radius:14px;
   border:1px solid var(--border);
   background:var(--card);
   color:var(--text);
   outline:none;
   box-shadow:var(--shadow);
+  font-size:16px;
+  transition:all .3s ease;
 }
 
 .search-box input:focus{
   border-color:var(--primary);
+  box-shadow:0 0 0 4px var(--accent-glow);
 }
 
 .container{
@@ -169,48 +199,55 @@ header{
 .dashboard{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:15px;
+  gap:18px;
   margin-bottom:35px;
 }
 
 .stat{
   background:var(--card);
   border:1px solid var(--border);
-  padding:20px;
-  border-radius:12px;
+  padding:22px;
+  border-radius:16px;
   box-shadow:var(--shadow);
   text-align:center;
 }
 
 .stat strong{
   display:block;
-  font-size:30px;
+  font-size:32px;
   color:var(--primary);
+  font-weight:800;
 }
 
 .section-title{
-  margin:30px 0 15px;
+  margin:35px 0 18px;
   border-bottom:1px solid var(--border);
-  padding-bottom:8px;
+  padding-bottom:10px;
+  font-size:24px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
 }
 
 .subject{
-  margin-bottom:15px;
+  margin-bottom:18px;
   border:1px solid var(--border);
-  border-radius:12px;
+  border-radius:16px;
   background:var(--card);
   overflow:hidden;
   box-shadow:var(--shadow);
+  transition:border-color .3s ease;
+}
+
+.subject:hover{
+  border-color:rgba(56, 189, 248, 0.4);
 }
 
 .subject-header{
   width:100%;
-  padding:20px;
+  padding:22px;
   border:0;
-  background:var(--card);
+  background:transparent;
   color:var(--text);
   display:flex;
   align-items:center;
@@ -220,31 +257,45 @@ header{
 }
 
 .subject-header:hover{
-  background:var(--bg);
+  background:var(--card-hover);
 }
 
 .subject-name{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:16px;
 }
 
 .subject-icon{
-  font-size:30px;
+  font-size:32px;
+  background:rgba(56, 189, 248, 0.1);
+  width:54px;
+  height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+}
+
+.subject-header h3{
+  font-size:20px;
+  font-weight:700;
 }
 
 .arrow{
-  transition:transform .45s ease;
-  font-size:20px;
+  transition:transform .4s ease;
+  font-size:18px;
+  color:var(--muted);
 }
 
 .subject.open .arrow{
   transform:rotate(180deg);
+  color:var(--primary);
 }
 
 .topic-area{
   display:none;
-  padding:0 20px 20px;
+  padding:0 22px 22px;
 }
 
 .subject.open .topic-area{
@@ -253,51 +304,77 @@ header{
 
 .topic-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
-  gap:12px;
+  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+  gap:14px;
 }
 
 .topic{
   border:1px solid var(--border);
-  border-radius:9px;
-  padding:16px;
-  background:var(--bg);
-  transition:transform .35s ease, box-shadow .35s ease;
+  border-radius:12px;
+  padding:18px;
+  background:rgba(15, 23, 42, 0.4);
+  transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+
+body.light .topic{
+  background:rgba(248, 250, 252, 0.8);
 }
 
 .topic:hover{
   transform:translateY(-3px);
-  box-shadow:var(--shadow);
+  border-color:var(--primary);
+  box-shadow:0 8px 20px -5px var(--accent-glow);
 }
 
 .topic h4{
-  margin-bottom:5px;
+  margin-bottom:6px;
   color:var(--primary);
+  font-size:17px;
+  font-weight:700;
 }
 
 .topic p{
   color:var(--muted);
   font-size:14px;
+  min-height:40px;
 }
 
 .topic-actions{
   display:flex;
-  gap:6px;
-  margin-top:10px;
+  gap:8px;
+  margin-top:14px;
 }
 
 .topic button{
   border:1px solid var(--primary);
   color:var(--primary);
   background:transparent;
-  padding:6px 10px;
-  border-radius:6px;
+  padding:7px 12px;
+  border-radius:8px;
   cursor:pointer;
   font-size:13px;
+  font-weight:600;
+  transition:all .2s ease;
+  flex:1;
+}
+
+.topic button:hover{
+  background:var(--primary);
+  color:#ffffff;
+}
+
+.topic button.complete-btn{
+  border-color:var(--border);
+  color:var(--text);
+  flex:initial;
+}
+
+.topic button.complete-btn:hover{
+  background:var(--card-hover);
 }
 
 .progress{
-  height:7px;
+  height:6px;
   background:var(--border);
   border-radius:10px;
   margin-top:12px;
@@ -307,7 +384,7 @@ header{
 .progress-bar{
   height:100%;
   width:0%;
-  background:var(--primary);
+  background:linear-gradient(90deg, var(--primary), #818cf8);
   transition:width .8s ease;
 }
 
@@ -316,8 +393,8 @@ header{
 .lesson-overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.5);
-  backdrop-filter:blur(4px);
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(8px);
   z-index:1000;
   display:none;
   align-items:center;
@@ -326,18 +403,18 @@ header{
 
 .lesson-overlay.show{
   display:flex;
-  animation:lessonIn .35s ease both;
+  animation:lessonIn .3s ease both;
 }
 
 .lesson-modal{
-  width:92%;
-  max-width:900px;
+  width:94%;
+  max-width:920px;
   max-height:90vh;
   overflow:auto;
   background:var(--card);
   color:var(--text);
-  border-radius:16px;
-  box-shadow:var(--shadow);
+  border-radius:20px;
+  box-shadow:0 25px 50px -12px rgba(0,0,0,0.7);
   border:1px solid var(--border);
 }
 
@@ -347,7 +424,7 @@ header{
   z-index:5;
   background:var(--card);
   border-bottom:1px solid var(--border);
-  padding:16px 22px;
+  padding:18px 24px;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -355,27 +432,33 @@ header{
 }
 
 .lesson-content{
-  padding:28px;
+  padding:30px;
 }
 
 .lesson-visual{
-  margin:20px 0;
+  margin:22px 0;
   text-align:center;
-  background:var(--bg);
-  padding:18px;
-  border-radius:12px;
+  background:rgba(15, 23, 42, 0.6);
+  padding:22px;
+  border-radius:14px;
   border:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 }
 
-.lesson-visual img{
+body.light .lesson-visual{
+  background:#f1f5f9;
+}
+
+.lesson-visual svg{
   max-width:100%;
-  max-height:280px;
-  border-radius:8px;
-  object-fit:contain;
+  height:auto;
 }
 
 .lesson-visual-caption{
-  margin-top:8px;
+  margin-top:10px;
   font-size:14px;
   color:var(--muted);
   font-style:italic;
@@ -383,131 +466,147 @@ header{
 
 .lesson-quiz{
   margin-top:28px;
-  padding:20px;
+  padding:22px;
   border:1px solid var(--border);
-  border-radius:12px;
-  background:var(--bg);
+  border-radius:14px;
+  background:rgba(15, 23, 42, 0.3);
 }
 
 .lesson-answers{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:10px;
-  margin-top:15px;
+  margin-top:16px;
 }
 
 .lesson-answer{
-  padding:12px;
+  padding:14px;
   border:1px solid var(--border);
   background:var(--card);
   color:var(--text);
-  border-radius:8px;
+  border-radius:10px;
   cursor:pointer;
   text-align:left;
+  transition:all .2s ease;
+  font-weight:500;
+}
+
+.lesson-answer:hover{
+  border-color:var(--primary);
+  transform:translateY(-2px);
 }
 
 .lesson-answer.correct{
-  background:#d9eadb;
-  color:#18391d;
+  background:#166534;
+  color:#f0fdf4;
+  border-color:#22c55e;
 }
 
 .lesson-answer.wrong{
-  background:#f0d8d4;
-  color:#5a211a;
+  background:#991b1b;
+  color:#fef2f2;
+  border-color:#ef4444;
 }
 
-/* WORKSHEETS SECTION */
+/* PRACTICE SHEETS & CHALLENGE */
 
-.worksheets-section{
+.worksheets-section, .practice{
   margin-top:40px;
   background:var(--card);
   border:1px solid var(--border);
-  border-radius:14px;
-  padding:25px;
+  border-radius:18px;
+  padding:28px;
   box-shadow:var(--shadow);
 }
 
 .sheet-card{
   border:1px solid var(--border);
-  padding:18px;
-  border-radius:10px;
-  background:var(--bg);
-  margin-bottom:15px;
+  padding:20px;
+  border-radius:12px;
+  background:rgba(15, 23, 42, 0.3);
+  margin-bottom:16px;
+}
+
+body.light .sheet-card{
+  background:#f8fafc;
 }
 
 .sheet-card h4{
   color:var(--primary);
   margin-bottom:6px;
+  font-size:18px;
 }
 
 .sheet-questions{
   margin-top:12px;
-  padding-left:20px;
+  padding-left:22px;
 }
 
 .sheet-questions li{
   margin-bottom:10px;
 }
 
-/* PRACTICE & CHALLENGE */
-
-.practice{
-  margin-top:40px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:25px;
-  box-shadow:var(--shadow);
-}
-
 .answers{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin-top:15px;
+  gap:12px;
+  margin-top:16px;
 }
 
 .answer{
-  padding:13px;
+  padding:14px;
   border:1px solid var(--border);
-  background:var(--bg);
+  background:rgba(15, 23, 42, 0.3);
   color:var(--text);
-  border-radius:8px;
+  border-radius:10px;
   cursor:pointer;
   text-align:left;
+  font-weight:500;
+  transition:all .2s ease;
+}
+
+body.light .answer{
+  background:#f8fafc;
+}
+
+.answer:hover{
+  border-color:var(--primary);
+  transform:translateY(-2px);
 }
 
 .answer.correct{
-  background:#d9eadb;
-  color:#18391d;
+  background:#166534;
+  color:#ffffff;
 }
 
 .answer.wrong{
-  background:#f0d8d4;
-  color:#5a211a;
+  background:#991b1b;
+  color:#ffffff;
 }
 
 .main-btn{
   background:var(--primary);
-  color:white;
+  color:#ffffff;
   border:0;
-  border-radius:8px;
-  padding:11px 18px;
+  border-radius:10px;
+  padding:12px 22px;
   cursor:pointer;
-  transition:all .35s ease;
+  font-weight:700;
+  transition:all .25s ease;
 }
 
 .main-btn:hover{
-  opacity:.9;
+  background:var(--primary-hover);
   transform:translateY(-2px);
+  box-shadow:0 4px 12px var(--accent-glow);
 }
 
 footer{
   border-top:1px solid var(--border);
   text-align:center;
-  padding:25px;
+  padding:30px;
   color:var(--muted);
-  margin-top:40px;
+  margin-top:50px;
 }
 
 @keyframes lessonIn{
@@ -532,21 +631,21 @@ footer{
     </div>
 
     <div class="nav-buttons">
-      <button class="icon-btn" onclick="toggleDark()" aria-label="Toggle dark mode">🌙</button>
+      <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle dark/light mode">🌙 Theme</button>
       <button class="icon-btn" onclick="resetProgress()" aria-label="Reset progress">Reset</button>
     </div>
   </div>
 </header>
 
 <section class="hero">
-  <h1>Visual <span>Mathematics</span> Journey</h1>
-  <p>Explore concepts through interactive lessons, visual diagrams, formula derivations, and practice sheets.</p>
+  <h1>Complete <span>Mathematics</span> Journey</h1>
+  <p>From primary arithmetic to university-level mathematics with interactive derivations, diagrams, and practice problems.</p>
 
   <div class="search-box">
     <input
       type="search"
       id="search"
-      placeholder="Search topics... e.g. fractions, pythagoras, trigonometry, calculus"
+      placeholder="Search all topics... e.g., fractions, quadratic equations, calculus, matrices"
       aria-label="Search mathematics topics"
       oninput="searchTopics()"
     >
@@ -576,56 +675,55 @@ footer{
   <div id="subjects"></div>
 
   <div class="no-results" id="noResults" style="display:none; text-align:center; padding:30px; color:var(--muted);">
-    No topics found. Try searching for another term.
+    No topics found matching your query.
   </div>
 
   <!-- PRACTICE SHEETS SECTION -->
   <section class="worksheets-section">
-    <h2 style="margin-bottom:10px;">📄 Interactive Practice Sheets</h2>
-    <p style="color:var(--muted); margin-bottom:20px;">Generate targeted exercise sheets to test your problem-solving skills step by step.</p>
+    <h2 style="margin-bottom:8px;">📄 Interactive Practice Worksheets</h2>
+    <p style="color:var(--muted); margin-bottom:20px;">Structured problem sheets across various levels with instant solution verification.</p>
 
     <div class="sheet-card">
-      <h4>Sheet #1: Fractions & Ratios Fundamentals</h4>
-      <p style="font-size:14px; color:var(--muted);">Practice simplifying fractions, finding common denominators, and calculating proportional parts.</p>
+      <h4>Sheet #1: Arithmetic & Percentages</h4>
+      <p style="font-size:14px; color:var(--muted);">Practice fractions, ratios, and percentage conversions.</p>
       <ol class="sheet-questions">
         <li>Calculate $\frac{3}{8} + \frac{1}{4}$.</li>
-        <li>A recipe calls for a sugar to flour ratio of $2:5$. If you use $250\text{g}$ of flour, how much sugar do you need?</li>
-        <li>Convert $\frac{7}{20}$ into a percentage.</li>
+        <li>A quantity increases from $80$ to $100$. Find the percentage increase.</li>
       </ol>
-      <button class="main-btn" style="margin-top:10px;" onclick="alert('Answers:\n1) 5/8\n2) 100g sugar\n3) 35%')">Reveal Solutions</button>
+      <button class="main-btn" style="margin-top:10px;" onclick="alert('Answers:\n1) 5/8\n2) 25% increase')">Reveal Solutions</button>
     </div>
 
     <div class="sheet-card">
-      <h4>Sheet #2: Geometric Equations & Pythagoras</h4>
-      <p style="font-size:14px; color:var(--muted);">Apply the Pythagorean theorem and solve right-triangle side lengths.</p>
+      <h4>Sheet #2: Algebra & Quadratic Formulas</h4>
+      <p style="font-size:14px; color:var(--muted);">Solve linear and quadratic equations step by step.</p>
       <ol class="sheet-questions">
-        <li>A right triangle has legs $a = 6\text{ cm}$ and $b = 8\text{ cm}$. Find hypotenuse $c$.</li>
-        <li>Find the side length of a square whose diagonal measures $\sqrt{50}\text{ cm}$.</li>
+        <li>Solve for $x$: $3x + 5 = 20$.</li>
+        <li>Find the roots of $x^2 - 7x + 10 = 0$.</li>
       </ol>
-      <button class="main-btn" style="margin-top:10px;" onclick="alert('Answers:\n1) c = 10 cm\n2) side = 5 cm')">Reveal Solutions</button>
+      <button class="main-btn" style="margin-top:10px;" onclick="alert('Answers:\n1) x = 5\n2) x = 2 and x = 5')">Reveal Solutions</button>
     </div>
   </section>
 
   <!-- CHALLENGE PRACTICE SECTION -->
   <section class="practice" id="practiceSection">
-    <h2>📝 Challenge Practice Mode</h2>
-    <p style="color:var(--muted); margin-bottom:15px;">Test your knowledge with randomized questions across all difficulty tiers.</p>
+    <h2>📝 MathQuest Challenge Quiz</h2>
+    <p style="color:var(--muted); margin-bottom:15px;">Test your knowledge across random topics.</p>
 
-    <div class="question" id="question">Loading question...</div>
+    <div class="question" id="question" style="font-size:20px; font-weight:600; margin-bottom:15px;">Loading question...</div>
     <div class="answers" id="answers"></div>
-    <div class="message" id="message" style="margin-top:10px; font-weight:bold;"></div>
+    <div class="message" id="message" style="margin-top:12px; font-weight:bold;"></div>
 
-    <div id="solutionBox" style="display:none; margin-top:15px; padding:15px; background:var(--bg); border-left:4px solid var(--secondary); border-radius:8px;">
+    <div id="solutionBox" style="display:none; margin-top:18px; padding:18px; background:rgba(15, 23, 42, 0.5); border-left:4px solid var(--secondary); border-radius:10px;">
       <h4>💡 Solution:</h4>
-      <p id="solutionText"></p>
+      <p id="solutionText" style="margin-top:6px;"></p>
     </div>
 
-    <button class="main-btn" style="margin-top:15px;" onclick="newQuestion()">Next Question →</button>
+    <button class="main-btn" style="margin-top:18px;" onclick="newQuestion()">Next Question →</button>
   </section>
 </main>
 
 <footer>
-  <p><strong>MathQuest</strong> — Visual Mathematics for Everyone.</p>
+  <p><strong>MathQuest</strong> — Complete Mathematics Roadmap for Everyone.</p>
 </footer>
 
 <!-- VISUAL LESSON OVERLAY MODAL -->
@@ -653,95 +751,90 @@ function renderMath(container) {
   }
 }
 
-/* CENTRALIZED TOPIC DATA STORE WITH VISUALS */
+/* FULL ALL-TOPIC REGISTRY WITH DYNAMIC SVG DIAGRAMS */
 const TOPICS = {
+  // 1. ARITHMETIC
+  "arithmetic-counting": {
+    id: "arithmetic-counting", subject: "Arithmetic", title: "Counting", summary: "Finding how many objects there are.",
+    svg: `<svg width="220" height="120" viewBox="0 0 220 120"><circle cx="40" cy="60" r="20" fill="#38bdf8"/><circle cx="90" cy="60" r="20" fill="#38bdf8"/><circle cx="140" cy="60" r="20" fill="#38bdf8"/><circle cx="190" cy="60" r="20" fill="#f59e0b"/><text x="40" y="65" text-anchor="middle" fill="#0f172a" font-weight="bold">1</text><text x="90" y="65" text-anchor="middle" fill="#0f172a" font-weight="bold">2</text><text x="140" y="65" text-anchor="middle" fill="#0f172a" font-weight="bold">3</text><text x="190" y="65" text-anchor="middle" fill="#0f172a" font-weight="bold">4</text></svg>`,
+    caption: "Sequential counting of discrete elements.",
+    definition: "Counting determines the total quantity of items in a set.",
+    simpleNote: "Assign each object one unique number in sequence.",
+    keyPoints: ["Each object is counted exactly once.", "The last number specifies total count."],
+    examples: ["Counting $4$ circles gives $1, 2, 3, 4$."],
+    questions: [{ question: "What number comes after $19$?", options: ["$18$", "$20$", "$21$", "$29$"], correct: 1, explanation: "$19 + 1 = 20$." }]
+  },
   "arithmetic-fractions": {
-    id: "arithmetic-fractions",
-    subject: "Arithmetic",
-    icon: "🔢",
-    title: "Fractions & Parts",
-    summary: "Visualizing equal parts of a whole.",
-    imageUrl: "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcQLB7hxIZGoBOUd6ciod1nsY2bJDVXKlS3DO37a5Ws7lN2huWMN3mmouMuYKNyR8t_1HhxPXlGBzCoNAlQ",
-    imageCaption: "A pie chart visual representation of fraction proportions.",
-    definition: "A fraction represents a part of a whole, written as $\\frac{a}{b}$ where $a$ is the numerator and $b$ is the non-zero denominator.",
-    simpleNote: "Think of a slice of pizza: the denominator tells you total slices, and the numerator tells you how many slices you have.",
-    keyPoints: [
-      "Numerators count active parts; denominators count total equal divisions.",
-      "Equivalent fractions like $\\frac{1}{2}$ and $\\frac{2}{4}$ cover identical visual areas."
-    ],
-    examples: [
-      "$\\frac{3}{8}$ represents three out of eight equal segments of a circle."
-    ],
-    questions: [
-      {
-        question: "Which fraction is equivalent to $\\frac{2}{6}$?",
-        options: ["$\\frac{1}{3}$", "$\\frac{1}{2}$", "$\\frac{2}{3}$", "$\\frac{3}{4}$"],
-        correct: 0,
-        explanation: "Dividing numerator and denominator by $2$ yields $\\frac{1}{3}$."
-      }
-    ]
+    id: "arithmetic-fractions", subject: "Arithmetic", title: "Fractions", summary: "Parts of a whole.",
+    svg: `<svg width="140" height="140" viewBox="0 0 140 140"><path d="M70,70 L70,10 A60,60 0 0,1 130,70 Z" fill="#38bdf8"/><path d="M70,70 L130,70 A60,60 0 1,1 70,10 Z" fill="#334155"/><circle cx="70" cy="70" r="60" fill="none" stroke="#38bdf8" stroke-width="3"/></svg>`,
+    caption: "Visual pie representation showing a 1/4 fraction.",
+    definition: "A fraction represents a part of a whole written as $\\frac{a}{b}$.",
+    simpleNote: "The top number is numerator (parts taken); bottom is denominator (total parts).",
+    keyPoints: ["Denominator $b \\neq 0$.", "$\\frac{1}{4}$ represents one part out of four equal divisions."],
+    examples: ["$\\frac{2}{4} = \\frac{1}{2}$."],
+    questions: [{ question: "What is $\\frac{2}{5} + \\frac{1}{5}$?", options: ["$\\frac{3}{5}$", "$\\frac{3}{10}$", "$\\frac{2}{10}$", "$1$"], correct: 0, explanation: "$\\frac{2+1}{5} = \\frac{3}{5}$." }]
   },
+  "arithmetic-addition": { id: "arithmetic-addition", subject: "Arithmetic", title: "Addition", summary: "Combining quantities together.", definition: "Addition is combining values into a total sum.", simpleNote: "Put amounts together.", keyPoints: ["Commutative: $a+b = b+a$."], examples: ["$23 + 17 = 40$."], questions: [{ question: "What is $47 + 18$?", options: ["$55$", "$65$", "$75$", "$61$"], correct: 1, explanation: "$47 + 18 = 65$." }] },
+  "arithmetic-subtraction": { id: "arithmetic-subtraction", subject: "Arithmetic", title: "Subtraction", summary: "Taking away or finding difference.", definition: "Subtraction finds the difference between two quantities.", simpleNote: "Remove an amount from a total.", keyPoints: ["Inverse of addition."], examples: ["$25 - 9 = 16$."], questions: [{ question: "What is $92 - 37$?", options: ["$45$", "$55$", "$65$", "$75$"], correct: 1, explanation: "$92 - 37 = 55$." }] },
+  "arithmetic-multiplication": { id: "arithmetic-multiplication", subject: "Arithmetic", title: "Multiplication", summary: "Repeated addition of equal groups.", definition: "Multiplication scales a number by another.", simpleNote: "Quick addition of equal groups.", keyPoints: ["$a \\times b = b \\times a$."], examples: ["$4 \\times 3 = 12$."], questions: [{ question: "What is $9 \\times 7$?", options: ["$56$", "$63$", "$72$", "$81$"], correct: 1, explanation: "$9 \\times 7 = 63$." }] },
+  "arithmetic-division": { id: "arithmetic-division", subject: "Arithmetic", title: "Division", summary: "Splitting into equal groups.", definition: "Division splits a quantity into equal parts.", simpleNote: "Sharing equally.", keyPoints: ["Inverse of multiplication."], examples: ["$20 \\div 5 = 4$."], questions: [{ question: "What is $72 \\div 9$?", options: ["$6$", "$7$", "$8$", "$9$"], correct: 2, explanation: "$72 \\div 9 = 8$." }] },
 
+  // 2. NUMBER SYSTEMS
+  "numbers-integers": { id: "numbers-integers", subject: "Number Systems", title: "Integers", summary: "Positive and negative whole numbers.", definition: "Integers consist of whole numbers and their negatives: $\\{\\dots, -2, -1, 0, 1, 2, \\dots\\}$.", simpleNote: "Whole numbers with signs.", keyPoints: ["Includes zero."], examples: ["$-5 + 8 = 3$."], questions: [{ question: "What is $-7 + 4$?", options: ["$-3$", "$3$", "$-11$", "$11$"], correct: 0, explanation: "$-7 + 4 = -3$." }] },
+  "numbers-real": { id: "numbers-real", subject: "Number Systems", title: "Real Numbers", summary: "Rational and irrational numbers combined.", definition: "Real numbers represent points along an infinite continuous number line.", simpleNote: "All numbers on the number line.", keyPoints: ["Includes fractions, integers, and irrationals like $\\pi$."], examples: ["$\\sqrt{2} \\approx 1.414$."], questions: [{ question: "Which of the following is an irrational number?", options: ["$\\frac{1}{2}$", "$\\sqrt{2}$", "$0.75$", "$-5$"], correct: 1, explanation: "$\\sqrt{2}$ cannot be written as a fraction of integers." }] },
+
+  // 3. ALGEBRA
+  "algebra-linear": {
+    id: "algebra-linear", subject: "Algebra", title: "Linear Equations", summary: "Equations where variables have power 1.",
+    svg: `<svg width="200" height="120" viewBox="0 0 200 120"><line x1="20" y1="100" x2="180" y2="100" stroke="#94a3b8" stroke-width="2"/><line x1="30" y1="110" x2="30" y2="10" stroke="#94a3b8" stroke-width="2"/><line x1="30" y1="90" x2="170" y2="20" stroke="#38bdf8" stroke-width="3"/></svg>`,
+    caption: "Graph of a linear equation y = mx + c.",
+    definition: "An equation of the form $ax + b = c$.", simpleNote: "Keep both sides balanced.", keyPoints: ["Degree of $x$ is $1$."], examples: ["$2x + 3 = 11 \\implies x = 4$."], questions: [{ question: "Solve $3x - 5 = 10$.", options: ["$x=3$", "$x=5$", "$x=7$", "$x=15$"], correct: 1, explanation: "$3x = 15 \\implies x = 5$." }]
+  },
+  "algebra-quadratic": { id: "algebra-quadratic", subject: "Algebra", title: "Quadratic Equations", summary: "Equations involving a squared variable.", definition: "An equation of degree 2: $ax^2 + bx + c = 0$.", simpleNote: "Parabola shape with quadratic formula $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$.", keyPoints: ["Has up to two real roots."], examples: ["$x^2 - 9 = 0 \\implies x = \\pm 3$."], questions: [{ question: "Roots of $x^2 - 7x + 10 = 0$?", options: ["$1, 10$", "$2, 5$", "$3, 4$", "$-2, -5$"], correct: 1, explanation: "$(x-2)(x-5) = 0$." }] },
+
+  // 4. GEOMETRY
   "geometry-pythagoras": {
-    id: "geometry-pythagoras",
-    subject: "Geometry",
-    icon: "📐",
-    title: "Pythagorean Theorem",
-    summary: "Calculating hypotenuse lengths in right triangles.",
-    imageUrl: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcTnzE8KE-NZnYBsN-4fK5I7tdsAP-Lju6Kh2FLfwT8MS4fO8vR0ucDwvnzqXVQ0-jpa4YyXS8HEIH7MRac",
-    imageCaption: "Right triangle geometry displaying leg relationships.",
-    definition: "For any right-angled triangle, $a^2 + b^2 = c^2$, where $c$ is the hypotenuse.",
-    simpleNote: "Square the short sides, sum them together, and take the square root to get the diagonal.",
-    keyPoints: [
-      "Applies exclusively to triangles containing a $90^\\circ$ angle.",
-      "The hypotenuse $c$ is always the longest side opposite the right angle."
-    ],
-    examples: [
-      "With legs $a = 3, b = 4$: $c = \\sqrt{3^2 + 4^2} = \\sqrt{25} = 5$."
-    ],
-    questions: [
-      {
-        question: "If leg $a = 5$ and leg $b = 12$, find hypotenuse $c$.",
-        options: ["$10$", "$11$", "$13$", "$15$"],
-        correct: 2,
-        explanation: "$c = \\sqrt{5^2 + 12^2} = \\sqrt{25 + 144} = \\sqrt{169} = 13$."
-      }
-    ]
+    id: "geometry-pythagoras", subject: "Geometry", title: "Pythagoras Theorem", summary: "Right triangle side relationships.",
+    svg: `<svg width="160" height="120" viewBox="0 0 160 120"><polygon points="30,100 130,100 30,20" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="3"/><rect x="30" y="85" width="15" height="15" fill="none" stroke="#f59e0b" stroke-width="2"/><text x="80" y="115" fill="#94a3b8" text-anchor="middle">a</text><text x="15" y="65" fill="#94a3b8">b</text><text x="90" y="55" fill="#38bdf8">c</text></svg>`,
+    caption: "Right triangle with hypotenuse c.",
+    definition: "In a right triangle, $a^2 + b^2 = c^2$.", simpleNote: "Square the short sides to find the hypotenuse.", keyPoints: ["Applies only to $90^\\circ$ triangles."], examples: ["$3^2 + 4^2 = 5^2$."], questions: [{ question: "If $a=6, b=8$, find $c$.", options: ["$9$", "$10$", "$12$", "$14$"], correct: 1, explanation: "$c = \\sqrt{36+64} = 10$." }]
   },
 
-  "trigonometry-ratios": {
-    id: "trigonometry-ratios",
-    subject: "Trigonometry",
-    icon: "📐",
-    title: "Trigonometric Ratios",
-    summary: "Sine, Cosine, and Tangent definitions.",
-    imageUrl: "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcTM2Sl7CzboXltL9do_J6ZbLJG99O-zOzUc77FYALLgrq0_Zx7W8XHUdn_3h3CasyVcNeepsFfW2BFxz5Q",
-    imageCaption: "Trigonometric unit circle and side ratio diagrams.",
-    definition: "Fundamental trigonometric functions relate angle measures to side length ratios in right triangles.",
-    simpleNote: "SOH CAH TOA: $\\sin(\\theta) = \\frac{\\text{Opp}}{\\text{Hyp}}$, $\\cos(\\theta) = \\frac{\\text{Adj}}{\\text{Hyp}}$, $\\tan(\\theta) = \\frac{\\text{Opp}}{\\text{Adj}}$.",
-    keyPoints: [
-      "Sine relates opposite side to hypotenuse.",
-      "Cosine relates adjacent side to hypotenuse.",
-      "Tangent equals $\\frac{\\sin(\\theta)}{\\cos(\\theta)}$."
-    ],
-    examples: [
-      "In a $30^\\circ-60^\\circ-90^\\circ$ triangle, $\\sin(30^\\circ) = 0.5$."
-    ],
-    questions: [
-      {
-        question: "What is $\\tan(45^\\circ)$?",
-        options: ["$0$", "$0.5$", "$1$", "$\\sqrt{2}$"],
-        correct: 2,
-        explanation: "At $45^\\circ$, opposite and adjacent sides are equal, so $\\tan(45^\\circ) = 1$."
-      }
-    ]
-  }
+  // 5. MENSURATION
+  "mensuration-area": { id: "mensuration-area", subject: "Mensuration", title: "Area & Volume", summary: "Space inside flat shapes and solids.", definition: "Area measures surface extent; volume measures occupied 3D space.", simpleNote: "Area is 2D space; volume is 3D space.", keyPoints: ["Circle Area $= \\pi r^2$."], examples: ["Circle with $r=7$: Area $\\approx 154$."], questions: [{ question: "Area of square with side $9\\text{ cm}$?", options: ["$18$", "$36$", "$81$", "$27$"], correct: 2, explanation: "$9 \\times 9 = 81\\text{ cm}^2$." }] },
+
+  // 6. TRIGONOMETRY
+  "trigonometry-ratios": { id: "trigonometry-ratios", subject: "Trigonometry", title: "Trigonometric Ratios", summary: "Sine, Cosine, and Tangent.", definition: "Ratios connecting angles to side lengths in right triangles.", simpleNote: "SOH CAH TOA.", keyPoints: ["$\\sin(\\theta) = \\frac{\\text{Opp}}{\\text{Hyp}}$."], examples: ["$\\sin(30^\\circ) = 0.5$."], questions: [{ question: "What is $\\tan(45^\\circ)$?", options: ["$0$", "$0.5$", "$1$", "$\\sqrt{2}$"], correct: 2, explanation: "Opposite equals adjacent, so ratio is $1$." }] },
+
+  // 7. STATISTICS
+  "statistics-mean": { id: "statistics-mean", subject: "Statistics", title: "Mean & Averages", summary: "Central tendencies of data.", definition: "The arithmetic mean is the sum of values divided by count.", simpleNote: "Add all values and divide by how many there are.", keyPoints: ["Mean $= \\frac{\\sum x}{n}$."], examples: ["Mean of $2, 4, 6$ is $4$."], questions: [{ question: "Mean of $6, 8, 10$?", options: ["$7$", "$8$", "$9$", "$10$"], correct: 1, explanation: "$(6+8+10)/3 = 8$." }] },
+
+  // 8. CALCULUS
+  "calculus-derivatives": {
+    id: "calculus-derivatives", subject: "Calculus", title: "Derivatives", summary: "Instantaneous rate of change.",
+    svg: `<svg width="180" height="110" viewBox="0 0 180 110"><path d="M20,90 Q90,90 160,20" fill="none" stroke="#38bdf8" stroke-width="3"/><line x1="50" y1="100" x2="150" y2="20" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4"/><circle cx="100" cy="60" r="5" fill="#f59e0b"/></svg>`,
+    caption: "Tangent line representing slope at a point.",
+    definition: "Derivative represents instantaneous rate of change.", simpleNote: "Slope of the curve at a point.", keyPoints: ["$\\frac{d}{dx}[x^n] = n x^{n-1}$."], examples: ["$\\frac{d}{dx}[x^2] = 2x$."], questions: [{ question: "Derivative of $5x$?", options: ["$5$", "$x$", "$0$", "$5x^2$"], correct: 0, explanation: "$\\frac{d}{dx}[5x] = 5$." }]
+  },
+
+  // 9. DISCRETE MATH
+  "discrete-sets": { id: "discrete-sets", subject: "Discrete Mathematics", title: "Set Theory", summary: "Collections of distinct objects.", definition: "A set is a well-defined collection of distinct elements.", simpleNote: "Grouping items into sets.", keyPoints: ["Union $\\cup$, Intersection $\\cap$."], examples: ["$\\{1,2\\} \\cup \\{3\\} = \\{1,2,3\\}$."], questions: [{ question: "If $A=\\{1,2,3\\}$, how many elements are in $A$?", options: ["$1$", "$2$", "$3$", "$4$"], correct: 2, explanation: "There are 3 elements." }] },
+
+  // 10. ADVANCED MATH
+  "advanced-matrices": { id: "advanced-matrices", subject: "Advanced Mathematics", title: "Matrices & Linear Algebra", summary: "Rectangular arrays of numbers.", definition: "A matrix is a grid of numbers arranged in rows and columns.", simpleNote: "Grids used for linear transformations.", keyPoints: ["Dimensions: rows $\\times$ columns."], examples: ["$\\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\end{bmatrix}$ is $2 \\times 2$."], questions: [{ question: "How many entries in a $3 \\times 2$ matrix?", options: ["$5$", "$6$", "$8$", "$9$"], correct: 1, explanation: "$3 \\times 2 = 6$ entries." }] }
 };
 
 const SUBJECTS = [
-  { name: "Arithmetic", icon: "🔢", description: "Foundational mathematics.", topicIds: ["arithmetic-fractions"] },
-  { name: "Geometry", icon: "📐", description: "Shapes, angles, and spatial theorems.", topicIds: ["geometry-pythagoras"] },
-  { name: "Trigonometry", icon: "📐", description: "Ratios, angles, and periodic functions.", topicIds: ["trigonometry-ratios"] }
+  { name: "Arithmetic", icon: "🔢", description: "The foundation of mathematics.", topicIds: ["arithmetic-counting", "arithmetic-fractions", "arithmetic-addition", "arithmetic-subtraction", "arithmetic-multiplication", "arithmetic-division"] },
+  { name: "Number Systems", icon: "ℕ", description: "Explore types of numbers.", topicIds: ["numbers-integers", "numbers-real"] },
+  { name: "Algebra", icon: "𝑥", description: "Use symbols and equations to solve problems.", topicIds: ["algebra-linear", "algebra-quadratic"] },
+  { name: "Geometry", icon: "📐", description: "Study shapes, angles, and space.", topicIds: ["geometry-pythagoras"] },
+  { name: "Mensuration", icon: "📏", description: "Calculate lengths, areas, and volumes.", topicIds: ["mensuration-area"] },
+  { name: "Trigonometry", icon: "📐", description: "Study ratios and triangle angles.", topicIds: ["trigonometry-ratios"] },
+  { name: "Statistics", icon: "📊", description: "Collect, analyze, and interpret data.", topicIds: ["statistics-mean"] },
+  { name: "Calculus", icon: "∫", description: "Study change, motion, and accumulation.", topicIds: ["calculus-derivatives"] },
+  { name: "Discrete Mathematics", icon: "🧩", description: "Study countable structures and logic.", topicIds: ["discrete-sets"] },
+  { name: "Advanced Mathematics", icon: "∞", description: "Matrices, vectors, and complex structures.", topicIds: ["advanced-matrices"] }
 ];
 
 let completedTopics = JSON.parse(localStorage.getItem("mathquestCompleted") || "[]");
@@ -761,7 +854,7 @@ function renderSubjects() {
         <span class="subject-icon">${subj.icon}</span>
         <div>
           <h3>${subj.name}</h3>
-          <small>${subj.description}</small>
+          <small style="color:var(--muted);">${subj.description}</small>
         </div>
       </div>
       <span class="arrow">▼</span>
@@ -787,8 +880,8 @@ function renderSubjects() {
         <h4>${topic.title}</h4>
         <p>${topic.summary}</p>
         <div class="topic-actions">
-          <button onclick="openLesson('${id}')">📖 Learn Visual Lesson</button>
-          <button onclick="toggleComplete(event, '${id}')">${done ? "✓ Done" : "Mark Complete"}</button>
+          <button onclick="openLesson('${id}')">📖 Learn Lesson</button>
+          <button class="complete-btn" onclick="toggleComplete(event, '${id}')">${done ? "✓ Done" : "Mark Complete"}</button>
         </div>
         <div class="progress">
           <div class="progress-bar" style="width:${done ? 100 : 0}%"></div>
@@ -830,34 +923,38 @@ function openLesson(id) {
   if (!topic) return;
 
   const contentEl = document.getElementById("lessonContent");
-  document.getElementById("lessonTitle").textContent = topic.icon + " " + topic.title;
+  document.getElementById("lessonTitle").textContent = topic.title;
+
+  const svgVisual = topic.svg ? `
+    <div class="lesson-visual">
+      ${topic.svg}
+      <div class="lesson-visual-caption">${topic.caption}</div>
+    </div>
+  ` : '';
 
   contentEl.innerHTML = `
-    <p class="lesson-note">${topic.subject} • ${topic.summary}</p>
+    <p style="color:var(--muted); font-size:14px;">${topic.subject} • ${topic.summary}</p>
 
-    <div class="lesson-visual">
-      <img src="${topic.imageUrl}" alt="${topic.title}">
-      <div class="lesson-visual-caption">${topic.imageCaption}</div>
-    </div>
+    ${svgVisual}
 
-    <h3>📚 Concept Definition</h3>
+    <h3 style="margin-top:20px; color:var(--primary);">📚 Concept Definition</h3>
     <p><strong>${topic.definition}</strong></p>
 
-    <h3>💡 Intuitive View</h3>
+    <h3 style="margin-top:16px; color:var(--primary);">💡 Intuitive View</h3>
     <p>${topic.simpleNote}</p>
 
-    <h3>Key Highlights</h3>
-    <ul>${topic.keyPoints.map(p => `<li>${p}</li>`).join("")}</ul>
+    <h3 style="margin-top:16px; color:var(--primary);">⭐ Key Highlights</h3>
+    <ul style="padding-left:20px;">${topic.keyPoints.map(p => `<li>${p}</li>`).join("")}</ul>
 
     <div class="lesson-quiz">
-      <h3>🧠 Quick Practice Check</h3>
-      <p>${topic.questions[0].question}</p>
+      <h3 style="color:var(--primary);">🧠 Quick Check</h3>
+      <p style="margin-top:8px;"><strong>${topic.questions[0].question}</strong></p>
       <div class="lesson-answers">
         ${topic.questions[0].options.map((opt, i) => `
           <button class="lesson-answer" onclick="checkLessonAnswer(${i}, ${topic.questions[0].correct}, this)">${opt}</button>
         `).join("")}
       </div>
-      <div id="lessonMsg" style="margin-top:10px; font-weight:bold;"></div>
+      <div id="lessonMsg" style="margin-top:12px; font-weight:bold;"></div>
     </div>
   `;
 
@@ -885,7 +982,9 @@ function closeLesson() {
 /* PRACTICE CHALLENGE ENGINE */
 const challengeQuestions = [
   { q: "Calculate $\\frac{2}{3} + \\frac{1}{6}$.", a: ["$\\frac{3}{9}$", "$\\frac{5}{6}$", "$1$", "$\\frac{4}{6}$"], correct: 1, solution: "Convert $\\frac{2}{3} = \\frac{4}{6}$. Then $\\frac{4}{6} + \\frac{1}{6} = \\frac{5}{6}$." },
-  { q: "What is $\\sin(90^\\circ)$?", a: ["$0$", "$0.5$", "$1$", "Undefined"], correct: 2, solution: "At $90^\\circ$, the opposite side equals the hypotenuse, yielding $\\sin(90^\\circ) = 1$." }
+  { q: "What is $\\sin(90^\\circ)$?", a: ["$0$", "$0.5$", "$1$", "Undefined"], correct: 2, solution: "At $90^\\circ$, $\\sin(90^\\circ) = 1$." },
+  { q: "If $3x + 5 = 20$, find $x$.", a: ["$3$", "$5$", "$7$", "$15$"], correct: 1, solution: "$3x = 15 \\implies x = 5$." },
+  { q: "Find $\\sqrt{196}$.", a: ["$12$", "$13$", "$14$", "$16$"], correct: 2, solution: "$14 \\times 14 = 196$." }
 ];
 
 let activeQuestion = null;
@@ -936,8 +1035,8 @@ function searchTopics() {
   });
 }
 
-function toggleDark() {
-  document.body.classList.toggle("dark");
+function toggleTheme() {
+  document.body.classList.toggle("light");
 }
 
 function resetProgress() {
