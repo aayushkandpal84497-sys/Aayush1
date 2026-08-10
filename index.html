@@ -2,267 +2,2450 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#111827">
-<title>MathQuest — Mathematics from Beginner to Olympiad</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f">
+<title>MathQuest — Complete Mathematics</title>
+
 <style>
-:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#667085;--primary:#5b5cf0;--primary2:#8b5cf6;--border:#e5e7ef;--good:#16a34a;--bad:#dc2626;--gold:#f59e0b;--shadow:0 12px 35px rgba(20,30,60,.09)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
-body.dark{--bg:#090e1b;--card:#121a2c;--text:#eef2ff;--muted:#9ba8bf;--border:#28334d;--shadow:0 15px 40px rgba(0,0,0,.28)}
-button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}body.dark .top{background:rgba(9,14,27,.9)}
-.nav{max-width:1250px;margin:auto;padding:12px 18px;display:flex;align-items:center;gap:12px}.logo{font-size:23px;font-weight:950;color:var(--primary);white-space:nowrap}.logo span{color:var(--text)}
-.navlinks{display:flex;gap:4px;margin-left:auto}.navlinks button,.icon{padding:9px 11px;border-radius:10px;background:transparent;color:var(--text);font-weight:750}.navlinks button:hover,.icon:hover{background:var(--border)}.icon{font-size:18px}
-main{max-width:1250px;margin:auto;padding:28px 18px 70px}.panel{display:none}.panel.active{display:block}
-.hero{position:relative;overflow:hidden;padding:48px 38px;border-radius:28px;background:linear-gradient(135deg,#101827,#312e81 55%,#7c3aed);color:#fff;box-shadow:var(--shadow)}.hero:after{content:"∑  π  √  ∞  x²  ∫";position:absolute;right:15px;bottom:4px;font-size:50px;opacity:.11;letter-spacing:12px}.hero h1{font-size:clamp(36px,6vw,68px);margin:0 0 10px;line-height:1.05}.hero p{max-width:780px;color:#dbe4ff;font-size:18px;line-height:1.65}.heroBtns{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.primary,.secondary{padding:13px 18px;border-radius:12px;font-weight:850}.primary{background:#fff;color:#312e81}.secondary{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.25)}
-.section{margin-top:30px}.sectionHead{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:15px}.section h2{margin:0;font-size:27px}.muted{color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}.stat,.card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow)}.stat{padding:17px}.stat b{display:block;font-size:26px;margin-top:6px}.progress{height:8px;background:var(--border);border-radius:20px;overflow:hidden;margin-top:10px}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:20px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{padding:20px}.topic{transition:.18s}.topic:hover{transform:translateY(-3px)}.emoji{font-size:34px}.topic h3{margin:11px 0 6px}.topic p{color:var(--muted);line-height:1.55}.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.tag{font-size:12px;padding:5px 8px;border-radius:20px;background:rgba(91,92,240,.1);color:var(--primary);font-weight:800}.topic button,.primaryBtn{margin-top:14px;width:100%;padding:11px;border-radius:10px;background:var(--primary);color:#fff;font-weight:850}
-.searchbar{display:flex;gap:9px;flex-wrap:wrap}.searchbar input,.searchbar select{padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);outline:none}.searchbar input{width:min(420px,100%)}
-.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.level{padding:15px;border-radius:14px;border:1px solid var(--border);background:var(--card);text-align:center}.level strong{display:block}.level small{color:var(--muted)}
-.practiceGrid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}.practiceCard{padding:25px}.question{font-size:21px;font-weight:850;line-height:1.5}.options{display:grid;gap:9px;margin-top:18px}.option{padding:12px;border:1px solid var(--border);background:transparent;color:var(--text);border-radius:11px;text-align:left}.option:hover{border-color:var(--primary)}.option.correct{border-color:var(--good);background:rgba(22,163,74,.12)}.option.wrong{border-color:var(--bad);background:rgba(220,38,38,.1)}.option:disabled{cursor:default}.feedback{min-height:28px;font-weight:800;margin-top:14px}.next,.back{margin-top:12px;padding:11px 16px;border-radius:10px;background:var(--text);color:var(--card);font-weight:850}.back{margin:0 0 18px;background:var(--card);border:1px solid var(--border);color:var(--text)}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.tab{padding:10px 13px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--text);font-weight:800}.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-.lesson{line-height:1.7}.formula{padding:15px;border-left:4px solid var(--primary);background:rgba(91,92,240,.08);border-radius:10px;font-size:18px;font-weight:800;margin:15px 0}.example{padding:17px;border:1px solid var(--border);border-radius:14px;margin-top:12px}
-.badge{display:inline-block;padding:6px 9px;border-radius:20px;background:rgba(245,158,11,.14);color:#b76a00;font-weight:850;font-size:12px}.empty{text-align:center;padding:40px;color:var(--muted)}
-.self textarea{width:100%;min-height:100px;margin-top:12px;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);resize:vertical}.answerBox{margin-top:12px;padding:12px;border-radius:10px;background:rgba(91,92,240,.08);display:none}
-.table{width:100%;border-collapse:collapse}.table th,.table td{padding:11px;border-bottom:1px solid var(--border);text-align:left}.footer{text-align:center;color:var(--muted);padding:35px 10px}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modal.open{display:flex}.modalBox{max-width:720px;width:100%;max-height:88vh;overflow:auto;background:var(--card);color:var(--text);border-radius:20px;padding:24px}.close{float:right;padding:8px 11px;border-radius:9px;background:var(--border);color:var(--text)}
-@media(max-width:950px){.grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(3,1fr)}.practiceGrid{grid-template-columns:1fr}.levels{grid-template-columns:repeat(3,1fr)}.navlinks button{display:none}}
-@media(max-width:600px){.grid,.stats{grid-template-columns:1fr}.levels{grid-template-columns:1fr 1fr}.hero{padding:34px 22px}.nav{padding:10px}.logo{font-size:20px}}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#07111f;
+  --bg2:#0d1b2d;
+  --card:#10243a;
+  --card2:#142b44;
+  --text:#f4f7fb;
+  --muted:#9fb0c5;
+  --primary:#5eead4;
+  --primary2:#22d3ee;
+  --accent:#818cf8;
+  --danger:#fb7185;
+  --success:#4ade80;
+  --warning:#fbbf24;
+  --border:rgba(255,255,255,.09);
+  --shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+body.light{
+  --bg:#f4f7fb;
+  --bg2:#ffffff;
+  --card:#ffffff;
+  --card2:#eef4fa;
+  --text:#142033;
+  --muted:#607089;
+  --border:rgba(20,32,51,.1);
+  --shadow:0 15px 40px rgba(30,60,90,.12);
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(34,211,238,.10),transparent 30%),
+    radial-gradient(circle at 90% 20%,rgba(129,140,248,.12),transparent 30%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  transition:.3s;
+}
+
+button,input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  width:275px;
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  background:rgba(7,17,31,.9);
+  backdrop-filter:blur(20px);
+  border-right:1px solid var(--border);
+  padding:22px 15px;
+  z-index:100;
+  overflow-y:auto;
+}
+
+body.light .sidebar{
+  background:rgba(255,255,255,.92);
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:8px 10px 25px;
+}
+
+.logo-icon{
+  width:45px;
+  height:45px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,var(--primary2),var(--accent));
+  color:#07111f;
+  font-weight:900;
+  font-size:23px;
+}
+
+.logo h1{
+  font-size:20px;
+}
+
+.logo span{
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.nav-title{
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  padding:12px 12px 7px;
+}
+
+.nav-btn{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  padding:12px;
+  border-radius:12px;
+  text-align:left;
+  margin:2px 0;
+  transition:.2s;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+  background:var(--card2);
+  color:var(--text);
+}
+
+.nav-btn.active{
+  box-shadow:inset 3px 0 var(--primary);
+}
+
+.side-progress{
+  margin-top:20px;
+  padding:15px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+}
+
+.progress-line{
+  height:7px;
+  background:rgba(255,255,255,.08);
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress-fill{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--primary),var(--primary2));
+  border-radius:20px;
+  transition:.5s;
+}
+
+/* MAIN */
+
+.main{
+  margin-left:275px;
+  width:calc(100% - 275px);
+  padding:25px;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.search{
+  flex:1;
+  max-width:650px;
+  position:relative;
+}
+
+.search input{
+  width:100%;
+  padding:14px 18px 14px 45px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:var(--card);
+  color:var(--text);
+  outline:none;
+}
+
+.search-icon{
+  position:absolute;
+  left:17px;
+  top:13px;
+}
+
+.icon-btn{
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  width:45px;
+  height:45px;
+  border-radius:13px;
+}
+
+/* HERO */
+
+.hero{
+  padding:38px;
+  border:1px solid var(--border);
+  border-radius:26px;
+  background:
+    linear-gradient(135deg,rgba(94,234,212,.10),rgba(129,140,248,.08)),
+    var(--card);
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+
+.hero:after{
+  content:"∑  π  √  ∫  θ";
+  position:absolute;
+  right:20px;
+  bottom:-15px;
+  font-size:80px;
+  opacity:.035;
+  white-space:nowrap;
+}
+
+.badge{
+  display:inline-flex;
+  padding:7px 12px;
+  border-radius:30px;
+  background:rgba(94,234,212,.1);
+  color:var(--primary);
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+.hero h2{
+  font-size:clamp(30px,5vw,54px);
+  line-height:1.05;
+  max-width:800px;
+}
+
+.hero p{
+  color:var(--muted);
+  max-width:720px;
+  margin-top:15px;
+  line-height:1.7;
+}
+
+.hero-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:25px;
+}
+
+.primary-btn,
+.secondary-btn{
+  border:0;
+  padding:13px 18px;
+  border-radius:12px;
+  font-weight:700;
+}
+
+.primary-btn{
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:#06131d;
+}
+
+.secondary-btn{
+  background:var(--card2);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+
+/* STATS */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin:22px 0;
+}
+
+.stat{
+  padding:20px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+}
+
+.stat-icon{
+  font-size:22px;
+}
+
+.stat strong{
+  display:block;
+  font-size:26px;
+  margin-top:8px;
+}
+
+.stat span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* SECTIONS */
+
+.section{
+  margin-top:30px;
+}
+
+.section-header{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  margin-bottom:15px;
+}
+
+.section-header h2{
+  font-size:24px;
+}
+
+.section-header p{
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* TOPIC GRID */
+
+.topic-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.topic-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:21px;
+  transition:.25s;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+
+.topic-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(94,234,212,.3);
+  box-shadow:var(--shadow);
+}
+
+.topic-number{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.topic-icon{
+  font-size:32px;
+  margin:13px 0;
+}
+
+.topic-card h3{
+  margin-bottom:6px;
+}
+
+.topic-card p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+}
+
+.topic-count{
+  margin-top:15px;
+  color:var(--primary);
+  font-size:12px;
+}
+
+/* PAGE */
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+/* LEARNING PAGE */
+
+.learning-header{
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:25px;
+  border-radius:22px;
+  margin-bottom:20px;
+}
+
+.learning-header h1{
+  font-size:34px;
+}
+
+.learning-header p{
+  color:var(--muted);
+  margin-top:8px;
+}
+
+.subtopics{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:18px;
+}
+
+.subtopic{
+  padding:8px 12px;
+  border-radius:30px;
+  background:var(--card2);
+  color:var(--muted);
+  border:1px solid var(--border);
+  cursor:pointer;
+}
+
+.subtopic.active{
+  color:#06131d;
+  background:var(--primary);
+}
+
+.lesson{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:26px;
+  margin-bottom:17px;
+}
+
+.lesson h2{
+  margin-bottom:13px;
+}
+
+.lesson h3{
+  margin:18px 0 8px;
+  color:var(--primary);
+}
+
+.lesson p,
+.lesson li{
+  color:var(--muted);
+  line-height:1.75;
+}
+
+.lesson ul{
+  padding-left:22px;
+}
+
+.formula{
+  background:#07111f;
+  border:1px solid var(--border);
+  border-left:4px solid var(--primary);
+  padding:16px;
+  border-radius:10px;
+  margin:15px 0;
+  font-family:monospace;
+  color:var(--text);
+  overflow-x:auto;
+}
+
+body.light .formula{
+  background:#eef4fa;
+}
+
+.example{
+  background:rgba(129,140,248,.08);
+  border:1px solid rgba(129,140,248,.2);
+  border-radius:15px;
+  padding:18px;
+  margin-top:15px;
+}
+
+.example-title{
+  color:var(--accent);
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.step{
+  padding:7px 0;
+}
+
+/* QUESTION */
+
+.question-box{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:25px;
+  margin-bottom:15px;
+}
+
+.q-meta{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:13px;
+}
+
+.tag{
+  font-size:11px;
+  padding:5px 9px;
+  border-radius:20px;
+  background:var(--card2);
+  color:var(--muted);
+}
+
+.tag.easy{color:var(--success)}
+.tag.medium{color:var(--warning)}
+.tag.hard{color:var(--danger)}
+
+.question{
+  font-size:18px;
+  line-height:1.5;
+  margin-bottom:17px;
+}
+
+.options{
+  display:grid;
+  gap:9px;
+}
+
+.option{
+  padding:13px 15px;
+  border:1px solid var(--border);
+  background:var(--card2);
+  color:var(--text);
+  border-radius:12px;
+  text-align:left;
+  transition:.2s;
+}
+
+.option:hover{
+  border-color:var(--primary);
+}
+
+.option.correct{
+  background:rgba(74,222,128,.15);
+  border-color:var(--success);
+}
+
+.option.wrong{
+  background:rgba(251,113,133,.15);
+  border-color:var(--danger);
+}
+
+.explanation{
+  display:none;
+  margin-top:15px;
+  padding:15px;
+  background:rgba(94,234,212,.07);
+  border-radius:12px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.explanation.show{
+  display:block;
+}
+
+.hint{
+  display:none;
+  margin-top:12px;
+  color:var(--warning);
+}
+
+.hint.show{
+  display:block;
+}
+
+/* DASHBOARD */
+
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:17px;
+}
+
+.dash-card{
+  padding:23px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+}
+
+.dash-card h3{
+  margin-bottom:15px;
+}
+
+.subject-progress{
+  margin:13px 0;
+}
+
+.subject-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  margin-bottom:6px;
+}
+
+.bar{
+  height:8px;
+  border-radius:10px;
+  background:rgba(255,255,255,.08);
+  overflow:hidden;
+}
+
+.bar div{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+}
+
+/* PRACTICE */
+
+.practice-controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.select{
+  padding:11px 14px;
+  background:var(--card);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:11px;
+}
+
+/* MOBILE */
+
+.mobile-menu{
+  display:none;
+}
+
+@media(max-width:1000px){
+  .topic-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:750px){
+  .sidebar{
+    transform:translateX(-100%);
+    transition:.3s;
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+  }
+
+  .main{
+    margin-left:0;
+    width:100%;
+    padding:15px;
+  }
+
+  .mobile-menu{
+    display:block;
+  }
+
+  .topbar{
+    flex-wrap:wrap;
+  }
+
+  .search{
+    order:3;
+    flex-basis:100%;
+  }
+
+  .topic-grid,
+  .dashboard-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero{
+    padding:25px;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+}
 </style>
 </head>
+
 <body>
-<header class="top"><nav class="nav">
-<div class="logo">∑ <span>MathQuest</span></div>
-<div class="navlinks">
-<button onclick="show('home')">Home</button><button onclick="show('learn')">Learn</button><button onclick="show('practice')">Practice</button><button onclick="show('progress')">Progress</button>
-</div><button class="icon" onclick="toggleDark()" title="Dark mode">◐</button>
-</nav></header>
 
-<main>
-<section id="home" class="panel active">
-<div class="hero"><h1>Master Mathematics.</h1><p>Learn from the first idea, practise with feedback, build competency, and climb through Beginner, Explorer, Challenger, Advanced and Olympiad levels.</p>
-<div class="heroBtns"><button class="primary" onclick="show('learn')">Start Learning →</button><button class="secondary" onclick="show('practice')">⚡ Practice Arena</button></div></div>
+<div class="app">
 
-<div class="section"><div class="sectionHead"><h2>Your Quest</h2><span class="muted">Saved automatically on this device</span></div>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="logo">
+    <div class="logo-icon">∑</div>
+    <div>
+      <h1>MathQuest</h1>
+      <span>Master Mathematics</span>
+    </div>
+  </div>
+
+  <div class="nav-title">Main</div>
+
+  <button class="nav-btn active" onclick="showPage('home',this)">
+    🏠 Home
+  </button>
+
+  <button class="nav-btn" onclick="showPage('learn',this)">
+    📖 Learn
+  </button>
+
+  <button class="nav-btn" onclick="showPage('practice',this)">
+    📝 Practice
+  </button>
+
+  <button class="nav-btn" onclick="showPage('dashboard',this)">
+    📊 Progress
+  </button>
+
+  <div class="nav-title">Levels</div>
+
+  <button class="nav-btn" onclick="setLevel('Beginner')">
+    🌱 Beginner
+  </button>
+
+  <button class="nav-btn" onclick="setLevel('Intermediate')">
+    ⚡ Intermediate
+  </button>
+
+  <button class="nav-btn" onclick="setLevel('Advanced')">
+    🔥 Advanced
+  </button>
+
+  <button class="nav-btn" onclick="setLevel('Olympiad')">
+    🏆 Olympiad
+  </button>
+
+  <div class="side-progress">
+    <small>Overall Progress</small>
+    <strong id="sideProgressText">0%</strong>
+    <div class="progress-line">
+      <div class="progress-fill" id="sideProgress"></div>
+    </div>
+  </div>
+
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<div class="topbar">
+
+  <button class="icon-btn mobile-menu" onclick="toggleSidebar()">☰</button>
+
+  <div class="search">
+    <span class="search-icon">🔎</span>
+    <input
+      id="searchInput"
+      placeholder="Search mathematics topics..."
+      oninput="searchTopics()">
+  </div>
+
+  <button class="icon-btn" onclick="toggleTheme()" title="Theme">
+    🌙
+  </button>
+
+</div>
+
+<!-- HOME -->
+<section class="page active" id="home">
+
+<div class="hero">
+
+  <div class="badge">🚀 COMPLETE MATHEMATICS LEARNING SYSTEM</div>
+
+  <h2>Learn mathematics from the basics to Olympiad level.</h2>
+
+  <p>
+    MathQuest doesn't just give you formulas.
+    First understand the idea, then see a worked example,
+    practise it, solve competency questions and finally
+    challenge yourself with harder problems.
+  </p>
+
+  <div class="hero-actions">
+    <button class="primary-btn" onclick="showPage('learn')">
+      Start Learning →
+    </button>
+
+    <button class="secondary-btn" onclick="showPage('practice')">
+      Practice Questions
+    </button>
+  </div>
+
+</div>
+
 <div class="stats">
-<div class="stat">Topics explored<b id="done">0</b><div class="progress"><i id="doneBar" style="width:0%"></i></div></div>
-<div class="stat">Questions solved<b id="solved">0</b></div><div class="stat">Correct<b id="correct">0</b></div>
-<div class="stat">Accuracy<b id="accuracy">0%</b></div><div class="stat">Quest points<b id="points">0</b></div>
-</div></div>
 
-<div class="section"><h2>Difficulty ladder</h2><div class="levels">
-<div class="level"><strong>🌱 Beginner</strong><small>Foundations</small></div><div class="level"><strong>📘 Explorer</strong><small>Core skills</small></div><div class="level"><strong>🔥 Challenger</strong><small>Harder reasoning</small></div><div class="level"><strong>🏆 Advanced</strong><small>Deep problem solving</small></div><div class="level"><strong>👑 Olympiad</strong><small>Elite thinking</small></div>
-</div></div>
+  <div class="stat">
+    <div class="stat-icon">📚</div>
+    <strong id="statTopics">10</strong>
+    <span>Major Areas</span>
+  </div>
 
-<div class="section"><div class="card"><h3>What you can do</h3><p class="muted">Study definitions and examples, open subtopics, practise MCQs, solve competency questions, write your own solution, use hints, track accuracy, earn points, search the library and switch between light and dark mode.</p></div></div>
+  <div class="stat">
+    <div class="stat-icon">📝</div>
+    <strong id="statQuestions">0</strong>
+    <span>Questions Solved</span>
+  </div>
+
+  <div class="stat">
+    <div class="stat-icon">⭐</div>
+    <strong id="statXP">0</strong>
+    <span>XP Earned</span>
+  </div>
+
+  <div class="stat">
+    <div class="stat-icon">🏆</div>
+    <strong id="statLevel">Beginner</strong>
+    <span>Current Level</span>
+  </div>
+
+</div>
+
+<div class="section">
+
+<div class="section-header">
+  <div>
+    <h2>Explore Mathematics</h2>
+    <p>Choose an area and start building your understanding.</p>
+  </div>
+</div>
+
+<div class="topic-grid" id="homeTopics"></div>
+
+</div>
+
 </section>
 
-<section id="learn" class="panel">
-<button class="back" onclick="show('home')">← Home</button>
-<div class="sectionHead"><div><h2>Math Library</h2><p class="muted">11 subjects • 100+ subtopics • progressive levels</p></div>
-<div class="searchbar"><input id="search" placeholder="Search subject or topic…" oninput="filterTopics()"><select id="levelFilter" onchange="filterTopics()"><option value="">All levels</option><option>Beginner</option><option>Explorer</option><option>Challenger</option><option>Advanced</option><option>Olympiad</option></select></div></div>
-<div class="grid" id="topicGrid"></div>
+
+<!-- LEARN -->
+<section class="page" id="learn">
+
+<div id="learnContent"></div>
+
 </section>
 
-<section id="topic" class="panel">
-<button class="back" onclick="show('learn')">← All subjects</button><div id="topicContent"></div>
+
+<!-- PRACTICE -->
+<section class="page" id="practice">
+
+<div class="learning-header">
+
+<h1>Practice Arena</h1>
+
+<p>
+Choose a topic and difficulty. Questions become progressively harder.
+</p>
+
+<div class="practice-controls">
+
+<select class="select" id="practiceTopic" onchange="renderQuestions()">
+<option value="all">All Topics</option>
+</select>
+
+<select class="select" id="practiceDifficulty" onchange="renderQuestions()">
+<option value="all">All Difficulties</option>
+<option value="easy">Beginner</option>
+<option value="medium">Intermediate</option>
+<option value="hard">Advanced</option>
+<option value="olympiad">Olympiad</option>
+</select>
+
+<button class="primary-btn" onclick="randomQuestion()">
+🎲 Random Question
+</button>
+
+</div>
+
+</div>
+
+<div id="questions"></div>
+
 </section>
 
-<section id="practice" class="panel">
-<button class="back" onclick="show('home')">← Home</button>
-<div class="sectionHead"><div><h2>Practice Arena ⚡</h2><p class="muted">MCQ • Competency • Language • Challenge • Self-done</p></div>
-<div class="searchbar"><select id="practiceType" onchange="newPracticeSet()"><option value="all">All question types</option><option value="mcq">MCQ</option><option value="competency">Competency</option><option value="language">Language</option><option value="challenge">Challenge</option></select></div></div>
-<div class="tabs"><button class="tab active" id="tabEasy" onclick="setDifficulty('Beginner')">Beginner</button><button class="tab" id="tabExp" onclick="setDifficulty('Explorer')">Explorer</button><button class="tab" id="tabCh" onclick="setDifficulty('Challenger')">Challenger</button><button class="tab" id="tabAdv" onclick="setDifficulty('Advanced')">Advanced</button><button class="tab" id="tabOly" onclick="setDifficulty('Olympiad')">Olympiad</button></div>
-<div class="practiceGrid">
-<div class="card practiceCard"><span class="badge" id="qBadge">Beginner • Arithmetic</span><div class="question" id="qText"></div><div class="options" id="options"></div><div class="feedback" id="feedback"></div><button class="next" onclick="nextQuestion()">Next question →</button></div>
-<div class="card practiceCard self"><h3>✍️ Self-done question</h3><p class="muted">Solve it yourself, then reveal the model answer.</p><div class="question" id="selfQ"></div><textarea id="selfAnswer" placeholder="Write your working here…"></textarea><button class="next" onclick="document.getElementById('answerBox').style.display='block'">Reveal model answer</button><div class="answerBox" id="answerBox"></div><button class="next" onclick="newSelf()">New self-done question</button></div>
-</div></section>
 
-<section id="progress" class="panel">
-<button class="back" onclick="show('home')">← Home</button>
-<div class="card"><h2>Progress Dashboard</h2><p class="muted">Your results are stored locally in your browser.</p>
-<table class="table"><tr><th>Metric</th><th>Value</th></tr><tr><td>Questions solved</td><td id="pSolved">0</td></tr><tr><td>Correct</td><td id="pCorrect">0</td></tr><tr><td>Accuracy</td><td id="pAcc">0%</td></tr><tr><td>Points</td><td id="pPoints">0</td></tr><tr><td>Subjects explored</td><td id="pDone">0</td></tr></table>
-<button class="next" onclick="resetData()">Reset all progress</button></div></section>
+<!-- DASHBOARD -->
+<section class="page" id="dashboard">
+
+<div class="learning-header">
+
+<h1>Your Progress</h1>
+
+<p>
+Track what you have learned and identify areas that need more practice.
+</p>
+
+</div>
+
+<div class="dashboard-grid">
+
+<div class="dash-card">
+
+<h3>📈 Overall Performance</h3>
+
+<div style="font-size:42px;font-weight:800" id="dashPercent">
+0%
+</div>
+
+<p style="color:var(--muted)">
+Questions answered correctly
+</p>
+
+</div>
+
+<div class="dash-card">
+
+<h3>🔥 Learning Streak</h3>
+
+<div style="font-size:42px;font-weight:800">
+<span id="streak">0</span> days
+</div>
+
+<p style="color:var(--muted)">
+Keep practising every day.
+</p>
+
+</div>
+
+</div>
+
+<div class="dash-card" style="margin-top:17px">
+
+<h3>Subject Progress</h3>
+
+<div id="subjectProgress"></div>
+
+</div>
+
+<div class="dash-card" style="margin-top:17px">
+
+<h3>🏆 Your Journey</h3>
+
+<p style="color:var(--muted);line-height:1.8">
+
+🌱 Beginner → understand the fundamentals<br>
+⚡ Intermediate → solve standard problems<br>
+🔥 Advanced → handle multi-step problems<br>
+🏆 Olympiad → solve unfamiliar mathematical problems
+
+</p>
+
+</div>
+
+</section>
+
 </main>
 
-<div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()">✕</button><div id="modalContent"></div></div></div>
-<div class="footer">MathQuest © 2026 • Learn • Practise • Think • Master</div>
+</div>
+
 
 <script>
-const levels=["Beginner","Explorer","Challenger","Advanced","Olympiad"];
-const topics=[
-{e:"🔢",n:"Arithmetic",d:"Build number sense from counting to percentages, ratios and real-life calculations.",s:["Counting & Number Sense","Place Value","Addition & Subtraction","Multiplication & Division","Factors & Multiples","Fractions","Decimals","Percentages","Ratio & Proportion","Unitary Method","Average","Profit & Loss","Simple Interest","Speed, Time & Distance","Powers & Roots","Estimation"],f:"Start with quantities, operations and everyday numerical reasoning."},
-{e:"🧮",n:"Number Systems",d:"Understand the structure and properties of natural, integer, rational, irrational and real numbers.",s:["Natural Numbers","Whole Numbers","Integers","Rational Numbers","Irrational Numbers","Real Numbers","HCF & LCM","Euclid's Algorithm","Prime Factorisation","Laws of Exponents","Surds","Decimal Expansions","Number Line","Divisibility","Congruences"],f:"Numbers are objects with patterns and properties, not just answers."},
-{e:"✖️",n:"Algebra",d:"Use symbols, patterns, equations and functions to model and solve problems.",s:["Variables & Expressions","Like Terms","Algebraic Identities","Linear Equations","Pair of Linear Equations","Polynomials","Factorisation","Quadratic Equations","Sequences","Arithmetic Progression","Inequalities","Functions","Graphs","Word Problems","Systems of Equations"],f:"Algebra turns unknown quantities and patterns into precise mathematical language."},
-{e:"📐",n:"Geometry",d:"Develop visual reasoning through angles, triangles, circles, coordinates, constructions and proofs.",s:["Lines & Angles","Triangles","Congruence","Similarity","Quadrilaterals","Polygons","Circles","Tangents","Coordinate Geometry","Distance Formula","Section Formula","Constructions","Proofs","Locus","Advanced Geometry"],f:"Geometry is about relationships between shapes, measurements and logical proof."},
-{e:"📏",n:"Mensuration",d:"Calculate perimeter, area, surface area and volume of common and composite figures.",s:["Perimeter","Area","Triangle Area","Heron's Formula","Circle Measures","Sector & Segment","Cuboid","Cube","Cylinder","Cone","Sphere","Hemisphere","Frustum","Composite Figures","Unit Conversion"],f:"Mensuration connects geometry with measurement and real-world quantities."},
-{e:"📐",n:"Trigonometry",d:"Connect angles and side lengths, then use identities, equations and graphs to solve harder problems.",s:["Trigonometric Ratios","Standard Angles","Trigonometric Values","Identities","Complementary Angles","Heights & Distances","Trigonometric Equations","Graphs","Inverse Trigonometry","Sine Rule","Cosine Rule","Area Formula","Mixed Problems","Proofs"],f:"Trigonometry links geometry, algebra and measurement through angle relationships."},
-{e:"📊",n:"Statistics",d:"Represent, calculate and interpret data rather than merely reading numbers.",s:["Data Collection","Frequency Tables","Bar Graphs","Pie Charts","Histograms","Mean","Median","Mode","Range","Grouped Data","Cumulative Frequency","Quartiles","Interpretation","Comparative Data"],f:"Statistics asks what data says, how reliable it is, and how quantities compare."},
-{e:"🎲",n:"Probability",d:"Reason about chance, sample spaces, events and compound outcomes.",s:["Experiments","Outcomes","Sample Space","Events","Classical Probability","Complement","Independent Events","Dependent Events","Compound Events","Counting Methods","Conditional Probability","Expected Value","Probability Trees"],f:"Probability measures uncertainty using structured counting and logical reasoning."},
-{e:"∫",n:"Calculus",d:"Study change, limits, derivatives, areas and mathematical models of continuous quantities.",s:["Functions","Limits","Continuity","Derivative from First Principles","Rules of Differentiation","Applications of Derivatives","Maxima & Minima","Integration","Definite Integrals","Area Under Curves","Differential Equations","Sequences & Limits"],f:"Calculus provides a language for change and accumulation."},
-{e:"♟️",n:"Discrete Mathematics",d:"Explore logic, sets, combinatorics, graph theory, recurrence and mathematical structures.",s:["Logic","Propositions","Sets","Relations","Functions","Counting","Permutations","Combinations","Graph Theory","Trees","Recurrence Relations","Algorithms","Boolean Algebra","Number Theory"],f:"Discrete mathematics studies countable structures used throughout computer science."},
-{e:"🧠",n:"Advanced Mathematics",d:"Train for proof-heavy and Olympiad-style problem solving.",s:["Inequalities","AM-GM","Cauchy-Schwarz","Functional Equations","Advanced Geometry","Combinatorics","Number Theory","Modular Arithmetic","Sequences","Invariants","Pigeonhole Principle","Proof by Contradiction","Induction","Extremal Principle","Olympiad Strategy"],f:"The goal here is not speed alone: it is elegant reasoning, proof and insight."}
+
+/* =========================================================
+   MATHQUEST DATA
+========================================================= */
+
+const topics = [
+
+{
+id:"number",
+icon:"🔢",
+name:"Number System",
+description:"Understand numbers, factors, divisibility, remainders and patterns.",
+subtopics:[
+{
+name:"Types of Numbers",
+theory:`
+<p>A <b>number system</b> is a way of classifying and working with numbers.</p>
+
+<ul>
+<li><b>Natural numbers:</b> 1, 2, 3, 4, ...</li>
+<li><b>Whole numbers:</b> 0, 1, 2, 3, ...</li>
+<li><b>Integers:</b> ..., −3, −2, −1, 0, 1, 2, 3, ...</li>
+<li><b>Rational numbers:</b> numbers that can be written as p/q where q ≠ 0.</li>
+<li><b>Irrational numbers:</b> numbers that cannot be written as p/q.</li>
+</ul>
+`,
+example:`
+<p><b>Question:</b> Is √2 rational?</p>
+<div class="step">√2 cannot be represented as p/q for integers p and q.</div>
+<div class="step"><b>Therefore:</b> √2 is irrational.</div>
+`,
+hint:"Remember: rational numbers can be expressed as a fraction of two integers."
+},
+
+{
+name:"Divisibility",
+theory:`
+<p>Divisibility rules help us determine whether one number divides another without performing the complete division.</p>
+
+<h3>Important rules</h3>
+
+<ul>
+<li>Divisible by 2 → last digit is even.</li>
+<li>Divisible by 3 → sum of digits is divisible by 3.</li>
+<li>Divisible by 5 → last digit is 0 or 5.</li>
+<li>Divisible by 9 → sum of digits is divisible by 9.</li>
+<li>Divisible by 10 → last digit is 0.</li>
+</ul>
+`,
+example:`
+<p>Is 7,245 divisible by 9?</p>
+<div class="step">7 + 2 + 4 + 5 = 18</div>
+<div class="step">18 is divisible by 9.</div>
+<div class="step"><b>Therefore 7,245 is divisible by 9.</b></div>
+`,
+hint:"For 3 and 9, add the digits."
+},
+
+{
+name:"HCF and LCM",
+theory:`
+<p><b>HCF</b> is the greatest number that divides two or more numbers exactly.</p>
+<p><b>LCM</b> is the smallest positive number that is a multiple of two or more numbers.</p>
+
+<div class="formula">
+For two positive integers a and b:
+HCF(a,b) × LCM(a,b) = a × b
+</div>
+`,
+example:`
+<p>Find HCF and LCM of 12 and 18.</p>
+<div class="step">12 = 2² × 3</div>
+<div class="step">18 = 2 × 3²</div>
+<div class="step">HCF = 2 × 3 = 6</div>
+<div class="step">LCM = 2² × 3² = 36</div>
+`,
+hint:"Prime factorisation makes HCF and LCM easier."
+}
+
+]
+},
+
+{
+id:"arithmetic",
+icon:"➗",
+name:"Arithmetic",
+description:"Master percentages, ratios, averages, profit, interest and mixtures.",
+subtopics:[
+{
+name:"Percentages",
+theory:`
+<p>Percentage means <b>per hundred</b>.</p>
+
+<div class="formula">
+Percentage = (Part / Whole) × 100
+</div>
+
+<p>Percentages are useful for comparing quantities, discounts,
+marks, population changes and many real-world situations.</p>
+`,
+example:`
+<p>A student scores 72 out of 90.</p>
+<div class="step">Percentage = (72/90) × 100</div>
+<div class="step">= 80%</div>
+`,
+hint:"Convert the fraction into a percentage by multiplying by 100."
+},
+
+{
+name:"Ratio and Proportion",
+theory:`
+<p>A <b>ratio</b> compares two quantities using the same unit.</p>
+
+<div class="formula">
+a : b = a/b
+</div>
+
+<p>A proportion states that two ratios are equal.</p>
+`,
+example:`
+<p>Divide ₹600 in the ratio 2 : 3.</p>
+<div class="step">Total parts = 2 + 3 = 5</div>
+<div class="step">First share = 600 × 2/5 = ₹240</div>
+<div class="step">Second share = 600 × 3/5 = ₹360</div>
+`,
+hint:"First find the total number of ratio parts."
+},
+
+{
+name:"Average",
+theory:`
+<p>The average gives a central value for a group of numbers.</p>
+
+<div class="formula">
+Average = Sum of observations / Number of observations
+</div>
+`,
+example:`
+<p>Find the average of 8, 12 and 16.</p>
+<div class="step">Sum = 8 + 12 + 16 = 36</div>
+<div class="step">Number of values = 3</div>
+<div class="step">Average = 36/3 = 12</div>
+`,
+hint:"Add all values first."
+},
+
+{
+name:"Profit and Loss",
+theory:`
+<p><b>Cost Price (CP)</b> is the amount paid to obtain an item.</p>
+<p><b>Selling Price (SP)</b> is the amount received when it is sold.</p>
+
+<div class="formula">
+Profit = SP − CP
+Loss = CP − SP
+
+Profit% = Profit/CP × 100
+Loss% = Loss/CP × 100
+</div>
+`,
+example:`
+<p>An item costs ₹500 and is sold for ₹575.</p>
+<div class="step">Profit = 575 − 500 = ₹75</div>
+<div class="step">Profit% = 75/500 × 100 = 15%</div>
+`,
+hint:"Profit occurs when SP is greater than CP."
+}
+]
+},
+
+{
+id:"algebra",
+icon:"𝒙",
+name:"Algebra",
+description:"Move from simple equations to quadratics, sequences and functions.",
+subtopics:[
+{
+name:"Algebraic Identities",
+theory:`
+<p>An algebraic identity is an equality that is true for all allowed values of its variables.</p>
+
+<div class="formula">
+(a+b)² = a² + 2ab + b²
+
+(a−b)² = a² − 2ab + b²
+
+(a+b)(a−b) = a² − b²
+</div>
+`,
+example:`
+<p>Expand (x + 3)².</p>
+<div class="step">(x+3)² = x² + 2(x)(3) + 3²</div>
+<div class="step">= x² + 6x + 9</div>
+`,
+hint:"Use the identity (a+b)²."
+},
+
+{
+name:"Linear Equations",
+theory:`
+<p>A linear equation has variables only to the first power.</p>
+
+<p>The goal is to isolate the unknown while keeping both sides balanced.</p>
+`,
+example:`
+<p>Solve 3x + 5 = 20.</p>
+<div class="step">3x = 20 − 5</div>
+<div class="step">3x = 15</div>
+<div class="step">x = 5</div>
+`,
+hint:"Undo operations in reverse order."
+},
+
+{
+name:"Quadratic Equations",
+theory:`
+<p>A quadratic equation has the form:</p>
+
+<div class="formula">
+ax² + bx + c = 0, a ≠ 0
+</div>
+
+<p>One important method is factorisation.</p>
+`,
+example:`
+<p>Solve x² − 5x + 6 = 0.</p>
+<div class="step">x² − 5x + 6 = (x−2)(x−3)</div>
+<div class="step">Therefore x = 2 or x = 3.</div>
+`,
+hint:"Look for two numbers whose product is 6 and sum is −5."
+},
+
+{
+name:"Sequences",
+theory:`
+<p>A sequence is an ordered list of numbers following a pattern.</p>
+
+<p>For an arithmetic progression (AP), the difference between consecutive terms is constant.</p>
+
+<div class="formula">
+aₙ = a + (n−1)d
+</div>
+`,
+example:`
+<p>Find the 10th term of 3, 7, 11, 15, ...</p>
+<div class="step">a = 3, d = 4, n = 10</div>
+<div class="step">a₁₀ = 3 + 9(4)</div>
+<div class="step">= 39</div>
+`,
+hint:"First identify the common difference."
+}
+]
+},
+
+{
+id:"geometry",
+icon:"📐",
+name:"Geometry",
+description:"Understand shapes, angles, triangles, circles and coordinate geometry.",
+subtopics:[
+{
+name:"Angles",
+theory:`
+<p>An angle measures the amount of rotation between two rays.</p>
+
+<ul>
+<li>Acute angle: less than 90°</li>
+<li>Right angle: 90°</li>
+<li>Obtuse angle: between 90° and 180°</li>
+<li>Straight angle: 180°</li>
+</ul>
+
+<p>Angles on a straight line add to 180°.</p>
+`,
+example:`
+<p>If one angle on a straight line is 65°, find the other.</p>
+<div class="step">Other angle = 180° − 65°</div>
+<div class="step">= 115°</div>
+`,
+hint:"Angles on a straight line form 180°."
+},
+
+{
+name:"Triangles",
+theory:`
+<p>A triangle has three sides and three angles.</p>
+
+<div class="formula">
+Sum of interior angles = 180°
+</div>
+
+<p>For a right triangle, Pythagoras' theorem states:</p>
+
+<div class="formula">
+a² + b² = c²
+</div>
+`,
+example:`
+<p>A right triangle has legs 6 cm and 8 cm.</p>
+<div class="step">c² = 6² + 8²</div>
+<div class="step">= 36 + 64 = 100</div>
+<div class="step">c = 10 cm</div>
+`,
+hint:"The hypotenuse is opposite the right angle."
+},
+
+{
+name:"Circles",
+theory:`
+<p>A circle is the set of all points at a fixed distance from a centre.</p>
+
+<div class="formula">
+Circumference = 2πr
+
+Area = πr²
+</div>
+`,
+example:`
+<p>Find the circumference of a circle with radius 7 cm.</p>
+<div class="step">C = 2πr</div>
+<div class="step">= 2 × 22/7 × 7</div>
+<div class="step">= 44 cm</div>
+`,
+hint:"Circumference uses 2πr."
+}
+]
+},
+
+{
+id:"mensuration",
+icon:"📦",
+name:"Mensuration",
+description:"Calculate perimeter, area, surface area and volume.",
+subtopics:[
+{
+name:"2D Figures",
+theory:`
+<p>Mensuration studies measurement of geometric figures.</p>
+
+<div class="formula">
+Rectangle area = l × b
+
+Square area = a²
+
+Triangle area = 1/2 × base × height
+
+Circle area = πr²
+</div>
+`,
+example:`
+<p>A rectangle has length 12 cm and breadth 5 cm.</p>
+<div class="step">Area = 12 × 5</div>
+<div class="step">= 60 cm²</div>
+`,
+hint:"Area measures the region inside a 2D shape."
+},
+
+{
+name:"3D Solids",
+theory:`
+<p>Volume measures the amount of space occupied by a solid.</p>
+
+<div class="formula">
+Cuboid volume = lbh
+
+Cube volume = a³
+
+Cylinder volume = πr²h
+</div>
+`,
+example:`
+<p>Find the volume of a cuboid 5 cm × 4 cm × 3 cm.</p>
+<div class="step">V = lbh</div>
+<div class="step">= 5 × 4 × 3</div>
+<div class="step">= 60 cm³</div>
+`,
+hint:"Multiply the three dimensions of a cuboid."
+}
+]
+},
+
+{
+id:"trigonometry",
+icon:"📏",
+name:"Trigonometry",
+description:"Learn ratios, identities, equations and heights & distances.",
+subtopics:[
+{
+name:"Trigonometric Ratios",
+theory:`
+<p>For an acute angle θ in a right triangle:</p>
+
+<div class="formula">
+sin θ = Perpendicular / Hypotenuse
+
+cos θ = Base / Hypotenuse
+
+tan θ = Perpendicular / Base
+</div>
+
+<p>A useful memory aid is <b>SOH-CAH-TOA</b>.</p>
+`,
+example:`
+<p>If opposite = 3 and hypotenuse = 5:</p>
+<div class="step">sin θ = 3/5</div>
+`,
+hint:"SOH = Sin, Opposite, Hypotenuse."
+},
+
+{
+name:"Standard Angles",
+theory:`
+<p>Important values include:</p>
+
+<div class="formula">
+sin 0° = 0
+sin 30° = 1/2
+sin 45° = 1/√2
+sin 60° = √3/2
+sin 90° = 1
+</div>
+`,
+example:`
+<p>Evaluate sin 30° + cos 60°.</p>
+<div class="step">1/2 + 1/2 = 1</div>
+`,
+hint:"Both sin 30° and cos 60° equal 1/2."
+}
+]
+},
+
+{
+id:"statistics",
+icon:"📊",
+name:"Statistics",
+description:"Turn data into useful information using averages and distributions.",
+subtopics:[
+{
+name:"Mean Median Mode",
+theory:`
+<p><b>Mean:</b> arithmetic average.</p>
+<p><b>Median:</b> middle value after arranging data.</p>
+<p><b>Mode:</b> most frequently occurring value.</p>
+`,
+example:`
+<p>For 2, 3, 3, 5, 7:</p>
+<div class="step">Mean = 20/5 = 4</div>
+<div class="step">Median = 3</div>
+<div class="step">Mode = 3</div>
+`,
+hint:"Arrange the data before finding the median."
+}
+]
+},
+
+{
+id:"probability",
+icon:"🎲",
+name:"Probability & Counting",
+description:"Study chance, counting principles, permutations and combinations.",
+subtopics:[
+{
+name:"Basic Probability",
+theory:`
+<p>Probability measures how likely an event is to occur.</p>
+
+<div class="formula">
+P(E) = Number of favourable outcomes /
+       Total number of equally likely outcomes
+</div>
+
+<p>Probability lies between 0 and 1.</p>
+`,
+example:`
+<p>A fair die is rolled. What is the probability of getting an even number?</p>
+<div class="step">Even outcomes = 2, 4, 6 → 3 outcomes</div>
+<div class="step">Total outcomes = 6</div>
+<div class="step">P(E) = 3/6 = 1/2</div>
+`,
+hint:"List the favourable outcomes first."
+},
+
+{
+name:"Permutations and Combinations",
+theory:`
+<p>Permutations are arrangements where order matters.</p>
+<p>Combinations are selections where order does not matter.</p>
+
+<div class="formula">
+nPr = n!/(n−r)!
+
+nCr = n!/[r!(n−r)!]
+</div>
+`,
+example:`
+<p>How many ways can 2 students be selected from 5?</p>
+<div class="step">Order does not matter.</div>
+<div class="step">Therefore use 5C2.</div>
+<div class="step">5C2 = 10</div>
+`,
+hint:"Selection → combination. Arrangement → permutation."
+}
+]
+},
+
+{
+id:"advanced",
+icon:"∞",
+name:"Advanced Mathematics",
+description:"Go beyond school mathematics into functions, calculus, matrices and more.",
+subtopics:[
+{
+name:"Functions",
+theory:`
+<p>A function assigns each input exactly one output.</p>
+
+<p>We write:</p>
+
+<div class="formula">
+f(x) = y
+</div>
+
+<p>The input belongs to the domain and the resulting values form the range.</p>
+`,
+example:`
+<p>If f(x) = 2x + 1, find f(4).</p>
+<div class="step">f(4) = 2(4) + 1</div>
+<div class="step">= 9</div>
+`,
+hint:"Replace x with the given value."
+},
+
+{
+name:"Limits",
+theory:`
+<p>A limit describes the value that a function approaches as its input approaches a particular value.</p>
+
+<div class="formula">
+lim x→a f(x)
+</div>
+`,
+example:`
+<p>For f(x) = x + 2, find the limit as x approaches 3.</p>
+<div class="step">Substitute x = 3.</div>
+<div class="step">3 + 2 = 5</div>
+`,
+hint:"For simple continuous functions, direct substitution works."
+},
+
+{
+name:"Differentiation",
+theory:`
+<p>Differentiation measures the instantaneous rate of change of a function.</p>
+
+<div class="formula">
+d/dx (xⁿ) = nxⁿ⁻¹
+</div>
+`,
+example:`
+<p>Differentiate x³.</p>
+<div class="step">d/dx(x³) = 3x²</div>
+`,
+hint:"Bring the power down and reduce the power by one."
+}
+]
+
+}
+
 ];
 
-const lessons={
-"Arithmetic":{def:"Arithmetic is the study of numbers and the basic operations performed on them.",formula:"Order of operations: Brackets → Powers → Division/Multiplication → Addition/Subtraction.",example:"For 18 + 6 × 4, multiply first: 6 × 4 = 24, so the answer is 42.",tip:"Estimate first. If your exact answer is wildly different from your estimate, recheck."},
-"Number Systems":{def:"A number system is a way of classifying and working with numbers according to their properties.",formula:"For positive integers a and b: a = bq + r, where 0 ≤ r < b.",example:"23 ÷ 5 gives quotient 4 and remainder 3, so 23 = 5×4 + 3.",tip:"When proving a number property, state exactly which set of numbers you are considering."},
-"Algebra":{def:"Algebra uses symbols to represent quantities and relationships.",formula:"(a+b)² = a² + 2ab + b²;  (a-b)² = a² - 2ab + b².",example:"If x+3=11, subtract 3 from both sides: x=8.",tip:"Whatever operation you apply to one side of an equation must also be applied to the other."},
-"Geometry":{def:"Geometry studies shapes, sizes, positions, angles and the relationships between them.",formula:"Angles of a triangle add to 180°; Pythagoras: a²+b²=c² for a right triangle.",example:"If two triangle angles are 50° and 60°, the third is 70°.",tip:"Draw a labelled diagram before starting a geometry proof."},
-"Mensuration":{def:"Mensuration is the measurement of geometric figures.",formula:"Rectangle area = l×w; circle area = πr²; cylinder volume = πr²h.",example:"A 7 cm by 4 cm rectangle has area 28 cm².",tip:"Always check units and whether the question asks for length, area or volume."},
-"Trigonometry":{def:"Trigonometry studies relationships between angles and sides, especially in triangles.",formula:"sin θ = opposite/hypotenuse; cos θ = adjacent/hypotenuse; tan θ = opposite/adjacent.",example:"For a right triangle with opposite 3 and hypotenuse 5, sin θ=3/5.",tip:"Label opposite, adjacent and hypotenuse relative to the chosen angle."},
-"Statistics":{def:"Statistics is the collection, organisation, analysis and interpretation of data.",formula:"Mean = sum of observations ÷ number of observations.",example:"The mean of 4, 6 and 8 is 18/3 = 6.",tip:"A mean can be strongly affected by an unusually large or small value."},
-"Probability":{def:"Probability measures how likely an event is to occur.",formula:"For equally likely outcomes, P(E)=favourable outcomes/total outcomes.",example:"A fair die has P(rolling 4)=1/6.",tip:"Probability is always between 0 and 1 inclusive."},
-"Calculus":{def:"Calculus studies limits, change and accumulation.",formula:"d(xⁿ)/dx = n xⁿ⁻¹ for positive integer n.",example:"If y=x³, then dy/dx=3x².",tip:"A derivative can often be interpreted as an instantaneous rate of change or slope."},
-"Discrete Mathematics":{def:"Discrete mathematics studies distinct, countable structures and logical systems.",formula:"nCr = n!/[r!(n-r)!].",example:"Choosing 2 students from 5 gives 5C2=10 choices.",tip:"Translate words such as 'choose', 'arrange' and 'at least' carefully before counting."},
-"Advanced Mathematics":{def:"Advanced mathematics combines techniques from algebra, geometry, number theory, combinatorics and proof.",formula:"AM-GM: for positive a,b, (a+b)/2 ≥ √(ab).",example:"For positive a and b, replacing a+b by a bound involving √ab can simplify an inequality.",tip:"Try invariants, symmetry, extremal cases and small examples when a problem looks unfamiliar."}
+
+/* =========================================================
+   QUESTIONS
+========================================================= */
+
+const questions = [
+
+{
+topic:"number",
+difficulty:"easy",
+q:"Which of the following is an irrational number?",
+options:["4/5","0.25","√2","3"],
+answer:2,
+explanation:"√2 cannot be expressed as p/q where p and q are integers and q ≠ 0."
+},
+
+{
+topic:"number",
+difficulty:"medium",
+q:"What is the HCF of 24 and 36?",
+options:["6","8","12","18"],
+answer:2,
+explanation:"24 = 2³×3 and 36 = 2²×3². Common factors give HCF = 2²×3 = 12."
+},
+
+{
+topic:"number",
+difficulty:"hard",
+q:"A number leaves remainder 3 when divided by 5. Which remainder can it leave when divided by 10?",
+options:["1","3","5","8"],
+answer:1,
+explanation:"Numbers of the form 5k+3 can have remainder 3 or 8 modulo 10. Therefore 3 is possible."
+},
+
+{
+topic:"arithmetic",
+difficulty:"easy",
+q:"What is 25% of 200?",
+options:["25","40","50","75"],
+answer:2,
+explanation:"25% = 25/100 = 1/4. One-fourth of 200 is 50."
+},
+
+{
+topic:"arithmetic",
+difficulty:"medium",
+q:"A ₹800 item is sold for ₹920. What is the profit percentage?",
+options:["10%","12%","15%","20%"],
+answer:2,
+explanation:"Profit = 920−800 = 120. Profit% = 120/800 ×100 = 15%."
+},
+
+{
+topic:"arithmetic",
+difficulty:"hard",
+q:"A quantity increases by 20% and then decreases by 20%. What is the overall change?",
+options:["No change","4% decrease","4% increase","2% decrease"],
+answer:1,
+explanation:"Take 100. After +20% → 120. After −20% → 96. Thus there is a 4% decrease."
+},
+
+{
+topic:"algebra",
+difficulty:"easy",
+q:"Solve: 2x + 6 = 14.",
+options:["2","3","4","5"],
+answer:2,
+explanation:"2x = 8, therefore x = 4."
+},
+
+{
+topic:"algebra",
+difficulty:"medium",
+q:"What are the roots of x² − 7x + 12 = 0?",
+options:["2,6","3,4","1,12","−3,−4"],
+answer:1,
+explanation:"x²−7x+12 = (x−3)(x−4), so x = 3 or 4."
+},
+
+{
+topic:"algebra",
+difficulty:"hard",
+q:"If x + 1/x = 5, what is x² + 1/x²?",
+options:["21","23","25","27"],
+answer:1,
+explanation:"Square both sides: x² + 2 + 1/x² = 25. Therefore x² + 1/x² = 23."
+},
+
+{
+topic:"geometry",
+difficulty:"easy",
+q:"The angles of a triangle add up to:",
+options:["90°","180°","270°","360°"],
+answer:1,
+explanation:"The sum of the three interior angles of a triangle is 180°."
+},
+
+{
+topic:"geometry",
+difficulty:"medium",
+q:"A right triangle has legs 5 cm and 12 cm. Find its hypotenuse.",
+options:["10 cm","11 cm","13 cm","17 cm"],
+answer:2,
+explanation:"c² = 5²+12² = 25+144 =169, so c =13 cm."
+},
+
+{
+topic:"geometry",
+difficulty:"hard",
+q:"Two similar triangles have corresponding sides in ratio 2:3. What is the ratio of their areas?",
+options:["2:3","4:9","8:27","3:2"],
+answer:1,
+explanation:"Areas of similar figures are proportional to the squares of corresponding sides: 2²:3² = 4:9."
+},
+
+{
+topic:"mensuration",
+difficulty:"easy",
+q:"What is the area of a rectangle 8 cm long and 5 cm wide?",
+options:["13 cm²","26 cm²","40 cm²","80 cm²"],
+answer:2,
+explanation:"Area = length × breadth = 8×5 = 40 cm²."
+},
+
+{
+topic:"mensuration",
+difficulty:"medium",
+q:"What is the volume of a cube of side 4 cm?",
+options:["16 cm³","32 cm³","48 cm³","64 cm³"],
+answer:3,
+explanation:"Volume = a³ = 4³ = 64 cm³."
+},
+
+{
+topic:"trigonometry",
+difficulty:"easy",
+q:"What is sin 30°?",
+options:["0","1/2","√2/2","1"],
+answer:1,
+explanation:"sin 30° = 1/2."
+},
+
+{
+topic:"trigonometry",
+difficulty:"medium",
+q:"If tan θ = 3/4, what can be the value of sin θ for an acute θ?",
+options:["3/4","4/5","3/5","5/3"],
+answer:2,
+explanation:"Take opposite = 3 and adjacent = 4. Hypotenuse = 5. Therefore sin θ = 3/5."
+},
+
+{
+topic:"statistics",
+difficulty:"easy",
+q:"What is the mean of 4, 6 and 8?",
+options:["5","6","7","8"],
+answer:1,
+explanation:"Mean = (4+6+8)/3 = 18/3 = 6."
+},
+
+{
+topic:"statistics",
+difficulty:"medium",
+q:"What is the median of 2, 8, 3, 5, 7?",
+options:["3","5","7","8"],
+answer:1,
+explanation:"Arrange: 2,3,5,7,8. The middle value is 5."
+},
+
+{
+topic:"probability",
+difficulty:"easy",
+q:"What is the probability of getting a head when a fair coin is tossed?",
+options:["0","1/4","1/2","1"],
+answer:2,
+explanation:"There are two equally likely outcomes: head and tail. Therefore probability = 1/2."
+},
+
+{
+topic:"probability",
+difficulty:"medium",
+q:"How many ways can 2 students be selected from 6?",
+options:["6","12","15","30"],
+answer:2,
+explanation:"Selection means combination: 6C2 = 6×5/2 = 15."
+},
+
+{
+topic:"advanced",
+difficulty:"medium",
+q:"If f(x)=3x−2, what is f(5)?",
+options:["10","12","13","15"],
+answer:2,
+explanation:"f(5)=3(5)−2=15−2=13."
+},
+
+{
+topic:"advanced",
+difficulty:"hard",
+q:"Differentiate x⁴.",
+options:["x³","3x³","4x³","4x⁴"],
+answer:2,
+explanation:"Using d/dx(xⁿ)=nxⁿ⁻¹, d/dx(x⁴)=4x³."
+},
+
+{
+topic:"advanced",
+difficulty:"olympiad",
+q:"If x + 1/x = 3, find x³ + 1/x³.",
+options:["18","21","24","27"],
+answer:1,
+explanation:"Let a=x+1/x=3. Then x³+1/x³ = a³−3a = 27−9 =18."
+}
+
+];
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let state = JSON.parse(localStorage.getItem("mathquestState")) || {
+  solved:0,
+  correct:0,
+  xp:0,
+  level:"Beginner",
+  answered:{},
+  completedTopics:{},
+  streak:0
 };
 
-const base=[
-["Arithmetic","Beginner","mcq","What is 25% of 80?",["10","15","20","25"],2,"25% = 1/4, so 80 ÷ 4 = 20."],
-["Arithmetic","Beginner","mcq","What is 7×8?",["54","56","58","64"],1,"7 groups of 8 make 56."],
-["Number Systems","Beginner","mcq","Which is an integer?",["2.5","√2","−7","1/3"],2,"−7 has no fractional part."],
-["Algebra","Explorer","mcq","If 3x+5=20, x is:",["3","5","7","15"],1,"Subtract 5 and divide by 3."],
-["Geometry","Beginner","mcq","Two angles of a triangle are 50° and 60°. The third is:",["60°","70°","80°","90°"],1,"Triangle angles total 180°."],
-["Mensuration","Beginner","mcq","A rectangle is 8 cm by 5 cm. Its area is:",["13","26","40","80"],2,"Area = length × width = 40 cm²."],
-["Trigonometry","Explorer","mcq","In a right triangle, sin θ equals:",["adjacent/hypotenuse","opposite/hypotenuse","opposite/adjacent","hypotenuse/opposite"],1,"Sine is opposite divided by hypotenuse."],
-["Statistics","Beginner","mcq","Mean of 4, 6 and 8 is:",["5","6","7","18"],1,"(4+6+8)/3 = 6."],
-["Probability","Beginner","mcq","Probability of heads on a fair coin is:",["0","1/4","1/2","1"],2,"Two equally likely outcomes give 1/2."],
-["Calculus","Advanced","mcq","Derivative of x³ is:",["x²","2x","3x²","3x"],2,"Power rule: 3x²."],
-["Discrete Mathematics","Challenger","mcq","How many ways can you choose 2 objects from 5?",["5","8","10","20"],2,"5C2 = 10."],
-["Advanced Mathematics","Olympiad","mcq","For positive a,b, which is always true?",["a+b<2√ab","a+b≥2√ab","a+b=√ab","a+b≤√ab"],1,"This is AM-GM."]
-];
 
-function extraQuestions(){
- const out=[...base];
- const nums=[12,15,18,21,24,27,30,36,42,48];
- nums.forEach((n,i)=>out.push(["Arithmetic",levels[i%5],"mcq",`What is ${n} ÷ ${3+i%3}?`,[String(Math.floor(n/(3+i%3))),String(Math.floor(n/(3+i%3))+1),String(Math.floor(n/(3+i%3))+2),String(n)],0,"Divide the number by the stated divisor."]));
- for(let i=1;i<=10;i++){
-   const a=i+2,b=i+5;
-   out.push(["Algebra",levels[i%5],"mcq",`Solve x + ${a} = ${a+b}.`,[String(b-1),String(b),String(b+1),String(a+b)],1,"Subtract the constant from both sides."]);
- }
- for(let i=1;i<=10;i++){
-   const a=20+i*5;
-   out.push(["Geometry",levels[i%5],"mcq",`An angle supplementary to ${a}° is:`,[String(90-a),String(180-a),String(180+a),String(360-a)],1,"Supplementary angles add to 180°."]);
- }
- for(let i=1;i<=10;i++){
-   const l=i+4,w=i+2;
-   out.push(["Mensuration",levels[i%5],"mcq",`A rectangle has length ${l} cm and width ${w} cm. Its area is:`,[String(l+w),String(2*l+2*w),String(l*w),String(l*w+2)],2,"Rectangle area = length × width."]);
- }
- for(let i=1;i<=10;i++){
-   out.push(["Statistics",levels[i%5],"mcq",`What is the mean of ${i}, ${i+2}, and ${i+4}?`,[String(i+1),String(i+2),String(i+3),String(i+4)],2,"Add the three values and divide by 3."]);
- }
- for(let i=1;i<=10;i++){
-   out.push(["Probability",levels[i%5],"mcq",`A fair die is rolled. What is P(rolling an even number)?`,["1/6","1/3","1/2","2/3"],2,"Even outcomes are 2,4,6: 3 of 6 outcomes."]);
- }
- // competency/language/challenge pool
- out.push(
- ["Algebra","Challenger","competency","A taxi charges a fixed ₹50 plus ₹12 per kilometre. Which expression gives the cost for x km?",["50x+12","12x+50","62x","50(x+12)"],1,"Fixed charge is 50 and distance charge is 12x."],
- ["Geometry","Advanced","competency","A student claims every rhombus is a square. What is the best response?",["Always true","False: a rhombus need not have right angles","False: rhombi have no equal sides","Always false because squares are not rhombi"],1,"A square is a special rhombus with four right angles."],
- ["Probability","Challenger","competency","A bag has 3 red and 2 blue balls. Without replacement, the probability of red then blue is:",["1/5","3/10","2/5","3/5"],1,"P(red)=3/5 and then P(blue)=2/4, product = 3/10."],
- ["Arithmetic","Explorer","language","Which sentence correctly describes 0.75?",["Seventy-five hundredths","Seven hundredths and five tenths","Seven and five hundredths","Seventy-five tenths"],0,"0.75 means 75 hundredths."],
- ["Number Systems","Advanced","challenge","If n is an odd integer, which expression is always even?",["n+1","n+2","2n+1","n²"],0,"Odd + 1 is even."],
- ["Advanced Mathematics","Olympiad","challenge","Why is checking several examples not enough to prove a statement for every integer?",["Examples are never useful","A finite sample cannot establish a universal claim","Integers are not numbers","Proofs require calculators"],1,"A universal statement needs a general argument."]
- );
- return out;
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showPage(id,btn){
+
+  document.querySelectorAll(".page").forEach(p=>{
+    p.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".nav-btn").forEach(b=>{
+    b.classList.remove("active");
+  });
+
+  if(btn) btn.classList.add("active");
+
+  if(id==="learn"){
+    renderLearn();
+  }
+
+  if(id==="practice"){
+    renderQuestions();
+  }
+
+  if(id==="dashboard"){
+    renderDashboard();
+  }
+
+  window.scrollTo({top:0,behavior:"smooth"});
 }
-const bank=extraQuestions();
 
-let data=JSON.parse(localStorage.getItem("mathquest_v3")||'{"solved":0,"correct":0,"points":0,"done":[],"streak":0,"bestStreak":0}');
-let currentDifficulty="Beginner", pool=[], qi=0, answered=false;
 
-function save(){localStorage.setItem("mathquest_v3",JSON.stringify(data));updateStats()}
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("open");
+}
+
+
+function toggleTheme(){
+
+  document.body.classList.toggle("light");
+
+  localStorage.setItem(
+    "mathquestTheme",
+    document.body.classList.contains("light")
+      ? "light"
+      : "dark"
+  );
+}
+
+
+if(localStorage.getItem("mathquestTheme")==="light"){
+  document.body.classList.add("light");
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function renderHome(){
+
+  const container=document.getElementById("homeTopics");
+
+  container.innerHTML=topics.map((t,i)=>`
+
+    <div class="topic-card"
+         data-search="${t.name} ${t.description}"
+         onclick="openTopic('${t.id}')">
+
+      <div class="topic-number">AREA ${String(i+1).padStart(2,"0")}</div>
+
+      <div class="topic-icon">${t.icon}</div>
+
+      <h3>${t.name}</h3>
+
+      <p>${t.description}</p>
+
+      <div class="topic-count">
+        ${t.subtopics.length} learning modules →
+      </div>
+
+    </div>
+
+  `).join("");
+
+}
+
+
+/* =========================================================
+   LEARNING
+========================================================= */
+
+function openTopic(id){
+
+  showPage("learn");
+
+  const topic=topics.find(t=>t.id===id);
+
+  renderTopic(topic);
+
+}
+
+
+function renderLearn(){
+
+  if(!window.currentTopic){
+    renderTopic(topics[0]);
+  }else{
+    renderTopic(window.currentTopic);
+  }
+
+}
+
+
+function renderTopic(topic){
+
+  window.currentTopic=topic;
+
+  const container=document.getElementById("learnContent");
+
+  container.innerHTML=`
+
+    <div class="learning-header">
+
+      <div style="font-size:38px">${topic.icon}</div>
+
+      <h1>${topic.name}</h1>
+
+      <p>${topic.description}</p>
+
+      <div class="subtopics">
+
+        ${topic.subtopics.map((s,i)=>`
+
+          <button
+            class="subtopic ${i===0?"active":""}"
+            onclick="selectSubtopic('${topic.id}',${i},this)">
+            ${s.name}
+          </button>
+
+        `).join("")}
+
+      </div>
+
+    </div>
+
+    <div id="lessonArea"></div>
+  `;
+
+  renderLesson(topic,0);
+}
+
+
+function selectSubtopic(topicId,index,button){
+
+  document.querySelectorAll(".subtopic").forEach(b=>{
+    b.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  const topic=topics.find(t=>t.id===topicId);
+
+  renderLesson(topic,index);
+}
+
+
+function renderLesson(topic,index){
+
+  const s=topic.subtopics[index];
+
+  document.getElementById("lessonArea").innerHTML=`
+
+    <div class="lesson">
+
+      <h2>📖 ${s.name}</h2>
+
+      <h3>Understand the idea</h3>
+
+      ${s.theory}
+
+      <h3>💡 Worked Example</h3>
+
+      <div class="example">
+
+        <div class="example-title">
+          Step-by-step solution
+        </div>
+
+        ${s.example}
+
+      </div>
+
+      <h3>🧠 Think about it</h3>
+
+      <p>
+        Don't just memorise the formula.
+        Ask what each quantity represents and why the method works.
+        Try changing the numbers in the example and predict what happens.
+      </p>
+
+      <h3>🎯 Your turn</h3>
+
+      <button
+        class="primary-btn"
+        onclick="practiceTopic('${topic.id}')">
+        Practice ${topic.name} →
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   PRACTICE
+========================================================= */
+
+function setupPractice(){
+
+  const select=document.getElementById("practiceTopic");
+
+  topics.forEach(t=>{
+
+    const option=document.createElement("option");
+
+    option.value=t.id;
+    option.textContent=t.name;
+
+    select.appendChild(option);
+
+  });
+
+}
+
+
+function practiceTopic(id){
+
+  showPage("practice");
+
+  document.getElementById("practiceTopic").value=id;
+
+  renderQuestions();
+
+}
+
+
+function renderQuestions(){
+
+  const topic=document.getElementById("practiceTopic").value;
+  const difficulty=document.getElementById("practiceDifficulty").value;
+
+  let filtered=questions.filter(q=>{
+
+    const topicOK=topic==="all" || q.topic===topic;
+    const diffOK=difficulty==="all" || q.difficulty===difficulty;
+
+    return topicOK && diffOK;
+
+  });
+
+  const container=document.getElementById("questions");
+
+  if(filtered.length===0){
+
+    container.innerHTML=`
+      <div class="lesson">
+        <h2>No questions found</h2>
+        <p>Try another topic or difficulty.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML=filtered.map((q,i)=>questionHTML(q,i)).join("");
+
+}
+
+
+function questionHTML(q,index){
+
+  const id=questions.indexOf(q);
+
+  const difficultyName={
+    easy:"Beginner",
+    medium:"Intermediate",
+    hard:"Advanced",
+    olympiad:"Olympiad"
+  }[q.difficulty];
+
+  return `
+
+    <div class="question-box" id="question-${id}">
+
+      <div class="q-meta">
+
+        <span class="tag">${getTopicName(q.topic)}</span>
+
+        <span class="tag ${q.difficulty}">
+          ${difficultyName}
+        </span>
+
+      </div>
+
+      <div class="question">
+        <b>Q${index+1}.</b> ${q.q}
+      </div>
+
+      <div class="options">
+
+        ${q.options.map((option,i)=>`
+
+          <button
+            class="option"
+            onclick="answerQuestion(${id},${i},this)">
+            ${String.fromCharCode(65+i)}. ${option}
+          </button>
+
+        `).join("")}
+
+      </div>
+
+      <div class="hint" id="hint-${id}">
+        💡 Hint: ${getHint(q)}
+      </div>
+
+      <button
+        class="secondary-btn"
+        style="margin-top:12px"
+        onclick="showHint(${id})">
+        💡 Show Hint
+      </button>
+
+      <div
+        class="explanation"
+        id="explanation-${id}">
+        <b>Solution:</b><br>
+        ${q.explanation}
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function getHint(q){
+
+  const hints={
+
+    "Which of the following is an irrational number?":
+      "Look for a number that cannot be written as a fraction of integers.",
+
+    "What is the HCF of 24 and 36?":
+      "Use prime factorisation.",
+
+    "What is 25% of 200?":
+      "25% is one-fourth.",
+
+    "A ₹800 item is sold for ₹920. What is the profit percentage?":
+      "First calculate the profit.",
+
+    "Solve: 2x + 6 = 14.":
+      "Move 6 to the other side.",
+
+    "What are the roots of x² − 7x + 12 = 0?":
+      "Find two numbers whose product is 12 and sum is 7.",
+
+    "The angles of a triangle add up to:":
+      "This is one of the basic properties of triangles.",
+
+    "What is sin 30°?":
+      "Remember the standard angle table.",
+
+    "What is the probability of getting a head when a fair coin is tossed?":
+      "There are two equally likely outcomes."
+
+  };
+
+  return hints[q.q] || "Break the problem into smaller steps and identify the relevant formula.";
+
+}
+
+
+function showHint(id){
+
+  document.getElementById("hint-"+id)
+    .classList.add("show");
+
+}
+
+
+function answerQuestion(id,selected,button){
+
+  const q=questions[id];
+
+  if(state.answered[id]) return;
+
+  state.answered[id]=true;
+
+  state.solved++;
+
+  const options=
+    document.querySelectorAll(`#question-${id} .option`);
+
+  options.forEach((option,i)=>{
+
+    if(i===q.answer){
+      option.classList.add("correct");
+    }
+
+  });
+
+  if(selected===q.answer){
+
+    button.classList.add("correct");
+
+    state.correct++;
+
+    state.xp+=10;
+
+  }else{
+
+    button.classList.add("wrong");
+
+    state.xp+=2;
+
+  }
+
+  document
+    .getElementById("explanation-"+id)
+    .classList.add("show");
+
+  updateLevel();
+
+  saveState();
+
+  updateStats();
+
+}
+
+
+function randomQuestion(){
+
+  const q=questions[Math.floor(Math.random()*questions.length)];
+
+  document.getElementById("practiceTopic").value=q.topic;
+
+  document.getElementById("practiceDifficulty").value=q.difficulty;
+
+  renderQuestions();
+
+}
+
+
+/* =========================================================
+   LEVEL SYSTEM
+========================================================= */
+
+function updateLevel(){
+
+  if(state.xp>=250){
+    state.level="Olympiad";
+  }else if(state.xp>=120){
+    state.level="Advanced";
+  }else if(state.xp>=50){
+    state.level="Intermediate";
+  }else{
+    state.level="Beginner";
+  }
+
+}
+
+
+function setLevel(level){
+
+  state.level=level;
+
+  saveState();
+
+  updateStats();
+
+  alert(
+    "MathQuest level set to "+level+
+    ". Choose questions of this level from Practice."
+  );
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function renderDashboard(){
+
+  const percent=
+    state.solved
+    ? Math.round(state.correct/state.solved*100)
+    : 0;
+
+  document.getElementById("dashPercent").textContent=percent+"%";
+
+  const container=document.getElementById("subjectProgress");
+
+  container.innerHTML=topics.map(topic=>{
+
+    const topicQs=
+      questions.filter(q=>q.topic===topic.id);
+
+    const solved=
+      topicQs.filter((q,i)=>{
+        const id=questions.indexOf(q);
+        return state.answered[id];
+      }).length;
+
+    const percent=
+      topicQs.length
+      ? Math.round(solved/topicQs.length*100)
+      : 0;
+
+    return `
+
+      <div class="subject-progress">
+
+        <div class="subject-row">
+          <span>${topic.icon} ${topic.name}</span>
+          <span>${percent}%</span>
+        </div>
+
+        <div class="bar">
+          <div style="width:${percent}%"></div>
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+}
+
+
 function updateStats(){
- const acc=data.solved?Math.round(data.correct/data.solved*100):0;
- document.getElementById("done").textContent=data.done.length;
- document.getElementById("doneBar").style.width=Math.min(100,data.done.length/topics.length*100)+"%";
- document.getElementById("solved").textContent=data.solved;
- document.getElementById("correct").textContent=data.correct;
- document.getElementById("accuracy").textContent=acc+"%";
- document.getElementById("points").textContent=data.points;
- ["pSolved","pCorrect","pAcc","pPoints","pDone"].forEach((id,i)=>document.getElementById(id).textContent=[data.solved,data.correct,acc+"%",data.points,data.done.length][i]);
-}
-function show(id){
- document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
- document.getElementById(id).classList.add("active"); window.scrollTo({top:0,behavior:"smooth"});
- if(id==="practice")newPracticeSet(); updateStats();
-}
-function toggleDark(){document.body.classList.toggle("dark");localStorage.setItem("mqdark",document.body.classList.contains("dark"))}
-if(localStorage.getItem("mqdark")==="true")document.body.classList.add("dark");
 
-function levelForSub(j){return j<3?"Beginner":j<7?"Explorer":j<11?"Challenger":j<14?"Advanced":"Olympiad"}
-function renderTopics(list=topics){
- const grid=document.getElementById("topicGrid");
- if(!list.length){grid.innerHTML='<div class="empty">No topics found. Try another search.</div>';return}
- grid.innerHTML=list.map(t=>`<article class="card topic"><div class="emoji">${t.e}</div><h3>${t.n}</h3><p>${t.d}</p><div class="tags">${t.s.slice(0,5).map(x=>`<span class="tag">${x}</span>`).join("")}</div><button onclick="openTopic('${t.n}')">Explore ${t.n} →</button></article>`).join("");
+  const percent=
+    questions.length
+    ? Math.round(
+        Object.keys(state.answered).length /
+        questions.length * 100
+      )
+    : 0;
+
+  document.getElementById("statQuestions").textContent=state.solved;
+
+  document.getElementById("statXP").textContent=state.xp;
+
+  document.getElementById("statLevel").textContent=state.level;
+
+  document.getElementById("sideProgress").style.width=
+    percent+"%";
+
+  document.getElementById("sideProgressText").textContent=
+    percent+"%";
+
+  document.getElementById("streak").textContent=
+    state.streak;
+
 }
-function filterTopics(){
- const s=document.getElementById("search").value.toLowerCase(), lv=document.getElementById("levelFilter").value;
- renderTopics(topics.filter(t=>(t.n+" "+t.d+" "+t.s.join(" ")).toLowerCase().includes(s)&&(!lv||t.s.some((_,i)=>levelForSub(i)===lv))));
+
+
+function saveState(){
+
+  localStorage.setItem(
+    "mathquestState",
+    JSON.stringify(state)
+  );
+
 }
-function openTopic(name){
- const t=topics.find(x=>x.n===name), l=lessons[name]||{def:t.d,formula:"Learn the rule, apply it, then test it.",example:"Start with a simple example and increase the difficulty.",tip:"Write every important step."};
- data.done=[...new Set([...data.done,name])]; save();
- document.getElementById("topicContent").innerHTML=`
- <div class="hero"><h1>${t.e} ${t.n}</h1><p>${t.d}</p><button class="primary" onclick="practiceSubject('${name}')">Practise ${t.n} →</button></div>
- <div class="section grid">
- <div class="card lesson"><h2>📖 Definition</h2><p>${l.def}</p><div class="formula">${l.formula}</div></div>
- <div class="card lesson"><h2>💡 Worked example</h2><div class="example">${l.example}</div><p><b>Tip:</b> ${l.tip}</p></div>
- <div class="card lesson"><h2>🎯 How to master it</h2><p>Learn the definition → understand the formula → solve a basic example → explain the idea in words → attempt competency questions → move to harder problems.</p></div>
- </div>
- <div class="section"><div class="sectionHead"><h2>Subtopics</h2><span class="muted">${t.s.length} topics</span></div><div class="grid">${t.s.map((s,i)=>`<div class="card topic"><span class="tag">${levelForSub(i)}</span><h3>${s}</h3><p>Definition, examples, practice and reasoning questions for ${s}.</p><button onclick="openLesson('${name}','${s}',${i})">Study & practise →</button></div>`).join("")}</div></div>`;
- show("topic");
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function searchTopics(){
+
+  const term=
+    document.getElementById("searchInput")
+      .value
+      .toLowerCase()
+      .trim();
+
+  if(!term){
+
+    document.querySelectorAll(".topic-card")
+      .forEach(card=>card.style.display="block");
+
+    return;
+
+  }
+
+  document.querySelectorAll(".topic-card")
+    .forEach(card=>{
+
+      const text=
+        card.dataset.search.toLowerCase();
+
+      card.style.display=
+        text.includes(term)
+        ? "block"
+        : "none";
+
+    });
+
 }
-function openLesson(subject,sub,i){
- const l=lessons[subject]||{def:"This subtopic develops the core ideas of "+subject+".",formula:"Use definitions and properties carefully.",example:"Start with a simple numerical example and then generalise.",tip:"Explain your reasoning in complete sentences."};
- document.getElementById("modalContent").innerHTML=`<span class="badge">${levelForSub(i)} • ${subject}</span><h2>${sub}</h2><h3>Definition</h3><p>${l.def}</p><div class="formula">${l.formula}</div><h3>Example</h3><div class="example">${l.example}</div><h3>Strategy</h3><p>${l.tip}</p><button class="primaryBtn" onclick="practiceSubject('${subject}');closeModal()">Practise this subject</button>`;
- document.getElementById("modal").classList.add("open");
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function getTopicName(id){
+
+  const t=topics.find(t=>t.id===id);
+
+  return t ? t.name : id;
+
 }
-function closeModal(){document.getElementById("modal").classList.remove("open")}
-function practiceSubject(subject){show("practice");pool=bank.filter(q=>q[0]===subject);if(!pool.length)pool=bank;qi=0;renderQuestion()}
-function setDifficulty(level){
- currentDifficulty=level;
- ["Beginner","Explorer","Challenger","Advanced","Olympiad"].forEach(x=>{const id={Beginner:"tabEasy",Explorer:"tabExp",Challenger:"tabCh",Advanced:"tabAdv",Olympiad:"tabOly"}[x];document.getElementById(id).classList.toggle("active",x===level)});
- newPracticeSet();
-}
-function newPracticeSet(){
- const type=document.getElementById("practiceType").value;
- pool=bank.filter(q=>q[1]===currentDifficulty&&(type==="all"||q[2]===type));
- if(!pool.length)pool=bank.filter(q=>q[1]===currentDifficulty);
- if(!pool.length)pool=bank;
- qi=Math.floor(Math.random()*pool.length);renderQuestion();
-}
-function renderQuestion(){
- const q=pool[qi%pool.length];answered=false;
- document.getElementById("qBadge").textContent=`${q[1]} • ${q[0]} • ${q[2].toUpperCase()}`;
- document.getElementById("qText").textContent=q[3];
- document.getElementById("feedback").textContent="";
- document.getElementById("options").innerHTML=q[4].map((o,i)=>`<button class="option" onclick="answer(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join("");
-}
-function answer(i){
- if(answered)return;answered=true;
- const q=pool[qi%pool.length],bs=[...document.querySelectorAll(".option")];
- bs.forEach(b=>b.disabled=true);data.solved++;
- if(i===q[5]){data.correct++;data.points+=q[1]==="Olympiad"?30:q[1]==="Advanced"?20:q[1]==="Challenger"?15:10;data.streak++;data.bestStreak=Math.max(data.bestStreak,data.streak);bs[i].classList.add("correct");document.getElementById("feedback").textContent="✓ Correct! "+q[6]}
- else{data.streak=0;bs[i].classList.add("wrong");bs[q[5]].classList.add("correct");document.getElementById("feedback").textContent="Not quite. "+q[6]}
- save();
-}
-function nextQuestion(){qi=(qi+1)%pool.length;renderQuestion()}
-function newSelf(){
- const choices=[
- ["A rectangle has length 12 cm and width 7 cm. Find its area and perimeter.","Area = 84 cm²; perimeter = 38 cm."],
- ["A number is increased by 20% and becomes 72. Find the original number.","60."],
- ["The angles of a triangle are in the ratio 2:3:4. Find the three angles.","40°, 60°, 80°."],
- ["A fair die is rolled twice. What is the probability that both results are even?","(3/6)×(3/6)=1/4."],
- ["Solve 2x−7=19 and show each step.","x=13."],
- ["Explain in words why the sum of two odd integers is always even.","Each odd integer can be written as 2k+1; their sum is 2(k+m+1), which is even."]
- ];
- const x=choices[Math.floor(Math.random()*choices.length)];
- document.getElementById("selfQ").textContent=x[0];document.getElementById("answerBox").textContent="Model answer: "+x[1];document.getElementById("answerBox").style.display="none";document.getElementById("selfAnswer").value="";
-}
-function resetData(){if(confirm("Reset all MathQuest progress?")){data={solved:0,correct:0,points:0,done:[],streak:0,bestStreak:0};save();}}
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
-renderTopics();newPracticeSet();newSelf();updateStats();
+
+
+/* =========================================================
+   INITIALISE
+========================================================= */
+
+renderHome();
+
+setupPractice();
+
+updateLevel();
+
+updateStats();
+
 </script>
+
 </body>
-                                                                                                                                                                </html>
+ </html>
