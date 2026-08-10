@@ -2,2376 +2,267 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07111f">
-<title>MathQuest — Level 2 Mathematics</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>MathQuest — Mathematics from Beginner to Olympiad</title>
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-:root{
-    --bg:#050b16;
-    --bg2:#091426;
-    --card:#101c30;
-    --card2:#14243d;
-    --hover:#1b3150;
-    --text:#f8fafc;
-    --muted:#94a3b8;
-    --primary:#38bdf8;
-    --primary2:#818cf8;
-    --gold:#f59e0b;
-    --green:#22c55e;
-    --red:#ef4444;
-    --border:#22324a;
-    --shadow:0 18px 50px rgba(0,0,0,.35);
-}
-
-body.light{
-    --bg:#f5f8fc;
-    --bg2:#eaf2fb;
-    --card:#ffffff;
-    --card2:#f1f6fb;
-    --hover:#e8f2fc;
-    --text:#0f172a;
-    --muted:#64748b;
-    --primary:#0284c7;
-    --primary2:#4f46e5;
-    --gold:#d97706;
-    --green:#16a34a;
-    --red:#dc2626;
-    --border:#dbe5ef;
-    --shadow:0 15px 35px rgba(15,23,42,.10);
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    min-height:100vh;
-    background:
-        radial-gradient(circle at 10% 10%,rgba(56,189,248,.10),transparent 30%),
-        radial-gradient(circle at 90% 20%,rgba(129,140,248,.09),transparent 28%),
-        radial-gradient(circle at 50% 100%,rgba(14,165,233,.07),transparent 35%),
-        var(--bg);
-    color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-    line-height:1.6;
-    overflow-x:hidden;
-}
-
-button,input,textarea,select{
-    font:inherit;
-}
-
-button{
-    -webkit-tap-highlight-color:transparent;
-}
-
-/* =========================================================
-   PREMIUM BACKGROUND
-   ========================================================= */
-
-#bgCanvas{
-    position:fixed;
-    inset:0;
-    width:100vw;
-    height:100vh;
-    z-index:-10;
-    pointer-events:none;
-}
-
-.math-grid{
-    position:fixed;
-    inset:0;
-    z-index:-9;
-    pointer-events:none;
-
-    background-image:
-        linear-gradient(rgba(56,189,248,.035) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(56,189,248,.035) 1px,transparent 1px);
-
-    background-size:55px 55px;
-
-    mask-image:radial-gradient(ellipse at center,black 15%,transparent 88%);
-
-    animation:gridMove 40s linear infinite;
-}
-
-@keyframes gridMove{
-    from{
-        background-position:0 0,0 0;
-    }
-    to{
-        background-position:55px 55px,55px 55px;
-    }
-}
-
-body::before,
-body::after{
-    content:"";
-    position:fixed;
-    width:420px;
-    height:420px;
-    border-radius:50%;
-    pointer-events:none;
-    z-index:-8;
-    filter:blur(90px);
-    opacity:.14;
-}
-
-body::before{
-    background:#38bdf8;
-    top:-180px;
-    left:-120px;
-    animation:orb1 20s ease-in-out infinite alternate;
-}
-
-body::after{
-    background:#6366f1;
-    right:-180px;
-    bottom:-180px;
-    animation:orb2 24s ease-in-out infinite alternate;
-}
-
-@keyframes orb1{
-    from{transform:translate(0,0) scale(1)}
-    to{transform:translate(160px,180px) scale(1.15)}
-}
-
-@keyframes orb2{
-    from{transform:translate(0,0) scale(1)}
-    to{transform:translate(-150px,-160px) scale(1.2)}
-}
-
-.math-symbol{
-    position:fixed;
-    z-index:-6;
-    pointer-events:none;
-    user-select:none;
-    color:var(--primary);
-    opacity:.045;
-    font-family:Georgia,"Times New Roman",serif;
-    font-weight:700;
-    animation:floatMath var(--duration) linear infinite;
-}
-
-@keyframes floatMath{
-    0%{
-        transform:translate3d(0,110vh,0) rotate(0deg);
-    }
-    50%{
-        transform:translate3d(var(--drift),45vh,0) rotate(120deg);
-    }
-    100%{
-        transform:translate3d(calc(var(--drift) * -1),-15vh,0) rotate(240deg);
-    }
-}
-
-.math-star{
-    position:fixed;
-    width:3px;
-    height:3px;
-    border-radius:50%;
-    background:var(--primary);
-    box-shadow:0 0 10px var(--primary);
-    z-index:-6;
-    pointer-events:none;
-    animation:starPulse var(--duration) ease-in-out infinite alternate;
-}
-
-@keyframes starPulse{
-    from{
-        opacity:.05;
-        transform:scale(.6);
-    }
-    to{
-        opacity:.35;
-        transform:scale(1.5);
-    }
-}
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
-header{
-    position:sticky;
-    top:0;
-    z-index:500;
-    background:rgba(5,11,22,.78);
-    backdrop-filter:blur(18px);
-    border-bottom:1px solid var(--border);
-    box-shadow:var(--shadow);
-}
-
-body.light header{
-    background:rgba(255,255,255,.82);
-}
-
-.nav{
-    max-width:1250px;
-    margin:auto;
-    padding:14px 20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-}
-
-.logo{
-    font-size:26px;
-    font-weight:900;
-    cursor:pointer;
-    color:var(--primary);
-    letter-spacing:-1px;
-}
-
-.logo span{
-    color:var(--gold);
-}
-
-.nav-actions{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-}
-
-.icon-btn{
-    border:1px solid var(--border);
-    background:var(--card);
-    color:var(--text);
-    padding:9px 14px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:700;
-    transition:.25s;
-}
-
-.icon-btn:hover{
-    background:var(--hover);
-    transform:translateY(-2px);
-}
-
-/* =========================================================
-   HERO
-   ========================================================= */
-
-.hero{
-    max-width:1250px;
-    margin:auto;
-    padding:65px 20px 35px;
-    text-align:center;
-}
-
-.badge{
-    display:inline-flex;
-    padding:7px 13px;
-    border:1px solid rgba(56,189,248,.3);
-    border-radius:999px;
-    color:var(--primary);
-    background:rgba(56,189,248,.07);
-    font-size:13px;
-    font-weight:800;
-    margin-bottom:18px;
-}
-
-.hero h1{
-    font-size:clamp(38px,7vw,72px);
-    line-height:1.05;
-    font-weight:900;
-    letter-spacing:-2px;
-}
-
-.gradient{
-    background:linear-gradient(135deg,var(--primary),var(--primary2),var(--gold));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.hero p{
-    max-width:760px;
-    margin:18px auto 0;
-    color:var(--muted);
-    font-size:18px;
-}
-
-.search{
-    max-width:750px;
-    margin:30px auto 0;
-}
-
-.search input{
-    width:100%;
-    padding:17px 22px;
-    border:1px solid var(--border);
-    border-radius:15px;
-    outline:none;
-    color:var(--text);
-    background:var(--card);
-    box-shadow:var(--shadow);
-}
-
-.search input:focus{
-    border-color:var(--primary);
-    box-shadow:0 0 0 4px rgba(56,189,248,.12);
-}
-
-/* =========================================================
-   LEVEL BAR
-   ========================================================= */
-
-.level-bar{
-    max-width:1250px;
-    margin:10px auto 25px;
-    padding:0 20px;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-}
-
-.level-btn{
-    border:1px solid var(--border);
-    background:var(--card);
-    color:var(--muted);
-    padding:14px;
-    border-radius:13px;
-    cursor:pointer;
-    font-weight:800;
-    transition:.3s;
-}
-
-.level-btn:hover,
-.level-btn.active{
-    color:var(--text);
-    border-color:var(--primary);
-    background:var(--hover);
-    box-shadow:0 0 25px rgba(56,189,248,.08);
-}
-
-.level-btn span{
-    display:block;
-    font-size:12px;
-    font-weight:500;
-    color:var(--muted);
-}
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-.container{
-    max-width:1250px;
-    margin:auto;
-    padding:0 20px 60px;
-}
-
-.dashboard{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
-    margin-bottom:35px;
-}
-
-.stat{
-    padding:20px;
-    background:rgba(16,28,48,.82);
-    border:1px solid var(--border);
-    border-radius:17px;
-    text-align:center;
-    box-shadow:var(--shadow);
-    backdrop-filter:blur(12px);
-}
-
-body.light .stat{
-    background:rgba(255,255,255,.84);
-}
-
-.stat strong{
-    display:block;
-    font-size:30px;
-    color:var(--primary);
-}
-
-.section-title{
-    margin:30px 0 18px;
-    font-size:27px;
-}
-
-.subject{
-    margin-bottom:18px;
-    border:1px solid var(--border);
-    border-radius:18px;
-    overflow:hidden;
-    background:rgba(16,28,48,.82);
-    backdrop-filter:blur(13px);
-    box-shadow:var(--shadow);
-}
-
-body.light .subject{
-    background:rgba(255,255,255,.86);
-}
-
-.subject-header{
-    width:100%;
-    border:0;
-    color:var(--text);
-    background:transparent;
-    padding:21px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    cursor:pointer;
-    text-align:left;
-}
-
-.subject-header:hover{
-    background:var(--hover);
-}
-
-.subject-left{
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.subject-icon{
-    width:55px;
-    height:55px;
-    border-radius:14px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:30px;
-    background:rgba(56,189,248,.09);
-}
-
-.subject-name{
-    font-size:20px;
-    font-weight:900;
-}
-
-.subject-description{
-    color:var(--muted);
-    font-size:13px;
-}
-
-.arrow{
-    transition:.35s;
-    color:var(--muted);
-}
-
-.subject.open .arrow{
-    transform:rotate(180deg);
-    color:var(--primary);
-}
-
-.topic-area{
-    display:none;
-    padding:0 20px 20px;
-}
-
-.subject.open .topic-area{
-    display:block;
-}
-
-.topic-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:15px;
-}
-
-.topic{
-    border:1px solid var(--border);
-    background:rgba(5,11,22,.35);
-    border-radius:15px;
-    padding:20px;
-    transition:.3s;
-}
-
-body.light .topic{
-    background:rgba(245,248,252,.75);
-}
-
-.topic:hover{
-    transform:translateY(-4px);
-    border-color:var(--primary);
-    box-shadow:0 12px 35px rgba(0,0,0,.18);
-}
-
-.topic h3{
-    color:var(--primary);
-    margin-bottom:7px;
-}
-
-.topic p{
-    color:var(--muted);
-    font-size:14px;
-}
-
-.tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px;
-    margin:13px 0;
-}
-
-.tag{
-    padding:4px 8px;
-    font-size:11px;
-    border-radius:7px;
-    color:var(--primary);
-    border:1px solid rgba(56,189,248,.2);
-    background:rgba(56,189,248,.07);
-}
-
-.difficulty{
-    color:var(--gold);
-    font-size:12px;
-    font-weight:800;
-}
-
-.study-btn{
-    width:100%;
-    margin-top:13px;
-    padding:12px;
-    border:0;
-    border-radius:11px;
-    color:white;
-    background:linear-gradient(135deg,var(--primary),var(--primary2));
-    font-weight:900;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.study-btn:hover{
-    transform:scale(1.02);
-    box-shadow:0 7px 25px rgba(56,189,248,.2);
-}
-
-/* =========================================================
-   PRACTICE PANEL
-   ========================================================= */
-
-.practice-section{
-    margin-top:45px;
-    padding:25px;
-    border:1px solid var(--border);
-    border-radius:20px;
-    background:rgba(16,28,48,.82);
-    backdrop-filter:blur(15px);
-    box-shadow:var(--shadow);
-}
-
-body.light .practice-section{
-    background:rgba(255,255,255,.86);
-}
-
-.practice-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    margin-bottom:20px;
-    flex-wrap:wrap;
-}
-
-.practice-controls{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-}
-
-.select{
-    background:var(--card);
-    border:1px solid var(--border);
-    color:var(--text);
-    padding:10px 12px;
-    border-radius:9px;
-}
-
-.question-card{
-    border:1px solid var(--border);
-    border-radius:17px;
-    padding:24px;
-    background:rgba(5,11,22,.3);
-}
-
-body.light .question-card{
-    background:#f8fafc;
-}
-
-.question-number{
-    color:var(--primary);
-    font-size:13px;
-    font-weight:900;
-    margin-bottom:8px;
-}
-
-.question-text{
-    font-size:20px;
-    font-weight:700;
-    margin-bottom:20px;
-}
-
-.options{
-    display:grid;
-    gap:9px;
-}
-
-.option{
-    padding:13px 15px;
-    border-radius:10px;
-    border:1px solid var(--border);
-    background:var(--card);
-    color:var(--text);
-    cursor:pointer;
-    text-align:left;
-    transition:.2s;
-}
-
-.option:hover{
-    border-color:var(--primary);
-    background:var(--hover);
-}
-
-.option.correct{
-    border-color:var(--green);
-    background:rgba(34,197,94,.12);
-}
-
-.option.wrong{
-    border-color:var(--red);
-    background:rgba(239,68,68,.12);
-}
-
-.answer{
-    margin-top:15px;
-    padding:13px;
-    border-radius:10px;
-    background:rgba(56,189,248,.07);
-    color:var(--muted);
-    display:none;
-}
-
-.practice-buttons{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    margin-top:20px;
-}
-
-.main-btn{
-    border:0;
-    background:var(--primary);
-    color:white;
-    padding:12px 20px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:900;
-}
-
-.main-btn.secondary{
-    background:var(--card2);
-    border:1px solid var(--border);
-    color:var(--text);
-}
-
-/* =========================================================
-   SELF DONE
-   ========================================================= */
-
-.self-done{
-    margin-top:25px;
-    padding:20px;
-    border:1px solid var(--border);
-    border-radius:15px;
-    background:rgba(56,189,248,.04);
-}
-
-.self-done textarea{
-    width:100%;
-    min-height:130px;
-    margin-top:12px;
-    resize:vertical;
-    border:1px solid var(--border);
-    border-radius:11px;
-    padding:14px;
-    background:var(--card);
-    color:var(--text);
-    outline:none;
-}
-
-.self-done textarea:focus{
-    border-color:var(--primary);
-}
-
-/* =========================================================
-   FULLSCREEN STUDY MODE
-   ========================================================= */
-
-.overlay{
-    position:fixed;
-    inset:0;
-    z-index:2000;
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-    opacity:0;
-    pointer-events:none;
-    background:rgba(2,6,23,.88);
-    backdrop-filter:blur(18px);
-    transition:opacity .7s cubic-bezier(.16,1,.3,1);
-}
-
-.overlay.active{
-    opacity:1;
-    pointer-events:auto;
-}
-
-.study-modal{
-    width:100vw;
-    height:100vh;
-    overflow-y:auto;
-    background:
-        radial-gradient(circle at 10% 0%,rgba(56,189,248,.06),transparent 32%),
-        radial-gradient(circle at 100% 100%,rgba(99,102,241,.06),transparent 35%),
-        var(--card);
-    transform:translateY(100%);
-    transition:transform 1s cubic-bezier(.16,1,.3,1);
-    position:relative;
-}
-
-.overlay.active .study-modal{
-    transform:translateY(0);
-}
-
-.study-modal::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    background-image:
-        linear-gradient(rgba(56,189,248,.025) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(56,189,248,.025) 1px,transparent 1px);
-    background-size:45px 45px;
-    animation:gridMove 45s linear infinite;
-}
-
-.study-header{
-    position:sticky;
-    top:0;
-    z-index:10;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    padding:20px 30px;
-    border-bottom:1px solid var(--border);
-    background:rgba(16,28,48,.9);
-    backdrop-filter:blur(18px);
-}
-
-body.light .study-header{
-    background:rgba(255,255,255,.92);
-}
-
-.study-header h2{
-    color:var(--primary);
-}
-
-.study-header small{
-    color:var(--muted);
-}
-
-.study-content{
-    position:relative;
-    z-index:2;
-    max-width:950px;
-    margin:auto;
-    padding:45px 25px 100px;
-}
-
-.study-hero{
-    padding:30px;
-    border:1px solid var(--border);
-    border-radius:20px;
-    background:rgba(56,189,248,.035);
-    margin-bottom:25px;
-}
-
-.study-hero h1{
-    font-size:36px;
-    margin-bottom:10px;
-}
-
-.lesson-card{
-    border:1px solid var(--border);
-    border-radius:15px;
-    padding:22px;
-    margin-bottom:15px;
-    background:rgba(5,11,22,.3);
-}
-
-body.light .lesson-card{
-    background:#f8fafc;
-}
-
-.lesson-card h3{
-    color:var(--gold);
-    margin-bottom:7px;
-}
-
-.formula{
-    padding:18px;
-    margin:14px 0;
-    border-radius:11px;
-    background:rgba(56,189,248,.08);
-    border-left:4px solid var(--primary);
-    font-family:Georgia,serif;
-    font-size:19px;
-}
-
-.example{
-    padding:15px;
-    margin-top:12px;
-    border-radius:10px;
-    background:rgba(34,197,94,.06);
-    border:1px solid rgba(34,197,94,.15);
-}
-
-.study-footer{
-    display:flex;
-    gap:10px;
-    margin-top:30px;
-}
-
-footer{
-    text-align:center;
-    padding:35px;
-    color:var(--muted);
-    border-top:1px solid var(--border);
-}
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media(max-width:850px){
-    .dashboard{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .level-bar{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-@media(max-width:600px){
-    .dashboard{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .hero{
-        padding-top:45px;
-    }
-
-    .hero h1{
-        font-size:42px;
-    }
-
-    .study-header{
-        padding:15px;
-    }
-
-    .study-header h2{
-        font-size:19px;
-    }
-
-    .study-content{
-        padding:25px 16px 70px;
-    }
-
-    .study-hero h1{
-        font-size:28px;
-    }
-
-    .nav{
-        padding:11px 13px;
-    }
-
-    .logo{
-        font-size:21px;
-    }
-
-    .icon-btn{
-        padding:8px 9px;
-        font-size:12px;
-    }
-}
+:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#667085;--primary:#5b5cf0;--primary2:#8b5cf6;--border:#e5e7ef;--good:#16a34a;--bad:#dc2626;--gold:#f59e0b;--shadow:0 12px 35px rgba(20,30,60,.09)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+body.dark{--bg:#090e1b;--card:#121a2c;--text:#eef2ff;--muted:#9ba8bf;--border:#28334d;--shadow:0 15px 40px rgba(0,0,0,.28)}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}body.dark .top{background:rgba(9,14,27,.9)}
+.nav{max-width:1250px;margin:auto;padding:12px 18px;display:flex;align-items:center;gap:12px}.logo{font-size:23px;font-weight:950;color:var(--primary);white-space:nowrap}.logo span{color:var(--text)}
+.navlinks{display:flex;gap:4px;margin-left:auto}.navlinks button,.icon{padding:9px 11px;border-radius:10px;background:transparent;color:var(--text);font-weight:750}.navlinks button:hover,.icon:hover{background:var(--border)}.icon{font-size:18px}
+main{max-width:1250px;margin:auto;padding:28px 18px 70px}.panel{display:none}.panel.active{display:block}
+.hero{position:relative;overflow:hidden;padding:48px 38px;border-radius:28px;background:linear-gradient(135deg,#101827,#312e81 55%,#7c3aed);color:#fff;box-shadow:var(--shadow)}.hero:after{content:"∑  π  √  ∞  x²  ∫";position:absolute;right:15px;bottom:4px;font-size:50px;opacity:.11;letter-spacing:12px}.hero h1{font-size:clamp(36px,6vw,68px);margin:0 0 10px;line-height:1.05}.hero p{max-width:780px;color:#dbe4ff;font-size:18px;line-height:1.65}.heroBtns{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.primary,.secondary{padding:13px 18px;border-radius:12px;font-weight:850}.primary{background:#fff;color:#312e81}.secondary{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.section{margin-top:30px}.sectionHead{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:15px}.section h2{margin:0;font-size:27px}.muted{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}.stat,.card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow)}.stat{padding:17px}.stat b{display:block;font-size:26px;margin-top:6px}.progress{height:8px;background:var(--border);border-radius:20px;overflow:hidden;margin-top:10px}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--primary2));border-radius:20px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{padding:20px}.topic{transition:.18s}.topic:hover{transform:translateY(-3px)}.emoji{font-size:34px}.topic h3{margin:11px 0 6px}.topic p{color:var(--muted);line-height:1.55}.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.tag{font-size:12px;padding:5px 8px;border-radius:20px;background:rgba(91,92,240,.1);color:var(--primary);font-weight:800}.topic button,.primaryBtn{margin-top:14px;width:100%;padding:11px;border-radius:10px;background:var(--primary);color:#fff;font-weight:850}
+.searchbar{display:flex;gap:9px;flex-wrap:wrap}.searchbar input,.searchbar select{padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);outline:none}.searchbar input{width:min(420px,100%)}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.level{padding:15px;border-radius:14px;border:1px solid var(--border);background:var(--card);text-align:center}.level strong{display:block}.level small{color:var(--muted)}
+.practiceGrid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}.practiceCard{padding:25px}.question{font-size:21px;font-weight:850;line-height:1.5}.options{display:grid;gap:9px;margin-top:18px}.option{padding:12px;border:1px solid var(--border);background:transparent;color:var(--text);border-radius:11px;text-align:left}.option:hover{border-color:var(--primary)}.option.correct{border-color:var(--good);background:rgba(22,163,74,.12)}.option.wrong{border-color:var(--bad);background:rgba(220,38,38,.1)}.option:disabled{cursor:default}.feedback{min-height:28px;font-weight:800;margin-top:14px}.next,.back{margin-top:12px;padding:11px 16px;border-radius:10px;background:var(--text);color:var(--card);font-weight:850}.back{margin:0 0 18px;background:var(--card);border:1px solid var(--border);color:var(--text)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.tab{padding:10px 13px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--text);font-weight:800}.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.lesson{line-height:1.7}.formula{padding:15px;border-left:4px solid var(--primary);background:rgba(91,92,240,.08);border-radius:10px;font-size:18px;font-weight:800;margin:15px 0}.example{padding:17px;border:1px solid var(--border);border-radius:14px;margin-top:12px}
+.badge{display:inline-block;padding:6px 9px;border-radius:20px;background:rgba(245,158,11,.14);color:#b76a00;font-weight:850;font-size:12px}.empty{text-align:center;padding:40px;color:var(--muted)}
+.self textarea{width:100%;min-height:100px;margin-top:12px;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);resize:vertical}.answerBox{margin-top:12px;padding:12px;border-radius:10px;background:rgba(91,92,240,.08);display:none}
+.table{width:100%;border-collapse:collapse}.table th,.table td{padding:11px;border-bottom:1px solid var(--border);text-align:left}.footer{text-align:center;color:var(--muted);padding:35px 10px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modal.open{display:flex}.modalBox{max-width:720px;width:100%;max-height:88vh;overflow:auto;background:var(--card);color:var(--text);border-radius:20px;padding:24px}.close{float:right;padding:8px 11px;border-radius:9px;background:var(--border);color:var(--text)}
+@media(max-width:950px){.grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(3,1fr)}.practiceGrid{grid-template-columns:1fr}.levels{grid-template-columns:repeat(3,1fr)}.navlinks button{display:none}}
+@media(max-width:600px){.grid,.stats{grid-template-columns:1fr}.levels{grid-template-columns:1fr 1fr}.hero{padding:34px 22px}.nav{padding:10px}.logo{font-size:20px}}
 </style>
 </head>
-
 <body>
+<header class="top"><nav class="nav">
+<div class="logo">∑ <span>MathQuest</span></div>
+<div class="navlinks">
+<button onclick="show('home')">Home</button><button onclick="show('learn')">Learn</button><button onclick="show('practice')">Practice</button><button onclick="show('progress')">Progress</button>
+</div><button class="icon" onclick="toggleDark()" title="Dark mode">◐</button>
+</nav></header>
 
-<canvas id="bgCanvas"></canvas>
+<main>
+<section id="home" class="panel active">
+<div class="hero"><h1>Master Mathematics.</h1><p>Learn from the first idea, practise with feedback, build competency, and climb through Beginner, Explorer, Challenger, Advanced and Olympiad levels.</p>
+<div class="heroBtns"><button class="primary" onclick="show('learn')">Start Learning →</button><button class="secondary" onclick="show('practice')">⚡ Practice Arena</button></div></div>
 
-<div class="math-grid"></div>
+<div class="section"><div class="sectionHead"><h2>Your Quest</h2><span class="muted">Saved automatically on this device</span></div>
+<div class="stats">
+<div class="stat">Topics explored<b id="done">0</b><div class="progress"><i id="doneBar" style="width:0%"></i></div></div>
+<div class="stat">Questions solved<b id="solved">0</b></div><div class="stat">Correct<b id="correct">0</b></div>
+<div class="stat">Accuracy<b id="accuracy">0%</b></div><div class="stat">Quest points<b id="points">0</b></div>
+</div></div>
 
-<div class="math-symbol" style="left:4%;--duration:28s;--drift:70px;font-size:55px">π</div>
-<div class="math-symbol" style="left:15%;--duration:34s;--drift:-90px;font-size:48px">∑</div>
-<div class="math-symbol" style="left:27%;--duration:30s;--drift:80px;font-size:52px">√</div>
-<div class="math-symbol" style="left:40%;--duration:37s;--drift:-70px;font-size:45px">∞</div>
-<div class="math-symbol" style="left:53%;--duration:31s;--drift:100px;font-size:58px">∫</div>
-<div class="math-symbol" style="left:67%;--duration:35s;--drift:-80px;font-size:46px">θ</div>
-<div class="math-symbol" style="left:80%;--duration:29s;--drift:90px;font-size:54px">x²</div>
-<div class="math-symbol" style="left:92%;--duration:39s;--drift:-60px;font-size:48px">Δ</div>
+<div class="section"><h2>Difficulty ladder</h2><div class="levels">
+<div class="level"><strong>🌱 Beginner</strong><small>Foundations</small></div><div class="level"><strong>📘 Explorer</strong><small>Core skills</small></div><div class="level"><strong>🔥 Challenger</strong><small>Harder reasoning</small></div><div class="level"><strong>🏆 Advanced</strong><small>Deep problem solving</small></div><div class="level"><strong>👑 Olympiad</strong><small>Elite thinking</small></div>
+</div></div>
 
-<header>
-    <div class="nav">
-        <div class="logo" onclick="scrollTopPage()">
-            📐 Math<span>Quest</span>
-        </div>
-
-        <div class="nav-actions">
-            <button class="icon-btn" onclick="toggleTheme()">🌙 Theme</button>
-            <button class="icon-btn" onclick="resetProgress()">↻ Reset</button>
-        </div>
-    </div>
-</header>
-
-<section class="hero">
-
-    <div class="badge">
-        🚀 LEVEL 2 MATHEMATICS
-    </div>
-
-    <h1>
-        Learn.
-        <span class="gradient">Think.</span>
-        Master.
-    </h1>
-
-    <p>
-        From strong school-level foundations to advanced problem solving
-        and Olympiad-style thinking.
-    </p>
-
-    <div class="search">
-        <input
-            id="search"
-            type="search"
-            placeholder="Search Algebra, Trigonometry, Probability, Geometry..."
-            oninput="searchTopics()"
-        >
-    </div>
-
+<div class="section"><div class="card"><h3>What you can do</h3><p class="muted">Study definitions and examples, open subtopics, practise MCQs, solve competency questions, write your own solution, use hints, track accuracy, earn points, search the library and switch between light and dark mode.</p></div></div>
 </section>
 
-<div class="level-bar">
+<section id="learn" class="panel">
+<button class="back" onclick="show('home')">← Home</button>
+<div class="sectionHead"><div><h2>Math Library</h2><p class="muted">11 subjects • 100+ subtopics • progressive levels</p></div>
+<div class="searchbar"><input id="search" placeholder="Search subject or topic…" oninput="filterTopics()"><select id="levelFilter" onchange="filterTopics()"><option value="">All levels</option><option>Beginner</option><option>Explorer</option><option>Challenger</option><option>Advanced</option><option>Olympiad</option></select></div></div>
+<div class="grid" id="topicGrid"></div>
+</section>
 
-    <button class="level-btn active" onclick="setLevel('Level 2',this)">
-        🟢 Level 2
-        <span>Strong foundations</span>
-    </button>
+<section id="topic" class="panel">
+<button class="back" onclick="show('learn')">← All subjects</button><div id="topicContent"></div>
+</section>
 
-    <button class="level-btn" onclick="setLevel('School',this)">
-        🔵 School
-        <span>Class 8–10 concepts</span>
-    </button>
+<section id="practice" class="panel">
+<button class="back" onclick="show('home')">← Home</button>
+<div class="sectionHead"><div><h2>Practice Arena ⚡</h2><p class="muted">MCQ • Competency • Language • Challenge • Self-done</p></div>
+<div class="searchbar"><select id="practiceType" onchange="newPracticeSet()"><option value="all">All question types</option><option value="mcq">MCQ</option><option value="competency">Competency</option><option value="language">Language</option><option value="challenge">Challenge</option></select></div></div>
+<div class="tabs"><button class="tab active" id="tabEasy" onclick="setDifficulty('Beginner')">Beginner</button><button class="tab" id="tabExp" onclick="setDifficulty('Explorer')">Explorer</button><button class="tab" id="tabCh" onclick="setDifficulty('Challenger')">Challenger</button><button class="tab" id="tabAdv" onclick="setDifficulty('Advanced')">Advanced</button><button class="tab" id="tabOly" onclick="setDifficulty('Olympiad')">Olympiad</button></div>
+<div class="practiceGrid">
+<div class="card practiceCard"><span class="badge" id="qBadge">Beginner • Arithmetic</span><div class="question" id="qText"></div><div class="options" id="options"></div><div class="feedback" id="feedback"></div><button class="next" onclick="nextQuestion()">Next question →</button></div>
+<div class="card practiceCard self"><h3>✍️ Self-done question</h3><p class="muted">Solve it yourself, then reveal the model answer.</p><div class="question" id="selfQ"></div><textarea id="selfAnswer" placeholder="Write your working here…"></textarea><button class="next" onclick="document.getElementById('answerBox').style.display='block'">Reveal model answer</button><div class="answerBox" id="answerBox"></div><button class="next" onclick="newSelf()">New self-done question</button></div>
+</div></section>
 
-    <button class="level-btn" onclick="setLevel('Advanced',this)">
-        🟣 Advanced
-        <span>Hard problem solving</span>
-    </button>
-
-    <button class="level-btn" onclick="setLevel('Olympiad',this)">
-        🟠 Olympiad
-        <span>Challenge thinking</span>
-    </button>
-
-</div>
-
-<main class="container">
-
-    <div class="dashboard">
-
-        <div class="stat">
-            <strong id="completed">0</strong>
-            Completed
-        </div>
-
-        <div class="stat">
-            <strong id="total">180</strong>
-            Questions
-        </div>
-
-        <div class="stat">
-            <strong id="score">0</strong>
-            Correct
-        </div>
-
-        <div class="stat">
-            <strong id="percent">0%</strong>
-            Accuracy
-        </div>
-
-    </div>
-
-    <h2 class="section-title">
-        🗺️ Mathematics Roadmap
-    </h2>
-
-    <div id="subjects"></div>
-
-    <section class="practice-section" id="practice">
-
-        <div class="practice-top">
-
-            <div>
-                <h2>🧠 Practice Arena</h2>
-                <p style="color:var(--muted)">
-                    30 questions for every major topic.
-                    Includes normal, competency and language-based problems.
-                </p>
-            </div>
-
-            <div class="practice-controls">
-
-                <select id="practiceTopic" class="select">
-                </select>
-
-                <select id="questionType" class="select">
-                    <option value="all">All Questions</option>
-                    <option value="normal">Normal</option>
-                    <option value="competency">Competency</option>
-                    <option value="language">Language</option>
-                    <option value="olympiad">Olympiad</option>
-                </select>
-
-            </div>
-
-        </div>
-
-        <div id="questionBox"></div>
-
-        <div class="self-done">
-
-            <h3>✍️ Self-Done Question</h3>
-
-            <p style="color:var(--muted)">
-                Write your own solution, working, or a question you want
-                to solve later. Your note is saved on this device.
-            </p>
-
-            <textarea
-                id="selfNote"
-                placeholder="Write your solution or create your own question..."
-                oninput="saveSelfNote()"
-            ></textarea>
-
-        </div>
-
-    </section>
-
+<section id="progress" class="panel">
+<button class="back" onclick="show('home')">← Home</button>
+<div class="card"><h2>Progress Dashboard</h2><p class="muted">Your results are stored locally in your browser.</p>
+<table class="table"><tr><th>Metric</th><th>Value</th></tr><tr><td>Questions solved</td><td id="pSolved">0</td></tr><tr><td>Correct</td><td id="pCorrect">0</td></tr><tr><td>Accuracy</td><td id="pAcc">0%</td></tr><tr><td>Points</td><td id="pPoints">0</td></tr><tr><td>Subjects explored</td><td id="pDone">0</td></tr></table>
+<button class="next" onclick="resetData()">Reset all progress</button></div></section>
 </main>
 
-<footer>
-    <strong>MathQuest</strong> — Learn mathematics by understanding,
-    practicing and thinking.
-</footer>
-
-<!-- =====================================================
-     FULLSCREEN STUDY MODE
-     ===================================================== -->
-
-<div class="overlay" id="studyOverlay">
-
-    <div class="study-modal">
-
-        <div class="study-header">
-
-            <div>
-                <h2 id="studyTitle">Topic</h2>
-                <small id="studyCategory">Mathematics</small>
-            </div>
-
-            <button
-                class="icon-btn"
-                onclick="closeStudy()">
-                ✕ Exit
-            </button>
-
-        </div>
-
-        <div class="study-content" id="studyContent"></div>
-
-    </div>
-
-</div>
+<div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()">✕</button><div id="modalContent"></div></div></div>
+<div class="footer">MathQuest © 2026 • Learn • Practise • Think • Master</div>
 
 <script>
-
-/* =========================================================
-   BACKGROUND ANIMATION
-   ========================================================= */
-
-const canvas=document.getElementById("bgCanvas");
-const ctx=canvas.getContext("2d");
-
-let particles=[];
-let mouse={x:null,y:null};
-
-function resizeCanvas(){
-
-    const dpr=Math.min(window.devicePixelRatio||1,2);
-
-    canvas.width=innerWidth*dpr;
-    canvas.height=innerHeight*dpr;
-
-    canvas.style.width=innerWidth+"px";
-    canvas.style.height=innerHeight+"px";
-
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-}
-
-resizeCanvas();
-
-window.addEventListener("resize",resizeCanvas);
-
-window.addEventListener("mousemove",e=>{
-    mouse.x=e.clientX;
-    mouse.y=e.clientY;
-});
-
-window.addEventListener("mouseleave",()=>{
-    mouse.x=null;
-    mouse.y=null;
-});
-
-class Particle{
-
-    constructor(){
-
-        this.x=Math.random()*innerWidth;
-        this.y=Math.random()*innerHeight;
-
-        this.vx=(Math.random()-.5)*.18;
-        this.vy=(Math.random()-.5)*.18;
-
-        this.radius=Math.random()*1.5+.4;
-        this.alpha=Math.random()*.22+.04;
-    }
-
-    update(){
-
-        this.x+=this.vx;
-        this.y+=this.vy;
-
-        if(this.x<-20)this.x=innerWidth+20;
-        if(this.x>innerWidth+20)this.x=-20;
-
-        if(this.y<-20)this.y=innerHeight+20;
-        if(this.y>innerHeight+20)this.y=-20;
-
-        if(mouse.x!==null){
-
-            let dx=mouse.x-this.x;
-            let dy=mouse.y-this.y;
-            let d=Math.sqrt(dx*dx+dy*dy);
-
-            if(d<180){
-
-                this.x+=dx*.0003;
-                this.y+=dy*.0003;
-
-            }
-        }
-    }
-
-    draw(){
-
-        ctx.beginPath();
-
-        ctx.arc(
-            this.x,
-            this.y,
-            this.radius,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fillStyle=
-            `rgba(56,189,248,${this.alpha})`;
-
-        ctx.fill();
-    }
-}
-
-function createParticles(){
-
-    particles=[];
-
-    let amount=
-        innerWidth<600 ? 35 :
-        innerWidth<1000 ? 55 :
-        85;
-
-    for(let i=0;i<amount;i++){
-        particles.push(new Particle());
-    }
-}
-
-createParticles();
-
-window.addEventListener("resize",createParticles);
-
-function drawConnections(){
-
-    for(let i=0;i<particles.length;i++){
-
-        for(let j=i+1;j<particles.length;j++){
-
-            const a=particles[i];
-            const b=particles[j];
-
-            const dx=a.x-b.x;
-            const dy=a.y-b.y;
-
-            const d=Math.sqrt(dx*dx+dy*dy);
-
-            if(d<115){
-
-                ctx.beginPath();
-                ctx.moveTo(a.x,a.y);
-                ctx.lineTo(b.x,b.y);
-
-                ctx.strokeStyle=
-                    `rgba(56,189,248,${(1-d/115)*.075})`;
-
-                ctx.lineWidth=.6;
-                ctx.stroke();
-            }
-        }
-    }
-}
-
-function animate(){
-
-    ctx.clearRect(0,0,innerWidth,innerHeight);
-
-    particles.forEach(p=>{
-        p.update();
-        p.draw();
-    });
-
-    drawConnections();
-
-    requestAnimationFrame(animate);
-}
-
-animate();
-
-function createStars(){
-
-    const amount=innerWidth<600?18:35;
-
-    for(let i=0;i<amount;i++){
-
-        const star=document.createElement("div");
-
-        star.className="math-star";
-
-        star.style.left=Math.random()*100+"%";
-        star.style.top=Math.random()*100+"%";
-
-        star.style.setProperty(
-            "--duration",
-            (3+Math.random()*5)+"s"
-        );
-
-        document.body.appendChild(star);
-    }
-}
-
-createStars();
-
-
-/* =========================================================
-   TOPICS
-   ========================================================= */
-
-const TOPICS={
-
-algebra:{
-    icon:"𝑥",
-    title:"Advanced Algebra",
-    description:"Equations, identities, polynomials, inequalities and powerful algebraic thinking.",
-    tags:["Equations","Polynomials","Inequalities","Sequences","Olympiad"],
-    lessons:[
-        ["Linear & Quadratic Thinking",
-        "Move beyond simply solving equations. Learn how equations represent relationships and how roots connect with graphs.",
-        "ax² + bx + c = 0"],
-        ["Algebraic Identities",
-        "Use identities to simplify expressions, factor difficult terms and discover hidden structures.",
-        "(a+b)² = a² + 2ab + b²"],
-        ["Polynomials",
-        "Understand factors, zeros, remainders and relationships between coefficients and roots.",
-        "If P(a)=0, then (x-a) is a factor of P(x)."],
-        ["Inequalities",
-        "Learn how signs change when multiplying or dividing by negative numbers and how to solve compound inequalities.",
-        "x² ≥ 0"],
-        ["Sequences & Patterns",
-        "Recognise arithmetic and geometric patterns and develop formulas instead of calculating every term.",
-        "aₙ = a + (n−1)d"],
-        ["Olympiad Algebra",
-        "Use substitutions, symmetry, factorisation and clever inequalities to solve unfamiliar problems."]
-    ]
-},
-
-geometry:{
-    icon:"📐",
-    title:"Hard Geometry",
-    description:"Triangles, circles, similarity, coordinates, transformations and proof-based geometry.",
-    tags:["Triangles","Circles","Similarity","Coordinates","Proof"],
-    lessons:[
-        ["Triangle Geometry",
-        "Study angle relationships, medians, altitudes, angle bisectors and important triangle centres.",
-        "Area = ½bh"],
-        ["Similarity",
-        "Similar figures have the same shape. Corresponding sides are proportional and corresponding angles are equal.",
-        "a/b = c/d"],
-        ["Circle Geometry",
-        "Explore chords, tangents, cyclic quadrilaterals and angle relationships in circles.",
-        "Angle in semicircle = 90°"],
-        ["Coordinate Geometry",
-        "Convert geometry into algebra using distance, midpoint and section formulas.",
-        "d = √((x₂−x₁)²+(y₂−y₁)²)"],
-        ["Transformations",
-        "Understand reflections, rotations, translations and dilations mathematically.",
-        "Rotation preserves distance."],
-        ["Olympiad Geometry",
-        "Learn to search for hidden triangles, auxiliary lines, symmetry and invariant angles."]
-    ]
-},
-
-mensuration:{
-    icon:"📏",
-    title:"Advanced Mensuration",
-    description:"Complex areas, volumes, composite figures and real-world measurement problems.",
-    tags:["Area","Volume","Surface Area","Composite","3D"],
-    lessons:[
-        ["Composite Areas",
-        "Break complicated shapes into rectangles, triangles, circles and sectors.",
-        "Total Area = Sum of component areas"],
-        ["Circles & Sectors",
-        "Work with circumference, area, sectors and arcs.",
-        "A = πr²"],
-        ["Surface Area",
-        "Understand curved and total surface area of cylinders, cones and spheres.",
-        "CSA(cylinder)=2πrh"],
-        ["Volumes",
-        "Use volume formulas and understand how scaling affects volume.",
-        "V(cylinder)=πr²h"],
-        ["Frustums & Composite Solids",
-        "Solve harder problems involving combined and truncated solids.",
-        "Volume = volume of large solid − volume removed"],
-        ["Olympiad Mensuration",
-        "Use ratios, similarity and clever decomposition instead of memorising dozens of formulas."]
-    ]
-},
-
-trigonometry:{
-    icon:"θ",
-    title:"Advanced Trigonometry",
-    description:"Ratios, identities, equations, heights, distances and Olympiad trigonometric thinking.",
-    tags:["Ratios","Identities","Equations","Heights","Olympiad"],
-    lessons:[
-        ["Trigonometric Ratios",
-        "Understand sine, cosine and tangent as relationships between sides of a right triangle.",
-        "sin θ = opposite/hypotenuse"],
-        ["Special Angles",
-        "Build strong understanding of 0°, 30°, 45°, 60° and 90° rather than relying only on memorisation.",
-        "sin 45° = 1/√2"],
-        ["Identities",
-        "Use identities to transform complicated expressions.",
-        "sin²θ + cos²θ = 1"],
-        ["Trigonometric Equations",
-        "Solve equations involving sine, cosine and tangent while considering all possible angles.",
-        "sin θ = 1/2"],
-        ["Heights & Distances",
-        "Translate real-world situations into right triangles and trigonometric equations."],
-        ["Olympiad Trigonometry",
-        "Use identities, substitutions, symmetry and bounds to attack unusual problems."]
-    ]
-},
-
-probability:{
-    icon:"🎲",
-    title:"Advanced Probability",
-    description:"Counting, conditional probability, independent events and strategic probability.",
-    tags:["Counting","Events","Conditional","Expected","Olympiad"],
-    lessons:[
-        ["Basic Probability",
-        "Probability measures how likely an event is.",
-        "P(E)=favourable outcomes/total outcomes"],
-        ["Counting",
-        "Use systematic counting, multiplication principle, permutations and combinations.",
-        "nCr = n!/[r!(n−r)!]"],
-        ["Independent Events",
-        "For independent events, the occurrence of one does not change the probability of the other.",
-        "P(A∩B)=P(A)P(B)"],
-        ["Conditional Probability",
-        "Calculate probability when additional information is already known.",
-        "P(A|B)=P(A∩B)/P(B)"],
-        ["Expected Value",
-        "Find the long-run average outcome of a random experiment.",
-        "E(X)=ΣxP(x)"],
-        ["Olympiad Probability",
-        "Use complementary events, symmetry, counting and careful case analysis."]
-    ]
-},
-
-numberTheory:{
-    icon:"ℕ",
-    title:"Number Theory",
-    description:"Divisibility, primes, modular arithmetic, patterns and Olympiad number problems.",
-    tags:["Primes","Divisibility","HCF","LCM","Modulo"],
-    lessons:[
-        ["Prime Numbers",
-        "Understand primes, composite numbers and unique prime factorisation.",
-        "Every integer > 1 has a unique prime factorisation."],
-        ["Divisibility",
-        "Develop quick tests and logical methods for proving divisibility."],
-        ["HCF & LCM",
-        "Connect greatest common factors and least common multiples with prime factorisation.",
-        "HCF × LCM = product of two positive integers"],
-        ["Modular Arithmetic",
-        "Study remainders systematically.",
-        "17 ≡ 2 (mod 5)"],
-        ["Diophantine Thinking",
-        "Solve equations where variables are restricted to integers."],
-        ["Olympiad Number Theory",
-        "Use parity, modular arithmetic, factorisation and contradiction."]
-    ]
-}
-
+const levels=["Beginner","Explorer","Challenger","Advanced","Olympiad"];
+const topics=[
+{e:"🔢",n:"Arithmetic",d:"Build number sense from counting to percentages, ratios and real-life calculations.",s:["Counting & Number Sense","Place Value","Addition & Subtraction","Multiplication & Division","Factors & Multiples","Fractions","Decimals","Percentages","Ratio & Proportion","Unitary Method","Average","Profit & Loss","Simple Interest","Speed, Time & Distance","Powers & Roots","Estimation"],f:"Start with quantities, operations and everyday numerical reasoning."},
+{e:"🧮",n:"Number Systems",d:"Understand the structure and properties of natural, integer, rational, irrational and real numbers.",s:["Natural Numbers","Whole Numbers","Integers","Rational Numbers","Irrational Numbers","Real Numbers","HCF & LCM","Euclid's Algorithm","Prime Factorisation","Laws of Exponents","Surds","Decimal Expansions","Number Line","Divisibility","Congruences"],f:"Numbers are objects with patterns and properties, not just answers."},
+{e:"✖️",n:"Algebra",d:"Use symbols, patterns, equations and functions to model and solve problems.",s:["Variables & Expressions","Like Terms","Algebraic Identities","Linear Equations","Pair of Linear Equations","Polynomials","Factorisation","Quadratic Equations","Sequences","Arithmetic Progression","Inequalities","Functions","Graphs","Word Problems","Systems of Equations"],f:"Algebra turns unknown quantities and patterns into precise mathematical language."},
+{e:"📐",n:"Geometry",d:"Develop visual reasoning through angles, triangles, circles, coordinates, constructions and proofs.",s:["Lines & Angles","Triangles","Congruence","Similarity","Quadrilaterals","Polygons","Circles","Tangents","Coordinate Geometry","Distance Formula","Section Formula","Constructions","Proofs","Locus","Advanced Geometry"],f:"Geometry is about relationships between shapes, measurements and logical proof."},
+{e:"📏",n:"Mensuration",d:"Calculate perimeter, area, surface area and volume of common and composite figures.",s:["Perimeter","Area","Triangle Area","Heron's Formula","Circle Measures","Sector & Segment","Cuboid","Cube","Cylinder","Cone","Sphere","Hemisphere","Frustum","Composite Figures","Unit Conversion"],f:"Mensuration connects geometry with measurement and real-world quantities."},
+{e:"📐",n:"Trigonometry",d:"Connect angles and side lengths, then use identities, equations and graphs to solve harder problems.",s:["Trigonometric Ratios","Standard Angles","Trigonometric Values","Identities","Complementary Angles","Heights & Distances","Trigonometric Equations","Graphs","Inverse Trigonometry","Sine Rule","Cosine Rule","Area Formula","Mixed Problems","Proofs"],f:"Trigonometry links geometry, algebra and measurement through angle relationships."},
+{e:"📊",n:"Statistics",d:"Represent, calculate and interpret data rather than merely reading numbers.",s:["Data Collection","Frequency Tables","Bar Graphs","Pie Charts","Histograms","Mean","Median","Mode","Range","Grouped Data","Cumulative Frequency","Quartiles","Interpretation","Comparative Data"],f:"Statistics asks what data says, how reliable it is, and how quantities compare."},
+{e:"🎲",n:"Probability",d:"Reason about chance, sample spaces, events and compound outcomes.",s:["Experiments","Outcomes","Sample Space","Events","Classical Probability","Complement","Independent Events","Dependent Events","Compound Events","Counting Methods","Conditional Probability","Expected Value","Probability Trees"],f:"Probability measures uncertainty using structured counting and logical reasoning."},
+{e:"∫",n:"Calculus",d:"Study change, limits, derivatives, areas and mathematical models of continuous quantities.",s:["Functions","Limits","Continuity","Derivative from First Principles","Rules of Differentiation","Applications of Derivatives","Maxima & Minima","Integration","Definite Integrals","Area Under Curves","Differential Equations","Sequences & Limits"],f:"Calculus provides a language for change and accumulation."},
+{e:"♟️",n:"Discrete Mathematics",d:"Explore logic, sets, combinatorics, graph theory, recurrence and mathematical structures.",s:["Logic","Propositions","Sets","Relations","Functions","Counting","Permutations","Combinations","Graph Theory","Trees","Recurrence Relations","Algorithms","Boolean Algebra","Number Theory"],f:"Discrete mathematics studies countable structures used throughout computer science."},
+{e:"🧠",n:"Advanced Mathematics",d:"Train for proof-heavy and Olympiad-style problem solving.",s:["Inequalities","AM-GM","Cauchy-Schwarz","Functional Equations","Advanced Geometry","Combinatorics","Number Theory","Modular Arithmetic","Sequences","Invariants","Pigeonhole Principle","Proof by Contradiction","Induction","Extremal Principle","Olympiad Strategy"],f:"The goal here is not speed alone: it is elegant reasoning, proof and insight."}
+];
+
+const lessons={
+"Arithmetic":{def:"Arithmetic is the study of numbers and the basic operations performed on them.",formula:"Order of operations: Brackets → Powers → Division/Multiplication → Addition/Subtraction.",example:"For 18 + 6 × 4, multiply first: 6 × 4 = 24, so the answer is 42.",tip:"Estimate first. If your exact answer is wildly different from your estimate, recheck."},
+"Number Systems":{def:"A number system is a way of classifying and working with numbers according to their properties.",formula:"For positive integers a and b: a = bq + r, where 0 ≤ r < b.",example:"23 ÷ 5 gives quotient 4 and remainder 3, so 23 = 5×4 + 3.",tip:"When proving a number property, state exactly which set of numbers you are considering."},
+"Algebra":{def:"Algebra uses symbols to represent quantities and relationships.",formula:"(a+b)² = a² + 2ab + b²;  (a-b)² = a² - 2ab + b².",example:"If x+3=11, subtract 3 from both sides: x=8.",tip:"Whatever operation you apply to one side of an equation must also be applied to the other."},
+"Geometry":{def:"Geometry studies shapes, sizes, positions, angles and the relationships between them.",formula:"Angles of a triangle add to 180°; Pythagoras: a²+b²=c² for a right triangle.",example:"If two triangle angles are 50° and 60°, the third is 70°.",tip:"Draw a labelled diagram before starting a geometry proof."},
+"Mensuration":{def:"Mensuration is the measurement of geometric figures.",formula:"Rectangle area = l×w; circle area = πr²; cylinder volume = πr²h.",example:"A 7 cm by 4 cm rectangle has area 28 cm².",tip:"Always check units and whether the question asks for length, area or volume."},
+"Trigonometry":{def:"Trigonometry studies relationships between angles and sides, especially in triangles.",formula:"sin θ = opposite/hypotenuse; cos θ = adjacent/hypotenuse; tan θ = opposite/adjacent.",example:"For a right triangle with opposite 3 and hypotenuse 5, sin θ=3/5.",tip:"Label opposite, adjacent and hypotenuse relative to the chosen angle."},
+"Statistics":{def:"Statistics is the collection, organisation, analysis and interpretation of data.",formula:"Mean = sum of observations ÷ number of observations.",example:"The mean of 4, 6 and 8 is 18/3 = 6.",tip:"A mean can be strongly affected by an unusually large or small value."},
+"Probability":{def:"Probability measures how likely an event is to occur.",formula:"For equally likely outcomes, P(E)=favourable outcomes/total outcomes.",example:"A fair die has P(rolling 4)=1/6.",tip:"Probability is always between 0 and 1 inclusive."},
+"Calculus":{def:"Calculus studies limits, change and accumulation.",formula:"d(xⁿ)/dx = n xⁿ⁻¹ for positive integer n.",example:"If y=x³, then dy/dx=3x².",tip:"A derivative can often be interpreted as an instantaneous rate of change or slope."},
+"Discrete Mathematics":{def:"Discrete mathematics studies distinct, countable structures and logical systems.",formula:"nCr = n!/[r!(n-r)!].",example:"Choosing 2 students from 5 gives 5C2=10 choices.",tip:"Translate words such as 'choose', 'arrange' and 'at least' carefully before counting."},
+"Advanced Mathematics":{def:"Advanced mathematics combines techniques from algebra, geometry, number theory, combinatorics and proof.",formula:"AM-GM: for positive a,b, (a+b)/2 ≥ √(ab).",example:"For positive a and b, replacing a+b by a bound involving √ab can simplify an inequality.",tip:"Try invariants, symmetry, extremal cases and small examples when a problem looks unfamiliar."}
 };
 
+const base=[
+["Arithmetic","Beginner","mcq","What is 25% of 80?",["10","15","20","25"],2,"25% = 1/4, so 80 ÷ 4 = 20."],
+["Arithmetic","Beginner","mcq","What is 7×8?",["54","56","58","64"],1,"7 groups of 8 make 56."],
+["Number Systems","Beginner","mcq","Which is an integer?",["2.5","√2","−7","1/3"],2,"−7 has no fractional part."],
+["Algebra","Explorer","mcq","If 3x+5=20, x is:",["3","5","7","15"],1,"Subtract 5 and divide by 3."],
+["Geometry","Beginner","mcq","Two angles of a triangle are 50° and 60°. The third is:",["60°","70°","80°","90°"],1,"Triangle angles total 180°."],
+["Mensuration","Beginner","mcq","A rectangle is 8 cm by 5 cm. Its area is:",["13","26","40","80"],2,"Area = length × width = 40 cm²."],
+["Trigonometry","Explorer","mcq","In a right triangle, sin θ equals:",["adjacent/hypotenuse","opposite/hypotenuse","opposite/adjacent","hypotenuse/opposite"],1,"Sine is opposite divided by hypotenuse."],
+["Statistics","Beginner","mcq","Mean of 4, 6 and 8 is:",["5","6","7","18"],1,"(4+6+8)/3 = 6."],
+["Probability","Beginner","mcq","Probability of heads on a fair coin is:",["0","1/4","1/2","1"],2,"Two equally likely outcomes give 1/2."],
+["Calculus","Advanced","mcq","Derivative of x³ is:",["x²","2x","3x²","3x"],2,"Power rule: 3x²."],
+["Discrete Mathematics","Challenger","mcq","How many ways can you choose 2 objects from 5?",["5","8","10","20"],2,"5C2 = 10."],
+["Advanced Mathematics","Olympiad","mcq","For positive a,b, which is always true?",["a+b<2√ab","a+b≥2√ab","a+b=√ab","a+b≤√ab"],1,"This is AM-GM."]
+];
 
-/* =========================================================
-   30 QUESTIONS FOR EACH TOPIC
-   ========================================================= */
+function extraQuestions(){
+ const out=[...base];
+ const nums=[12,15,18,21,24,27,30,36,42,48];
+ nums.forEach((n,i)=>out.push(["Arithmetic",levels[i%5],"mcq",`What is ${n} ÷ ${3+i%3}?`,[String(Math.floor(n/(3+i%3))),String(Math.floor(n/(3+i%3))+1),String(Math.floor(n/(3+i%3))+2),String(n)],0,"Divide the number by the stated divisor."]));
+ for(let i=1;i<=10;i++){
+   const a=i+2,b=i+5;
+   out.push(["Algebra",levels[i%5],"mcq",`Solve x + ${a} = ${a+b}.`,[String(b-1),String(b),String(b+1),String(a+b)],1,"Subtract the constant from both sides."]);
+ }
+ for(let i=1;i<=10;i++){
+   const a=20+i*5;
+   out.push(["Geometry",levels[i%5],"mcq",`An angle supplementary to ${a}° is:`,[String(90-a),String(180-a),String(180+a),String(360-a)],1,"Supplementary angles add to 180°."]);
+ }
+ for(let i=1;i<=10;i++){
+   const l=i+4,w=i+2;
+   out.push(["Mensuration",levels[i%5],"mcq",`A rectangle has length ${l} cm and width ${w} cm. Its area is:`,[String(l+w),String(2*l+2*w),String(l*w),String(l*w+2)],2,"Rectangle area = length × width."]);
+ }
+ for(let i=1;i<=10;i++){
+   out.push(["Statistics",levels[i%5],"mcq",`What is the mean of ${i}, ${i+2}, and ${i+4}?`,[String(i+1),String(i+2),String(i+3),String(i+4)],2,"Add the three values and divide by 3."]);
+ }
+ for(let i=1;i<=10;i++){
+   out.push(["Probability",levels[i%5],"mcq",`A fair die is rolled. What is P(rolling an even number)?`,["1/6","1/3","1/2","2/3"],2,"Even outcomes are 2,4,6: 3 of 6 outcomes."]);
+ }
+ // competency/language/challenge pool
+ out.push(
+ ["Algebra","Challenger","competency","A taxi charges a fixed ₹50 plus ₹12 per kilometre. Which expression gives the cost for x km?",["50x+12","12x+50","62x","50(x+12)"],1,"Fixed charge is 50 and distance charge is 12x."],
+ ["Geometry","Advanced","competency","A student claims every rhombus is a square. What is the best response?",["Always true","False: a rhombus need not have right angles","False: rhombi have no equal sides","Always false because squares are not rhombi"],1,"A square is a special rhombus with four right angles."],
+ ["Probability","Challenger","competency","A bag has 3 red and 2 blue balls. Without replacement, the probability of red then blue is:",["1/5","3/10","2/5","3/5"],1,"P(red)=3/5 and then P(blue)=2/4, product = 3/10."],
+ ["Arithmetic","Explorer","language","Which sentence correctly describes 0.75?",["Seventy-five hundredths","Seven hundredths and five tenths","Seven and five hundredths","Seventy-five tenths"],0,"0.75 means 75 hundredths."],
+ ["Number Systems","Advanced","challenge","If n is an odd integer, which expression is always even?",["n+1","n+2","2n+1","n²"],0,"Odd + 1 is even."],
+ ["Advanced Mathematics","Olympiad","challenge","Why is checking several examples not enough to prove a statement for every integer?",["Examples are never useful","A finite sample cannot establish a universal claim","Integers are not numbers","Proofs require calculators"],1,"A universal statement needs a general argument."]
+ );
+ return out;
+}
+const bank=extraQuestions();
 
-const QUESTIONS={
+let data=JSON.parse(localStorage.getItem("mathquest_v3")||'{"solved":0,"correct":0,"points":0,"done":[],"streak":0,"bestStreak":0}');
+let currentDifficulty="Beginner", pool=[], qi=0, answered=false;
 
-algebra:[
-["Solve: 3x + 7 = 22.","5","normal","Subtract 7 and divide by 3."],
-["If x² = 81 and x is positive, find x.","9","normal","The positive square root of 81 is 9."],
-["Factorise x² − 25.","(x-5)(x+5)","normal","Use difference of squares."],
-["Solve 2x − 5 > 9.","x > 7","normal","Add 5 and divide by 2."],
-["If a+b=10 and ab=21, find a²+b².","58","competency","a²+b²=(a+b)²−2ab=100−42."],
-["Find the roots of x²−5x+6=0.","2, 3","normal","Factorise as (x−2)(x−3)."],
-["If x+y=7 and xy=10, find (x−y)².","9","competency","(x−y)²=(x+y)²−4xy."],
-["Find the remainder when x²+3x+5 is divided by x−2.","15","advanced","Use the remainder theorem: P(2)=15."],
-["Solve x/3 + 2 = 7.","15","normal","x/3=5."],
-["If 2x+3y=13 and x=2, find y.","3","language","Substitute x=2."],
-["The sum of two consecutive integers is 41. Find them.","20, 21","language","Let them be n and n+1."],
-["A number increased by 20% becomes 72. Find it.","60","language","1.2x=72."],
-["Simplify (a+b)²−(a−b)².","4ab","normal","Expand both squares."],
-["If x−1/x=3, find x²+1/x².","11","advanced","Square the given relation."],
-["Solve x²−9x+20=0.","4, 5","normal","Factorise."],
-["If a=3 and b=−2, find a²−2ab+b².","25","normal","This is (a−b)²."],
-["Find the 10th term of 3,7,11,15,...","39","normal","Arithmetic sequence with d=4."],
-["Find the common difference of 18,14,10,6,...","−4","normal","Subtract consecutive terms."],
-["If x+y=12 and x−y=4, find x.","8","normal","Add the equations."],
-["Solve 5(x−2)=3x+8.","9","normal","Expand and collect x terms."],
-["A rectangle has length x+3 and width x−3. Express its area.","x²−9","language","Use difference of squares."],
-["If x²−4x+4=0, find x.","2","normal","It is (x−2)²."],
-["For x²+bx+12, roots are 3 and 4. Find b.","−7","competency","Sum of roots = −b."],
-["If x+y=5 and x²+y²=13, find xy.","6","competency","25−2xy=13."],
-["Solve 1/x=4.","1/4","normal","Take reciprocal."],
-["Find x if 2^(x)=32.","5","normal","32=2⁵."],
-["If a:b=2:3 and a+b=25, find a.","10","language","Five equal parts total 25."],
-["Find the next term: 2,6,12,20,30,...","42","olympiad","Terms follow n(n+1)."],
-["If x+y=8 and xy=15, find x³+y³.","152","olympiad","x³+y³=(x+y)³−3xy(x+y)."],
-["Find the positive integer x satisfying x²−10x+25=0.","5","olympiad","Perfect square: (x−5)²."]
-],
-
-geometry:[
-["Angles of a triangle are 50°,60° and x. Find x.","70°","normal","Angles sum to 180°."],
-["Find the hypotenuse of a right triangle with legs 6 and 8.","10","normal","Use Pythagoras."],
-["A triangle has base 12 cm and height 7 cm. Find its area.","42 cm²","normal","Area=½bh."],
-["Two similar triangles have side ratio 2:3. What is their area ratio?","4:9","competency","Area ratio is square of side ratio."],
-["A tangent to a circle is perpendicular to the radius at the point of contact. What is the angle?","90°","normal","Radius ⟂ tangent."],
-["A semicircle has diameter 14 cm. Find its radius.","7 cm","normal","Radius is half diameter."],
-["Find distance between (0,0) and (3,4).","5","normal","Use distance formula."],
-["Find midpoint of (2,4) and (8,10).","(5,7)","normal","Average corresponding coordinates."],
-["If two angles of a triangle are 35° and 85°, find the third.","60°","normal","180−120=60."],
-["A square has diagonal 10√2 cm. Find its side.","10 cm","competency","Diagonal=s√2."],
-["A rectangle is 12 cm by 5 cm. Find its diagonal.","13 cm","normal","Pythagoras."],
-["A circle has radius 7 cm. Find circumference using π=22/7.","44 cm","normal","2πr."],
-["Opposite angles of a cyclic quadrilateral are supplementary. If one is 110°, find opposite angle.","70°","competency","180−110."],
-["An isosceles triangle has vertex angle 40°. Find each base angle.","70°","normal","Remaining 140° divided equally."],
-["A line divides a triangle into two equal areas. If total area is 50 cm², each part is...","25 cm²","language","Equal areas."],
-["A triangle has sides 3,4,5. Is it right angled?","Yes","normal","3²+4²=5²."],
-["If corresponding angles of two triangles are equal, what similarity criterion applies?","AAA","normal","Three equal corresponding angles."],
-["Find area of a circle with radius 3 cm.","9π cm²","normal","πr²."],
-["A chord passes through the centre. What is it called?","Diameter","normal","A diameter is a chord through centre."],
-["Find the angle in a semicircle.","90°","normal","Thales' theorem."],
-["A triangle has sides 5,5,8. What type is it?","Isosceles","normal","Two sides are equal."],
-["A regular hexagon has each interior angle equal to...","120°","advanced","Formula (n−2)180/n."],
-["A polygon has interior angle sum 900°. How many sides?","7","competency","(n−2)180=900."],
-["Distance between (1,2) and (4,6)?","5","normal","√(9+16)."],
-["If a triangle is similar to another with scale factor 3, its area changes by...","9 times","competency","Area scales as square."],
-["A square's side doubles. Its area becomes...","4 times","language","Area scales as side²."],
-["Two parallel lines are cut by a transversal. Corresponding angles are...","Equal","normal","Corresponding angles are equal."],
-["A triangle has sides 7,24,25. Is it right angled?","Yes","olympiad","49+576=625."],
-["A circle has diameter 20. Find radius.","10","normal","Half the diameter."],
-["If a central angle is 80°, what is the angle subtended by the same arc at the circumference?","40°","olympiad","Angle at centre is twice angle at circumference."]
-],
-
-mensuration:[
-["Find area of rectangle 12 cm × 8 cm.","96 cm²","normal","Area=length×breadth."],
-["Find perimeter of a square with side 9 cm.","36 cm","normal","4s."],
-["Find area of triangle with base 15 cm and height 8 cm.","60 cm²","normal","½×15×8."],
-["Find volume of cube with side 5 cm.","125 cm³","normal","s³."],
-["Find volume of cuboid 4×5×6 cm.","120 cm³","normal","lbh."],
-["Cylinder radius 7 cm, height 10 cm. Using π=22/7, find volume.","1540 cm³","normal","πr²h."],
-["Find circumference of circle radius 14 cm using π=22/7.","88 cm","normal","2πr."],
-["A square has area 144 cm². Find side.","12 cm","normal","√144."],
-["A cube has volume 216 cm³. Find side.","6 cm","normal","Cube root of 216."],
-["A rectangular garden is 20 m by 15 m. Find area.","300 m²","language","20×15."],
-["A path surrounds a square. Why can its area be found by subtracting inner square area from outer square area?","Composite area","competency","Outer area−inner area."],
-["A circle radius doubles. Its area becomes...","4 times","competency","Area depends on r²."],
-["A cube side triples. Volume becomes...","27 times","competency","Volume depends on s³."],
-["Find surface area of cube side 4 cm.","96 cm²","normal","6s²."],
-["Cylinder radius 3 cm and height 5 cm. CSA=...?","30π cm²","normal","2πrh."],
-["Cone radius 3 cm and height 4 cm. Find slant height.","5 cm","normal","Pythagoras."],
-["Sphere radius 3 cm. Volume is...","36π cm³","normal","4/3πr³."],
-["A room is 8m×6m. Find floor area.","48 m²","language","8×6."],
-["A 10m square field has a 2m wide path inside around the edge. Find remaining inner square side.","6 m","competency","10−4."],
-["Find area of a semicircle radius 7 cm using π=22/7.","77 cm²","normal","½πr²."],
-["A cylinder's height doubles while radius stays same. Volume becomes...","2 times","competency","V is directly proportional to h."],
-["A cube side changes from 2 to 6. Volume increases by...","27 times","olympiad","6³/2³."],
-["A cuboid has volume 240 cm³ and dimensions 10×6×h. Find h.","4 cm","normal","60h=240."],
-["A rectangle has area 180 cm² and length 20 cm. Find breadth.","9 cm","normal","180/20."],
-["A circle has circumference 44 cm using π=22/7. Find radius.","7 cm","normal","2πr=44."],
-["A sector is one quarter of a circle. What fraction of full area is it?","1/4","normal","Quarter circle."],
-["A cone and cylinder have same base and height. Which has greater volume?","Cylinder","competency","Cone is one-third of cylinder."],
-["A tank is 2m×1.5m×1m. Find capacity in litres.","3000 L","language","3 m³ = 3000 L."],
-["If every length of a solid doubles, surface area becomes...","4 times","olympiad","Area scales by square."],
-["If every length doubles, volume becomes...","8 times","olympiad","Volume scales by cube."]
-],
-
-trigonometry:[
-["In a right triangle, opposite=3 and hypotenuse=5. Find sin θ.","3/5","normal","sin=opposite/hypotenuse."],
-["Adjacent=4, hypotenuse=5. Find cos θ.","4/5","normal","cos=adjacent/hypotenuse."],
-["Opposite=3, adjacent=4. Find tan θ.","3/4","normal","tan=opposite/adjacent."],
-["Find sin 30°.","1/2","normal","Special angle."],
-["Find cos 60°.","1/2","normal","Special angle."],
-["Find tan 45°.","1","normal","Special angle."],
-["If sin θ=3/5 for acute θ, find cos θ.","4/5","competency","Use sin²+cos²=1."],
-["If tan θ=1, acute θ is...","45°","normal","tan45°=1."],
-["Simplify sin²θ+cos²θ.","1","normal","Fundamental identity."],
-["If cos θ=0, one standard angle is...","90°","normal","Cosine of 90° is 0."],
-["A pole casts a shadow 10m and angle of elevation is 45°. Height?","10 m","language","tan45=h/10."],
-["A ladder 10m long makes 30° with ground. Vertical height?","5 m","language","10sin30."],
-["If tan θ=√3 and θ is acute, find θ.","60°","normal","tan60°=√3."],
-["If sin θ=√2/2 and θ acute, θ=...?","45°","normal","Special angle."],
-["Simplify (1−cos²θ).","sin²θ","normal","Identity."],
-["Simplify sec²θ−tan²θ.","1","advanced","Identity."],
-["If tan θ=3/4, find sec θ.","5/4","advanced","3-4-5 triangle."],
-["If sin θ=5/13, find cot θ for acute θ.","12/5","advanced","cos=12/13."],
-["A tree's angle of elevation is 30° from a point 20m away. Approximate height?","20/√3 m","language","tan30=h/20."],
-["A building is observed at 45° from 30m away. Height?","30 m","language","tan45=h/30."],
-["If sin θ=0, standard angle in [0°,180°] is...","0° or 180°","competency","Sine is zero at these angles."],
-["Find cos 0°.","1","normal","Definition."],
-["Find sin 90°.","1","normal","Definition."],
-["If tan θ=√3 and 0°<θ<90°, find sin θ.","√3/2","advanced","Use 30-60-90 triangle."],
-["If sec θ=2, find cos θ.","1/2","normal","Sec is reciprocal of cos."],
-["If cot θ=1, acute θ=...?","45°","normal","cot45°=1."],
-["Simplify sinθ/cosθ.","tanθ","normal","Definition of tan."],
-["If θ=60°, evaluate sin²θ+cos²θ.","1","competency","Identity always holds."],
-["A 20m rope makes 60° with horizontal. Find vertical component.","10√3 m","olympiad","20sin60."],
-["Prove mentally: tanθ·cotθ = ?","1","olympiad","Reciprocals."]
-],
-
-probability:[
-["A fair coin is tossed once. P(heads)?","1/2","normal","Two equally likely outcomes."],
-["A fair die is rolled. P(6)?","1/6","normal","One favourable outcome out of six."],
-["P(even number on die)?","1/2","normal","Three even outcomes."],
-["P(number greater than 4 on die)?","1/3","normal","5 and 6."],
-["Two coins are tossed. Number of outcomes?","4","normal","HH, HT, TH, TT."],
-["Two dice are rolled. Total outcomes?","36","normal","6×6."],
-["P(sum=7 with two dice)?","1/6","competency","Six combinations out of 36."],
-["A bag has 3 red and 2 blue balls. P(red)?","3/5","normal","3 favourable out of 5."],
-["If P(A)=0.7, P(not A)=...?","0.3","normal","Complement =1−P(A)."],
-["A card is drawn from a standard deck. P(heart)?","1/4","normal","13 hearts out of 52."],
-["P(ace from standard deck)?","1/13","normal","4 aces out of 52."],
-["Three coins are tossed. Number of outcomes?","8","normal","2³."],
-["Three coins are tossed. P(all heads)?","1/8","normal","One outcome out of eight."],
-["A die is rolled twice. P(two sixes)?","1/36","competency","1/6×1/6."],
-["If two events are independent, P(A and B)=...?","P(A)P(B)","normal","Definition."],
-["A box contains 5 red and 5 green balls. P(red)?","1/2","normal","Equal numbers."],
-["A number is chosen from 1 to 10. P(prime)?","2/5","competency","2,3,5,7 = 4/10."],
-["A number is chosen from 1 to 20. P(multiple of 5)?","1/5","normal","5,10,15,20."],
-["A die is rolled. P(odd or even)?","1","competency","Every die result is odd or even."],
-["P(A)=0.4 and P(B)=0.5 for independent events. P(A∩B)?","0.2","advanced","Multiply."],
-["A bag has 4 red, 3 blue. One ball is chosen. P(blue)?","3/7","normal","3 of 7."],
-["Two cards are drawn with replacement. P(both aces)?","1/169","advanced","1/13×1/13."],
-["Two cards are drawn without replacement. P(both aces)?","1/221","advanced","4/52×3/51."],
-["A die is rolled. P(number <3)?","1/3","normal","1 or 2."],
-["A die is rolled. P(number ≥4)?","1/2","normal","4,5,6."],
-["A coin is biased with P(H)=0.6. P(T)?","0.4","normal","Complement."],
-["If P(A)=0.3 and P(B)=0.2 and events are independent, P(neither)?","0.56","advanced","0.7×0.8."],
-["A box has 2 defective and 8 good items. P(good)?","4/5","language","8/10."],
-["Expected value of a fair die?","3.5","olympiad","Average of 1 through 6."],
-["A fair coin is tossed 4 times. P(all tails)?","1/16","olympiad","(1/2)^4."]
-],
-
-numberTheory:[
-["Find HCF of 18 and 24.","6","normal","Largest common factor."],
-["Find LCM of 6 and 8.","24","normal","Smallest common multiple."],
-["Is 29 prime?","Yes","normal","It has no divisor other than 1 and 29."],
-["Find prime factorisation of 60.","2²×3×5","normal","60=4×3×5."],
-["Is 91 divisible by 7?","Yes","normal","7×13=91."],
-["Find remainder when 17 is divided by 5.","2","normal","17=15+2."],
-["Find 2⁵ mod 3.","2","normal","32 leaves remainder 2."],
-["What is the only even prime?","2","normal","All other even numbers are composite."],
-["HCF of 35 and 49?","7","normal","Common factor."],
-["LCM of 9 and 12?","36","normal","Smallest common multiple."],
-["Is 1 prime?","No","normal","Prime numbers have exactly two positive divisors."],
-["Find remainder of 100 when divided by 9.","1","normal","99+1."],
-["If n is even, n² is...","Even","competency","Even×even is even."],
-["If n is odd, n² is...","Odd","competency","Odd×odd is odd."],
-["Sum of two odd numbers is always...","Even","normal","Odd+odd=even."],
-["Product of an even and odd integer is...","Even","normal","Even factor makes product even."],
-["Find HCF of 72 and 90.","18","normal","Common greatest factor."],
-["Find LCM of 15 and 20.","60","normal","Prime factorisation."],
-["What is 123 mod 10?","3","normal","Last digit gives remainder."],
-["Find the units digit of 7².","9","normal","49 ends in 9."],
-["Find units digit of 2⁵.","2","advanced","Powers of 2 cycle 2,4,8,6."],
-["If a number is divisible by 6, it must be divisible by...","2 and 3","normal","6=2×3."],
-["A number divisible by 10 must end in...","0","normal","Divisibility by 10."],
-["Find the smallest positive multiple of both 8 and 12.","24","normal","LCM."],
-["If n leaves remainder 3 when divided by 5, n+2 leaves remainder...","0","competency","3+2=5."],
-["Find gcd(48,18).","6","normal","Euclidean algorithm."],
-["Find remainder of 2¹⁰ when divided by 3.","1","advanced","2 mod 3 alternates 2,1."],
-["Can an odd number be divisible by 2?","No","normal","Divisibility by 2 requires even."],
-["Find the smallest prime factor of 91.","7","normal","91=7×13."],
-["If p is prime and p divides ab, does p necessarily divide a or b?","Yes","olympiad","Euclid's lemma."]
-]
-
-};
-
-
-/* =========================================================
-   COMPLETE QUESTION COUNT
-   ========================================================= */
-
-const TOTAL_QUESTIONS=Object.values(QUESTIONS)
-    .reduce((sum,q)=>sum+q.length,0);
-
-document.getElementById("total").textContent=TOTAL_QUESTIONS;
-
-
-/* =========================================================
-   PROGRESS
-   ========================================================= */
-
-let completed=
-    JSON.parse(
-        localStorage.getItem("mq_completed")||"[]"
-    );
-
-let correct=
-    Number(
-        localStorage.getItem("mq_correct")||0
-    );
-
-let attempted=
-    Number(
-        localStorage.getItem("mq_attempted")||0
-    );
-
-let currentQuestion=0;
-let currentList=[];
-let answered=false;
-let currentLevel="Level 2";
-
-
+function save(){localStorage.setItem("mathquest_v3",JSON.stringify(data));updateStats()}
 function updateStats(){
-
-    document.getElementById("completed")
-        .textContent=completed.length;
-
-    document.getElementById("score")
-        .textContent=correct;
-
-    let accuracy=
-        attempted
-        ? Math.round(correct/attempted*100)
-        : 0;
-
-    document.getElementById("percent")
-        .textContent=accuracy+"%";
+ const acc=data.solved?Math.round(data.correct/data.solved*100):0;
+ document.getElementById("done").textContent=data.done.length;
+ document.getElementById("doneBar").style.width=Math.min(100,data.done.length/topics.length*100)+"%";
+ document.getElementById("solved").textContent=data.solved;
+ document.getElementById("correct").textContent=data.correct;
+ document.getElementById("accuracy").textContent=acc+"%";
+ document.getElementById("points").textContent=data.points;
+ ["pSolved","pCorrect","pAcc","pPoints","pDone"].forEach((id,i)=>document.getElementById(id).textContent=[data.solved,data.correct,acc+"%",data.points,data.done.length][i]);
 }
-
-
-/* =========================================================
-   SUBJECT RENDERING
-   ========================================================= */
-
-function renderSubjects(){
-
-    const container=document.getElementById("subjects");
-
-    container.innerHTML="";
-
-    Object.entries(TOPICS).forEach(([id,t])=>{
-
-        const subject=document.createElement("div");
-
-        subject.className="subject open";
-
-        subject.innerHTML=`
-
-            <button class="subject-header">
-
-                <div class="subject-left">
-
-                    <div class="subject-icon">
-                        ${t.icon}
-                    </div>
-
-                    <div>
-                        <div class="subject-name">
-                            ${t.title}
-                        </div>
-
-                        <div class="subject-description">
-                            ${t.description}
-                        </div>
-                    </div>
-
-                </div>
-
-                <span class="arrow">▼</span>
-
-            </button>
-
-            <div class="topic-area">
-
-                <div class="topic-grid">
-
-                    <div class="topic">
-
-                        <div class="difficulty">
-                            SCHOOL → OLYMPIAD
-                        </div>
-
-                        <h3>${t.title}</h3>
-
-                        <p>
-                            ${t.description}
-                        </p>
-
-                        <div class="tags">
-
-                            ${t.tags.map(x=>
-                                `<span class="tag">${x}</span>`
-                            ).join("")}
-
-                        </div>
-
-                        <button
-                            class="study-btn"
-                            onclick="openStudy('${id}')">
-
-                            🚀 Let's Study
-
-                        </button>
-
-                        <button
-                            class="study-btn"
-                            style="margin-top:7px;background:var(--card2);color:var(--text);"
-                            onclick="startPractice('${id}')">
-
-                            🧠 Practice 30 Questions
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-        `;
-
-        const header=
-            subject.querySelector(".subject-header");
-
-        header.onclick=()=>{
-            subject.classList.toggle("open");
-        };
-
-        container.appendChild(subject);
-    });
-
-    updateStats();
+function show(id){
+ document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active"); window.scrollTo({top:0,behavior:"smooth"});
+ if(id==="practice")newPracticeSet(); updateStats();
 }
+function toggleDark(){document.body.classList.toggle("dark");localStorage.setItem("mqdark",document.body.classList.contains("dark"))}
+if(localStorage.getItem("mqdark")==="true")document.body.classList.add("dark");
 
-
-/* =========================================================
-   STUDY MODE
-   ========================================================= */
-
-function openStudy(id){
-
-    const topic=TOPICS[id];
-
-    if(!topic)return;
-
-    document.getElementById("studyTitle")
-        .textContent=topic.title;
-
-    document.getElementById("studyCategory")
-        .textContent=
-            "Level 2 • School • Advanced • Olympiad";
-
-    const content=document.getElementById("studyContent");
-
-    content.innerHTML=`
-
-        <div class="study-hero">
-
-            <div class="badge">
-                📚 STEP-BY-STEP STUDY MODE
-            </div>
-
-            <h1>${topic.title}</h1>
-
-            <p style="color:var(--muted);font-size:17px;">
-                ${topic.description}
-            </p>
-
-        </div>
-
-        ${topic.lessons.map((lesson,i)=>`
-
-            <div class="lesson-card">
-
-                <h3>
-                    ${i+1}. ${lesson[0]}
-                </h3>
-
-                <p>
-                    ${lesson[1]}
-                </p>
-
-                ${lesson[2]?
-                    `<div class="formula">
-                        ${lesson[2]}
-                    </div>`
-                    :""
-                }
-
-                <div class="example">
-
-                    <strong>💡 Think like a mathematician</strong>
-
-                    <p style="color:var(--muted);margin-top:5px;">
-                        Don't only memorise the formula.
-                        Ask what the formula means, when it works,
-                        and whether you can derive it.
-                    </p>
-
-                </div>
-
-            </div>
-
-        `).join("")}
-
-        <div class="lesson-card">
-
-            <h3>🏆 Olympiad Mindset</h3>
-
-            <p>
-                When a problem looks difficult, don't immediately
-                search for a formula. Look for patterns, symmetry,
-                substitutions, special cases and simpler versions
-                of the problem.
-            </p>
-
-        </div>
-
-        <div class="study-footer">
-
-            <button
-                class="main-btn"
-                onclick="finishStudy('${id}')">
-
-                ✓ Finish Topic
-
-            </button>
-
-            <button
-                class="main-btn secondary"
-                onclick="startPractice('${id}');closeStudy()">
-
-                🧠 Practice Now
-
-            </button>
-
-        </div>
-    `;
-
-    const overlay=document.getElementById("studyOverlay");
-
-    overlay.classList.add("active");
-
-    document.body.style.overflow="hidden";
+function levelForSub(j){return j<3?"Beginner":j<7?"Explorer":j<11?"Challenger":j<14?"Advanced":"Olympiad"}
+function renderTopics(list=topics){
+ const grid=document.getElementById("topicGrid");
+ if(!list.length){grid.innerHTML='<div class="empty">No topics found. Try another search.</div>';return}
+ grid.innerHTML=list.map(t=>`<article class="card topic"><div class="emoji">${t.e}</div><h3>${t.n}</h3><p>${t.d}</p><div class="tags">${t.s.slice(0,5).map(x=>`<span class="tag">${x}</span>`).join("")}</div><button onclick="openTopic('${t.n}')">Explore ${t.n} →</button></article>`).join("");
 }
-
-function finishStudy(id){
-
-    if(!completed.includes(id)){
-
-        completed.push(id);
-
-        localStorage.setItem(
-            "mq_completed",
-            JSON.stringify(completed)
-        );
-    }
-
-    updateStats();
-
-    closeStudy();
+function filterTopics(){
+ const s=document.getElementById("search").value.toLowerCase(), lv=document.getElementById("levelFilter").value;
+ renderTopics(topics.filter(t=>(t.n+" "+t.d+" "+t.s.join(" ")).toLowerCase().includes(s)&&(!lv||t.s.some((_,i)=>levelForSub(i)===lv))));
 }
-
-function closeStudy(){
-
-    document.getElementById("studyOverlay")
-        .classList.remove("active");
-
-    document.body.style.overflow="";
+function openTopic(name){
+ const t=topics.find(x=>x.n===name), l=lessons[name]||{def:t.d,formula:"Learn the rule, apply it, then test it.",example:"Start with a simple example and increase the difficulty.",tip:"Write every important step."};
+ data.done=[...new Set([...data.done,name])]; save();
+ document.getElementById("topicContent").innerHTML=`
+ <div class="hero"><h1>${t.e} ${t.n}</h1><p>${t.d}</p><button class="primary" onclick="practiceSubject('${name}')">Practise ${t.n} →</button></div>
+ <div class="section grid">
+ <div class="card lesson"><h2>📖 Definition</h2><p>${l.def}</p><div class="formula">${l.formula}</div></div>
+ <div class="card lesson"><h2>💡 Worked example</h2><div class="example">${l.example}</div><p><b>Tip:</b> ${l.tip}</p></div>
+ <div class="card lesson"><h2>🎯 How to master it</h2><p>Learn the definition → understand the formula → solve a basic example → explain the idea in words → attempt competency questions → move to harder problems.</p></div>
+ </div>
+ <div class="section"><div class="sectionHead"><h2>Subtopics</h2><span class="muted">${t.s.length} topics</span></div><div class="grid">${t.s.map((s,i)=>`<div class="card topic"><span class="tag">${levelForSub(i)}</span><h3>${s}</h3><p>Definition, examples, practice and reasoning questions for ${s}.</p><button onclick="openLesson('${name}','${s}',${i})">Study & practise →</button></div>`).join("")}</div></div>`;
+ show("topic");
 }
-
-
-/* =========================================================
-   PRACTICE
-   ========================================================= */
-
-function populatePracticeTopics(){
-
-    const select=
-        document.getElementById("practiceTopic");
-
-    select.innerHTML="";
-
-    Object.keys(TOPICS).forEach(id=>{
-
-        const option=document.createElement("option");
-
-        option.value=id;
-        option.textContent=TOPICS[id].title;
-
-        select.appendChild(option);
-
-    });
-
-    select.onchange=()=>{
-        startPractice(select.value);
-    };
-
-    document.getElementById("questionType").onchange=()=>{
-        startPractice(select.value);
-    };
+function openLesson(subject,sub,i){
+ const l=lessons[subject]||{def:"This subtopic develops the core ideas of "+subject+".",formula:"Use definitions and properties carefully.",example:"Start with a simple numerical example and then generalise.",tip:"Explain your reasoning in complete sentences."};
+ document.getElementById("modalContent").innerHTML=`<span class="badge">${levelForSub(i)} • ${subject}</span><h2>${sub}</h2><h3>Definition</h3><p>${l.def}</p><div class="formula">${l.formula}</div><h3>Example</h3><div class="example">${l.example}</div><h3>Strategy</h3><p>${l.tip}</p><button class="primaryBtn" onclick="practiceSubject('${subject}');closeModal()">Practise this subject</button>`;
+ document.getElementById("modal").classList.add("open");
 }
-
-function startPractice(id){
-
-    const type=
-        document.getElementById("questionType").value;
-
-    document.getElementById("practiceTopic").value=id;
-
-    currentList=
-        QUESTIONS[id].filter(q=>
-            type==="all" || q[2]===type
-        );
-
-    if(currentList.length===0){
-        currentList=QUESTIONS[id];
-    }
-
-    currentQuestion=0;
-
-    renderQuestion();
-
-    document.getElementById("practice")
-        .scrollIntoView({
-            behavior:"smooth",
-            block:"start"
-        });
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+function practiceSubject(subject){show("practice");pool=bank.filter(q=>q[0]===subject);if(!pool.length)pool=bank;qi=0;renderQuestion()}
+function setDifficulty(level){
+ currentDifficulty=level;
+ ["Beginner","Explorer","Challenger","Advanced","Olympiad"].forEach(x=>{const id={Beginner:"tabEasy",Explorer:"tabExp",Challenger:"tabCh",Advanced:"tabAdv",Olympiad:"tabOly"}[x];document.getElementById(id).classList.toggle("active",x===level)});
+ newPracticeSet();
 }
-
+function newPracticeSet(){
+ const type=document.getElementById("practiceType").value;
+ pool=bank.filter(q=>q[1]===currentDifficulty&&(type==="all"||q[2]===type));
+ if(!pool.length)pool=bank.filter(q=>q[1]===currentDifficulty);
+ if(!pool.length)pool=bank;
+ qi=Math.floor(Math.random()*pool.length);renderQuestion();
+}
 function renderQuestion(){
-
-    const box=
-        document.getElementById("questionBox");
-
-    if(!currentList.length){
-
-        box.innerHTML=`
-            <div class="question-card">
-                No questions available.
-            </div>
-        `;
-
-        return;
-    }
-
-    const q=currentList[currentQuestion];
-
-    answered=false;
-
-    let answer=q[1];
-
-    let options=createOptions(answer,currentList);
-
-    box.innerHTML=`
-
-        <div class="question-card">
-
-            <div class="question-number">
-
-                QUESTION ${currentQuestion+1}
-                / ${currentList.length}
-
-                • ${q[2].toUpperCase()}
-
-            </div>
-
-            <div class="question-text">
-                ${q[0]}
-            </div>
-
-            <div class="options">
-
-                ${options.map((x,i)=>
-
-                    `<button
-                        class="option"
-                        onclick="checkAnswer(this,'${escapeAnswer(x)}','${escapeAnswer(answer)}')">
-
-                        ${String.fromCharCode(65+i)}. ${x}
-
-                    </button>`
-
-                ).join("")}
-
-            </div>
-
-            <div class="answer" id="answerBox">
-
-                <strong>Explanation:</strong>
-                ${q[3]}
-                <br>
-                <strong>Answer:</strong> ${answer}
-
-            </div>
-
-            <div class="practice-buttons">
-
-                <button
-                    class="main-btn secondary"
-                    onclick="previousQuestion()">
-
-                    ← Previous
-
-                </button>
-
-                <button
-                    class="main-btn"
-                    onclick="nextQuestion()">
-
-                    Next →
-
-                </button>
-
-            </div>
-
-        </div>
-    `;
+ const q=pool[qi%pool.length];answered=false;
+ document.getElementById("qBadge").textContent=`${q[1]} • ${q[0]} • ${q[2].toUpperCase()}`;
+ document.getElementById("qText").textContent=q[3];
+ document.getElementById("feedback").textContent="";
+ document.getElementById("options").innerHTML=q[4].map((o,i)=>`<button class="option" onclick="answer(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join("");
 }
-
-function escapeAnswer(text){
-
-    return String(text)
-        .replace(/\\/g,"\\\\")
-        .replace(/'/g,"\\'");
+function answer(i){
+ if(answered)return;answered=true;
+ const q=pool[qi%pool.length],bs=[...document.querySelectorAll(".option")];
+ bs.forEach(b=>b.disabled=true);data.solved++;
+ if(i===q[5]){data.correct++;data.points+=q[1]==="Olympiad"?30:q[1]==="Advanced"?20:q[1]==="Challenger"?15:10;data.streak++;data.bestStreak=Math.max(data.bestStreak,data.streak);bs[i].classList.add("correct");document.getElementById("feedback").textContent="✓ Correct! "+q[6]}
+ else{data.streak=0;bs[i].classList.add("wrong");bs[q[5]].classList.add("correct");document.getElementById("feedback").textContent="Not quite. "+q[6]}
+ save();
 }
-
-function createOptions(correct,list){
-
-    const answers=[correct];
-
-    for(let q of list){
-
-        if(q[1]!==correct && !answers.includes(q[1])){
-
-            answers.push(q[1]);
-
-        }
-
-        if(answers.length>=4)break;
-    }
-
-    while(answers.length<4){
-
-        answers.push("None of these");
-
-    }
-
-    return answers.sort(()=>Math.random()-.5);
+function nextQuestion(){qi=(qi+1)%pool.length;renderQuestion()}
+function newSelf(){
+ const choices=[
+ ["A rectangle has length 12 cm and width 7 cm. Find its area and perimeter.","Area = 84 cm²; perimeter = 38 cm."],
+ ["A number is increased by 20% and becomes 72. Find the original number.","60."],
+ ["The angles of a triangle are in the ratio 2:3:4. Find the three angles.","40°, 60°, 80°."],
+ ["A fair die is rolled twice. What is the probability that both results are even?","(3/6)×(3/6)=1/4."],
+ ["Solve 2x−7=19 and show each step.","x=13."],
+ ["Explain in words why the sum of two odd integers is always even.","Each odd integer can be written as 2k+1; their sum is 2(k+m+1), which is even."]
+ ];
+ const x=choices[Math.floor(Math.random()*choices.length)];
+ document.getElementById("selfQ").textContent=x[0];document.getElementById("answerBox").textContent="Model answer: "+x[1];document.getElementById("answerBox").style.display="none";document.getElementById("selfAnswer").value="";
 }
-
-function checkAnswer(button,chosen,correctAnswer){
-
-    if(answered)return;
-
-    answered=true;
-
-    attempted++;
-
-    localStorage.setItem(
-        "mq_attempted",
-        attempted
-    );
-
-    if(chosen===correctAnswer){
-
-        button.classList.add("correct");
-
-        correct++;
-
-        localStorage.setItem(
-            "mq_correct",
-            correct
-        );
-
-    }else{
-
-        button.classList.add("wrong");
-
-        document.querySelectorAll(".option")
-            .forEach(btn=>{
-
-                const text=
-                    btn.textContent
-                    .replace(/^[A-D]\.\s*/,"")
-                    .trim();
-
-                if(text===correctAnswer){
-                    btn.classList.add("correct");
-                }
-
-            });
-    }
-
-    document.getElementById("answerBox")
-        .style.display="block";
-
-    updateStats();
-}
-
-function nextQuestion(){
-
-    if(currentQuestion<currentList.length-1){
-
-        currentQuestion++;
-
-        renderQuestion();
-
-    }else{
-
-        alert(
-            "🎉 Practice set complete! Great work."
-        );
-    }
-}
-
-function previousQuestion(){
-
-    if(currentQuestion>0){
-
-        currentQuestion--;
-
-        renderQuestion();
-
-    }
-}
-
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
-
-function searchTopics(){
-
-    const query=
-        document.getElementById("search")
-        .value
-        .toLowerCase()
-        .trim();
-
-    document.querySelectorAll(".topic").forEach(card=>{
-
-        card.style.display=
-            card.textContent
-            .toLowerCase()
-            .includes(query)
-            ? ""
-            :"none";
-
-    });
-}
-
-
-/* =========================================================
-   LEVEL SYSTEM
-   ========================================================= */
-
-function setLevel(level,button){
-
-    currentLevel=level;
-
-    document.querySelectorAll(".level-btn")
-        .forEach(x=>x.classList.remove("active"));
-
-    button.classList.add("active");
-
-    if(level==="Olympiad"){
-
-        document.querySelector(".practice-section")
-            .scrollIntoView({
-                behavior:"smooth"
-            });
-    }
-}
-
-
-/* =========================================================
-   SELF DONE NOTES
-   ========================================================= */
-
-const savedNote=
-    localStorage.getItem("mq_self_note")||"";
-
-document.getElementById("selfNote").value=savedNote;
-
-function saveSelfNote(){
-
-    localStorage.setItem(
-        "mq_self_note",
-        document.getElementById("selfNote").value
-    );
-}
-
-
-/* =========================================================
-   THEME
-   ========================================================= */
-
-function toggleTheme(){
-
-    document.body.classList.toggle("light");
-
-    localStorage.setItem(
-        "mq_theme",
-        document.body.classList.contains("light")
-        ?"light"
-        :"dark"
-    );
-}
-
-if(localStorage.getItem("mq_theme")==="light"){
-
-    document.body.classList.add("light");
-
-}
-
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-function resetProgress(){
-
-    if(!confirm(
-        "Reset completed topics and practice score?"
-    ))return;
-
-    completed=[];
-    correct=0;
-    attempted=0;
-
-    localStorage.removeItem("mq_completed");
-    localStorage.removeItem("mq_correct");
-    localStorage.removeItem("mq_attempted");
-
-    updateStats();
-
-    alert("Progress reset.");
-}
-
-
-/* =========================================================
-   SCROLL
-   ========================================================= */
-
-function scrollTopPage(){
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-}
-
-
-/* =========================================================
-   ESC KEY CLOSE STUDY MODE
-   ========================================================= */
-
-document.addEventListener("keydown",e=>{
-
-    if(e.key==="Escape"){
-        closeStudy();
-    }
-
-});
-
-
-/* =========================================================
-   INITIALISE
-   ========================================================= */
-
-renderSubjects();
-
-populatePracticeTopics();
-
-startPractice("algebra");
-
-updateStats();
-
+function resetData(){if(confirm("Reset all MathQuest progress?")){data={solved:0,correct:0,points:0,done:[],streak:0,bestStreak:0};save();}}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+renderTopics();newPracticeSet();newSelf();updateStats();
 </script>
-
 </body>
-   </html>
+                                                                                                                                                                </html>
